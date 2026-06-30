@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DentalClinic - DEBUG</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+body{background:#f4f7fb;padding:20px;color:#0f172a;font-size:15px}
+.box{background:#fff;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);border:1px solid #e2e8f0}
+h1{font-size:22px;margin-bottom:8px;color:#0284c7}
+h2{font-size:16px;margin:14px 0 8px}
+.ok{color:#10b981;font-weight:600}
+.err{color:#ef4444;font-weight:600}
+.warn{color:#f59e0b;font-weight:600}
+pre{background:#0f172a;color:#10b981;padding:14px;border-radius:9px;font-size:12px;overflow:auto;white-space:pre-wrap;word-break:break-all}
+button{background:#0ea5e9;color:#fff;border:none;padding:11px 18px;border-radius:9px;font-weight:600;cursor:pointer;margin:4px;font-size:14px}
+button.danger{background:#ef4444}
+button.success{background:#10b981}
+button:disabled{background:#cbd5e1;cursor:not-allowed}
+input{padding:9px 12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;width:100%;margin:4px 0}
+input:focus{outline:none;border-color:#0ea5e9}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.step{padding:12px;background:#f0f9ff;border-left:4px solid #0ea5e9;border-radius:6px;margin:6px 0}
+.err-box{background:#fee2e2;border-left:4px solid #ef4444;padding:14px;border-radius:6px;margin:10px 0}
+.ok-box{background:#d1fae5;border-left:4px solid #10b981;padding:14px;border-radius:6px;margin:10px 0}
+.tag{display:inline-block;padding:3px 9px;border-radius:8px;font-size:11px;font-weight:600;margin:2px}
+.tag.red{background:#fee2e2;color:#ef4444}
+.tag.green{background:#d1fae5;color:#10b981}
+.tag.blue{background:#dbeafe;color:#3b82f6}
+.tag.yellow{background:#fef3c7;color:#92400e}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+th,td{padding:8px;text-align:left;border-bottom:1px solid #e2e8f0}
+th{background:#f8fafc;font-weight:600}
+</style>
+</head>
+<body>
+
+<h1>🦷 DentalClinic — Modo Debug</h1>
+<p>Esta página mostra exatamente o que está a acontecer com a ligação ao Supabase.</p>
+
+<div id="output"></div>
+
+<script>
+// ⬇️ COLOQUE AS SUAS CREDENCIAIS AQUI
+const SUPABASE_CONFIG = {
+  url: 'https://likvqjxysoqkwrshcfyi.supabase.co',
+  anonKey: 'sb_publishable_YwN9oIEh2Oj6ppjRuZm22g_6ozrZBun'
+};
+
+const out = document.getElementById('output');
+function log(html) { out.innerHTML += html; }
+function step(num, title, status, details = '') {
+  const cls = status === 'ok' ? 'ok' : status === 'err' ? 'err' : 'warn';
+  const icon = status === 'ok' ? '✅' : status === 'err' ? '❌' : '⚠️';
+  log(`<div class="step"><strong>Passo ${num}:</strong> ${icon} <span class="${cls}">${title}</span>${details ? `<br><small style="color:#475569">${details}</small>` : ''}</div>`);
+}
+
+async function runDiagnostics() {
+  out.innerHTML = '';
+  
+  // PASSO 1: Verificar config
+  log('<div class="box"><h2>🔍 Diagnóstico</h2>');
+  
+  if (!SUPABASE_CONFIG.url || SUPABASE_CONFIG.url.includes('SEU-PROJETO')) {
+    step(1, 'URL não configurado', 'err', 'Abra o código e altere SUPABASE_CONFIG.url para o URL do seu projeto Supabase');
+    log('<div class="err-box"><strong>⚠️ O URL ainda tem "SEU-PROJETO".</strong><br>Abra o ficheiro num editor de texto e altere:<br><pre>url: \'https://SEU-PROJETO.supabase.co\'</pre>Para:<pre>url: \'https://o-seu-projeto-real.supabase.co\'</pre></div></div>');
+    return;
+  }
+  step(1, 'URL configurado', 'ok', SUPABASE_CONFIG.url);
+  
+  if (!SUPABASE_CONFIG.anonKey || SUPABASE_CONFIG.anonKey.includes('SUA-CHAVE')) {
+    step(2, 'Chave não configurada', 'err', 'Abra o código e altere SUPABASE_CONFIG.anonKey');
+    log('<div class="err-box"><strong>⚠️ A chave ainda tem "SUA-CHAVE".</strong><br>Abra o ficheiro num editor de texto e altere:<br><pre>anonKey: \'SUA-CHAVE-PUBLICA-AQUI\'</pre>Para:<pre>anonKey: \'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....\'</pre></div></div>');
+    return;
+  }
+  step(2, 'Chave configurada', 'ok', SUPABASE_CONFIG.anonKey.slice(0, 30) + '...');
+  log('</div>');
+
+  // PASSO 3: Testar ligação
+  log('<div class="box"><h2>🌐 Teste de Ligação</h2>');
+  let sb;
+  try {
+    sb = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {
+      auth: { persistSession: false }
+    });
+    step(3, 'Cliente Supabase criado', 'ok');
+  } catch (e) {
+    step(3, 'Erro ao criar cliente', 'err', e.message);
+    log('</div>');
+    return;
+  }
+
+  // PASSO 4: Testar query à tabela users
+  try {
+    const { data, error } = await sb.from('users').select('*').limit(5);
+    if (error) {
+      if (error.message.includes('does not exist')) {
+        step(4, 'Tabela "users" não existe', 'err', 'Precisa criar as tabelas no SQL Editor do Supabase');
+        log('<div class="err-box"><strong>A tabela "users" não existe!</strong><br>Vá ao Supabase → SQL Editor → execute o script de criação de tabelas.</div>');
+      } else if (error.message.includes('permission') || error.message.includes('policy')) {
+        step(4, 'Permissão negada (RLS)', 'err', error.message);
+        log('<div class="err-box"><strong>RLS está a bloquear!</strong><br>Execute no SQL Editor:<br><pre>alter table users disable row level security;</pre>E faça o mesmo para todas as outras tabelas.</div>');
+      } else if (error.message.includes('JWT') || error.message.includes('Invalid API')) {
+        step(4, 'Chave API inválida', 'err', error.message);
+        log('<div class="err-box"><strong>A chave não está correta!</strong><br>Verifique que está a usar a chave <strong>anon public</strong>, não a <strong>service_role</strong>.<br>Vá a: Settings → API → copie a chave <strong>anon</strong> public.</div>');
+      } else {
+        step(4, 'Erro na query', 'err', error.message);
+      }
+      log('</div>');
+      return;
+    }
+    step(4, 'Query à tabela users OK', 'ok', `${data.length} utilizadores encontrados`);
+    
+    if (data.length === 0) {
+      log('<div class="err-box"><strong>⚠️ Tabela "users" está VAZIA!</strong><br>Precisa inserir os utilizadores. Execute no SQL Editor:<pre>INSERT INTO users (id, name, role, pin, active) VALUES<br>(1, \'Rui Urbano\', \'admin\', \'2580\', true),<br>(2, \'Flávia Girão\', \'user\', \'1234\', true),<br>(3, \'Andreia Conde\', \'user\', \'4567\', true),<br>(4, \'José Pimenta\', \'user\', \'7890\', true);</pre></div>');
+      log('<button class="danger" onclick="forceInsert(\'' + SUPABASE_CONFIG.url + '\',\'' + SUPABASE_CONFIG.anonKey + '\')">🔧 Tentar inserir via JS</button>');
+    } else {
+      log('<div class="ok-box"><strong>✅ Tudo OK! Há ' + data.length + ' utilizadores na base de dados.</strong></div>');
+      log('<h2>Utilizadores encontrados:</h2><table><tr><th>ID</th><th>Nome</th><th>Perfil</th><th>PIN</th><th>Ativo</th></tr>' + 
+        data.map(u => `<tr><td>${u.id}</td><td>${u.name}</td><td>${u.role}</td><td>${u.pin}</td><td>${u.active ? '✅' : '❌'}</td></tr>`).join('') + '</table>');
+    }
+  } catch (e) {
+    step(4, 'Erro na ligação', 'err', e.message);
+  }
+  log('</div>');
+
+  // PASSO 5: Verificar outras tabelas
+  log('<div class="box"><h2>📋 Verificação de Tabelas</h2>');
+  const tables = ['users', 'categories', 'suppliers', 'products', 'movements', 'orders_clinic'];
+  for (const t of tables) {
+    try {
+      const { count } = await sb.from(t).select('*', { count: 'exact', head: true });
+      step(5, `Tabela ${t}`, count > 0 ? 'ok' : 'warn', `${count} registos`);
+    } catch (e) {
+      step(5, `Tabela ${t}`, 'err', e.message);
+    }
+  }
+  log('</div>');
+
+  // PASSO 6: Configuração de permissões
+  log('<div class="box"><h2>🔐 Teste de Permissões (RLS)</h2>');
+  try {
+    const { data, error } = await sb.from('users').select('id').limit(1);
+    if (error) {
+      step(6, 'RLS a bloquear', 'err', error.message);
+      log('<div class="err-box"><strong>Solução:</strong> No SQL Editor execute:<pre>alter table users disable row level security;<br>alter table categories disable row level security;<br>alter table suppliers disable row level security;<br>alter table products disable row level security;<br>alter table movements disable row level security;<br>alter table orders_clinic disable row level security;</pre></div>');
+    } else {
+      step(6, 'Permissões OK', 'ok', 'Pode ler a tabela');
+    }
+  } catch (e) {
+    step(6, 'Erro', 'err', e.message);
+  }
+  log('</div>');
+
+  // Botão para inserir dados automaticamente
+  log('<div class="box"><h2>🚀 Ações Rápidas</h2>');
+  log('<button class="success" onclick="forceInsert(\'' + SUPABASE_CONFIG.url + '\',\'' + SUPABASE_CONFIG.anonKey + '\')">➕ Inserir Utilizadores/Categorias/Fornecedores/Produtos</button>');
+  log('<button onclick="testQuery()">🔄 Repetir Testes</button>');
+  log('</div>');
+}
+
+window.forceInsert = async (url, key) => {
+  const sb = supabase.createClient(url, key, { auth: { persistSession: false } });
+  try {
+    const users = [
+      { id: 1, name: 'Rui Urbano', role: 'admin', pin: '2580', active: true },
+      { id: 2, name: 'Flávia Girão', role: 'user', pin: '1234', active: true },
+      { id: 3, name: 'Andreia Conde', role: 'user', pin: '4567', active: true },
+      { id: 4, name: 'José Pimenta', role: 'user', pin: '7890', active: true }
+    ];
+    const { error: e1 } = await sb.from('users').upsert(users, { onConflict: 'id' });
+    if (e1) { alert('Erro users: ' + e1.message); return; }
+    
+    const cats = ['Materiais Dentários','Anestesia','Descartáveis','Esterilização','Ortodontia','Endodontia','Radiologia','Higiene','Protésico'];
+    await sb.from('categories').delete().neq('id', 0);
+    const { error: e2 } = await sb.from('categories').insert(cats.map(n => ({ name: n })));
+    if (e2) { alert('Erro categorias: ' + e2.message); return; }
+    
+    const sups = ['DentalPlus','MedSupply','DentariaPro','OrthoMax','EndoCare'];
+    await sb.from('suppliers').delete().neq('id', 0);
+    const { error: e3 } = await sb.from('suppliers').insert(sups.map(n => ({ name: n })));
+    if (e3) { alert('Erro fornecedores: ' + e3.message); return; }
+    
+    const prods = [
+      { name: 'Luvas Nitrilo M', category: 'Descartáveis', supplier: 'DentalPlus', ref: 'GLV-NT-M', stock: 50, min_stock: 30, location: 'Gabinete 1', unit: 'un', price: 0.15, active: true },
+      { name: 'Máscaras Cirúrgicas IIR', category: 'Descartáveis', supplier: 'MedSupply', ref: 'MSK-IIR', stock: 8, min_stock: 20, location: 'Gabinete 2', unit: 'un', price: 0.25, active: true },
+      { name: 'Anestub Lidocaína 2%', category: 'Anestesia', supplier: 'DentalPlus', ref: 'ANS-LIDO-2', stock: 0, min_stock: 10, location: 'Gabinete 1', unit: 'un', price: 1.20, active: true },
+      { name: 'Agulhas Descartáveis 27G', category: 'Anestesia', supplier: 'MedSupply', ref: 'AGL-27G', stock: 120, min_stock: 50, location: 'Gabinete 1', unit: 'un', price: 0.08, active: true },
+      { name: 'Compressas Estéreis 5x5', category: 'Descartáveis', supplier: 'DentalPlus', ref: 'CMP-5X5', stock: 200, min_stock: 80, location: 'Zona 1 (Esterilização)', unit: 'un', price: 0.05, active: true },
+      { name: 'Resina Composta A2', category: 'Materiais Dentários', supplier: 'DentariaPro', ref: 'RES-A2', stock: 3, min_stock: 5, location: 'Gabinete 2', unit: 'seringa', price: 18.50, active: true },
+      { name: 'Limas Endodônticas K-File #25', category: 'Endodontia', supplier: 'EndoCare', ref: 'LF-K25', stock: 25, min_stock: 15, location: 'Gabinete 3', unit: 'un', price: 2.40, active: true },
+      { name: 'Brackets Metálicos MBT', category: 'Ortodontia', supplier: 'OrthoMax', ref: 'BR-MBT-001', stock: 60, min_stock: 30, location: 'Zona 2 (Cave)', unit: 'kit', price: 8.50, active: true },
+      { name: 'Películas Radiográficas', category: 'Radiologia', supplier: 'MedSupply', ref: 'RX-PEL-3X4', stock: 45, min_stock: 25, location: 'Zona 3 (Gabinete 7)', unit: 'un', price: 0.60, active: true },
+      { name: 'Solução Desinfetante 1L', category: 'Esterilização', supplier: 'DentalPlus', ref: 'DES-1L', stock: 6, min_stock: 4, location: 'Zona 1 (Esterilização)', unit: 'L', price: 12.00, active: true }
+    ];
+    await sb.from('products').delete().neq('id', 0);
+    const { error: e4 } = await sb.from('products').insert(prods);
+    if (e4) { alert('Erro produtos: ' + e4.message); return; }
+    
+    alert('✅ TUDO INSERIDO COM SUCESSO!\n\nAgora pode voltar à app principal e fazer login.');
+    location.reload();
+  } catch (e) {
+    alert('❌ Erro: ' + e.message);
+  }
+};
+
+window.testQuery = runDiagnostics;
+
+runDiagnostics();
+</script>
+</body>
+</html>

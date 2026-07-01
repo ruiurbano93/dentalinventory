@@ -31,7 +31,6 @@ input,select,textarea{font-family:inherit;font-size:16px}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
 
-/* LOGIN */
 .login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#e0f2fe 0%,#f4f7fb 100%);display:flex;align-items:center;justify-content:center;z-index:1000}
 .login-card{background:var(--surface);padding:42px 34px;border-radius:24px;box-shadow:var(--shadow-lg);width:460px;max-width:94vw;text-align:center}
 .login-logo{width:84px;height:84px;background:var(--primary-light);border-radius:22px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:42px}
@@ -60,7 +59,6 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .setup-info{background:var(--primary-light);border-radius:10px;padding:11px;margin-top:12px;font-size:12px;color:var(--primary-dark);text-align:left;line-height:1.5}
 .setup-info code{background:#fff;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:11px}
 
-/* APP */
 .app{display:none;height:100vh;grid-template-columns:240px 1fr}
 .app.active{display:grid}
 .sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:18px 12px}
@@ -94,9 +92,13 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
 .sync-badge.online .sync-dot{animation:pulse 2s infinite}
 
-.search-box{position:relative;width:280px}
-.search-box input{width:100%;padding:9px 12px 9px 36px;border-radius:9px;border:1px solid var(--border);background:var(--surface2);font-size:13.5px}
-.search-box::before{content:"🔍";position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px}
+.search-box{position:relative;width:100%}
+.search-box input{width:100%;padding:11px 12px 11px 40px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface2);font-size:14px;transition:all .15s;outline:none}
+.search-box input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(10,31,68,0.1)}
+.search-box::before{content:"🔍";position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none}
+.search-box .clear-search{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:var(--border);color:var(--text-soft);width:24px;height:24px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:12px;cursor:pointer;border:none}
+.search-box .clear-search:hover{background:var(--text-soft);color:#fff}
+.search-box.has-value .clear-search{display:flex}
 .btn{padding:9px 14px;border-radius:9px;font-weight:600;font-size:13.5px;display:inline-flex;align-items:center;gap:5px;transition:all .12s;cursor:pointer;border:none}
 .btn-primary{background:var(--primary);color:#fff}
 .btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
@@ -131,10 +133,13 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .dashboard-search .clear-search:hover{background:var(--text-soft);color:#fff}
 .dashboard-search.has-value .clear-search{display:flex}
 
-.cat-filter{display:flex;gap:6px;flex-wrap:wrap}
+.cat-filter{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .cat-pill{padding:7px 13px;border-radius:18px;font-weight:600;font-size:12.5px;color:var(--text-soft);background:var(--surface2);cursor:pointer;border:1px solid var(--border);white-space:nowrap;transition:all .15s}
 .cat-pill:hover{border-color:var(--primary)}
 .cat-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.sort-toggle{margin-left:auto;display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:18px;cursor:pointer;font-size:12px;font-weight:600;color:var(--text-soft);transition:all .15s}
+.sort-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.sort-toggle.active{background:var(--primary-light);border-color:var(--primary);color:var(--primary-dark)}
 
 .dashboard-results{
   display:flex;align-items:center;justify-content:space-between;
@@ -142,7 +147,7 @@ input,select,textarea{font-family:inherit;font-size:16px}
 }
 .dashboard-results strong{color:var(--primary)}
 
-/* ===== GRELHA DE PRODUTOS - LAYOUT SIMPLES ===== */
+/* ===== GRELHA DE PRODUTOS ===== */
 .product-grid-dash{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
 @media(max-width:1400px){.product-grid-dash{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:1150px){.product-grid-dash{grid-template-columns:repeat(4,1fr)}}
@@ -161,13 +166,13 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .mini-product.forecast{border-left-color:var(--blue)}
 
 .mp-left{display:flex;flex-direction:column;gap:4px;min-width:0;cursor:pointer;overflow:hidden}
-
 .mp-header{display:flex;align-items:center;gap:8px}
 .mp-icon{width:32px;height:32px;border-radius:8px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .mp-info{flex:1;min-width:0}
 .mp-name{font-weight:700;font-size:13px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.mp-usage{display:inline-flex;align-items:center;gap:3px;font-size:9.5px;font-weight:600;color:var(--text-light);background:var(--surface);padding:1px 6px;border-radius:8px;margin-top:3px;border:1px solid var(--border)}
+.mp-usage.hot{color:var(--orange);background:var(--orange-bg);border-color:var(--orange)}
 
-/* INDICADOR DE STOCK NO FUNDO */
 .mp-stock-indicator{
   padding:4px 8px;font-size:10.5px;font-weight:700;text-align:center;border-radius:6px;
   margin-top:auto;
@@ -178,7 +183,6 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .mp-stock-indicator.near{background:var(--yellow-bg);color:#92400e}
 @keyframes critical-pulse{50%{opacity:0.6}}
 
-/* BOTÕES + e - LADO DIREITO */
 .mp-actions{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
 .mp-btn{
   width:40px;height:40px;border-radius:8px;
@@ -315,7 +319,6 @@ input,select,textarea{font-family:inherit;font-size:16px}
   .sidebar{display:none}
   .topbar{padding:11px 14px}
   .content{padding:14px;padding-bottom:90px}
-  .topbar .search-box{display:none}
   .form-grid{grid-template-columns:1fr}
   .product-row{grid-template-columns:50px 1fr;gap:10px}
   .product-stock{grid-column:1/-1;order:3;flex-direction:row;justify-content:space-between;padding:10px 14px}
@@ -451,6 +454,7 @@ const DEFAULT_SUPPLIERS = ['DentalPlus','MedSupply','DentariaPro','OrthoMax','En
 const state = {
   sb: null, currentUser: null, selectedUser: null, pinInput: '',
   currentPage: 'dashboard', activeZone: 'all', dashCategory: 'Todas', dashSearch: '',
+  sortByUsage: true,  // <-- NOVO: ordenar por mais usados
   cache: { products: [], users: [], movements: [], orders: [], logs: [], categories: [], suppliers: [] },
   loaded: false
 };
@@ -761,6 +765,18 @@ function getDailyAverage(p, days = 30) {
   });
   return m.reduce((s, mv) => s + mv.quantity, 0) / days;
 }
+
+// NOVA FUNÇÃO: Calcular total de saídas por produto
+function getProductUsage(productId) {
+  return state.cache.movements
+    .filter(m => m.product_id === productId && m.type === 'out')
+    .reduce((s, m) => s + m.quantity, 0);
+}
+
+// ORDENAR produtos por uso (mais saídas primeiro)
+function sortProductsByUsage(products) {
+  return [...products].sort((a, b) => getProductUsage(b.id) - getProductUsage(a.id));
+}
 function updateBadges() {
   const alerts = state.cache.products.filter(p => p.active && getStockStatus(p).level !== 'ok').length;
   const b = document.getElementById('alertBadge');
@@ -790,9 +806,9 @@ function renderPage(page) {
   updateBadges();
 }
 
-// ===== DASHBOARD COM PESQUISA TEMPO REAL =====
+// ===== DASHBOARD COM PESQUISA TEMPO REAL + ORDENAÇÃO POR USO =====
 function renderDashboard(c) {
-  const products = state.cache.products.filter(p => p.active);
+  let products = state.cache.products.filter(p => p.active);
   let filtered = state.dashCategory === 'Todas' ? products : products.filter(p => p.category === state.dashCategory);
   
   if (state.dashSearch) {
@@ -804,6 +820,11 @@ function renderDashboard(c) {
       (p.supplier||'').toLowerCase().includes(s)
     );
   }
+  
+  // ORDENAR por uso (mais saídas primeiro) se toggle ativo
+  if (state.sortByUsage) {
+    filtered = sortProductsByUsage(filtered);
+  }
 
   c.innerHTML = `
     <div class="dashboard-toolbar">
@@ -814,15 +835,19 @@ function renderDashboard(c) {
         <span class="clear-search" onclick="clearDashSearch()">✕</span>
       </div>
       <div class="cat-filter">
+        <span style="font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-right:4px;align-self:center">Filtrar:</span>
         ${['Todas', ...state.cache.categories.map(c=>c.name)].map(cat => {
           const count = cat === 'Todas' ? products.length : products.filter(p => p.category === cat).length;
           return `<button class="cat-pill ${state.dashCategory === cat ? 'active' : ''}" onclick="setDashCategory('${cat.replace(/'/g, "\\'")}')">${cat} <span style="opacity:0.6;font-weight:500">(${count})</span></button>`;
         }).join('')}
+        <button class="sort-toggle ${state.sortByUsage ? 'active' : ''}" onclick="toggleSortByUsage()">
+          ${state.sortByUsage ? '🔥' : '📋'} ${state.sortByUsage ? 'Mais usados' : 'Alfabético'}
+        </button>
       </div>
     </div>
     
     <div class="dashboard-results">
-      <span>A mostrar <strong>${filtered.length}</strong> de <strong>${products.length}</strong>${state.dashSearch ? ` para "<strong>${state.dashSearch}</strong>"` : ''}${state.dashCategory !== 'Todas' ? ` em <strong>${state.dashCategory}</strong>` : ''}</span>
+      <span>A mostrar <strong>${filtered.length}</strong> de <strong>${products.length}</strong>${state.dashSearch ? ` para "<strong>${state.dashSearch}</strong>"` : ''}${state.dashCategory !== 'Todas' ? ` em <strong>${state.dashCategory}</strong>` : ''}${state.sortByUsage ? ' · ordenado por mais usados' : ''}</span>
       ${(state.dashSearch || state.dashCategory !== 'Todas') ? `<button class="btn btn-sm btn-secondary" onclick="resetDashFilters()">✕ Limpar</button>` : ''}
     </div>
 
@@ -834,6 +859,7 @@ function renderDashboard(c) {
       </div>` :
         filtered.map(p => {
           const status = getStockStatus(p);
+          const usage = getProductUsage(p.id);
           let stockIndicator = '';
           if (status.level === 'critical') {
             stockIndicator = `<div class="mp-stock-indicator critical">🔴 ${p.stock} ${p.unit||'un'} · RUTURA</div>`;
@@ -844,12 +870,14 @@ function renderDashboard(c) {
           } else {
             stockIndicator = `<div class="mp-stock-indicator ok">✅ ${p.stock} ${p.unit||'un'}</div>`;
           }
+          const usageBadge = usage > 0 ? `<span class="mp-usage ${usage > 20 ? 'hot' : ''}">📊 ${usage} saídas</span>` : '';
           return `<div class="mini-product ${status.level}">
             <div class="mp-left" onclick="openProductDetail(${p.id})">
               <div class="mp-header">
                 <div class="mp-icon">${getProductIcon(p)}</div>
                 <div class="mp-info">
                   <div class="mp-name">${p.name}</div>
+                  ${usageBadge}
                 </div>
               </div>
               ${stockIndicator}
@@ -863,47 +891,43 @@ function renderDashboard(c) {
     </div>
   `;
   
-  // Foco no input
   setTimeout(() => {
     const inp = document.getElementById('dashSearchInput');
-    if (inp && !state.dashSearch) {
-      inp.focus();
-    }
+    if (inp && !state.dashSearch) inp.focus();
   }, 100);
 }
 
-// PESQUISA EM TEMPO REAL - SEM RE-RENDER, SÓ ATUALIZA OS PRODUTOS
+// PESQUISA EM TEMPO REAL - SÓ ATUALIZA A GRELHA
 let searchTimeout = null;
 window.updateDashSearch = (val) => {
   state.dashSearch = val;
-  
-  // Atualizar botão X
-  const searchBox = document.querySelector('.dashboard-search');
-  if (searchBox) {
-    searchBox.classList.toggle('has-value', !!val);
-  }
-  
-  // Debounce de 50ms
+  document.querySelector('.dashboard-search')?.classList.toggle('has-value', !!val);
   clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    filterAndRenderProducts();
-  }, 50);
+  searchTimeout = setTimeout(() => filterAndRenderProducts(), 50);
 };
 
 window.clearDashSearch = () => {
   state.dashSearch = '';
   document.querySelector('.dashboard-search')?.classList.remove('has-value');
   const inp = document.getElementById('dashSearchInput');
-  if (inp) {
-    inp.value = '';
-    inp.focus();
-  }
+  if (inp) { inp.value = ''; inp.focus(); }
   filterAndRenderProducts();
 };
 
 window.setDashCategory = (cat) => {
   state.dashCategory = cat;
   filterAndRenderProducts();
+};
+
+window.toggleSortByUsage = () => {
+  state.sortByUsage = !state.sortByUsage;
+  filterAndRenderProducts();
+  // Atualizar também o toggle visual
+  const toggle = document.querySelector('.sort-toggle');
+  if (toggle) {
+    toggle.classList.toggle('active', state.sortByUsage);
+    toggle.innerHTML = (state.sortByUsage ? '🔥' : '📋') + ' ' + (state.sortByUsage ? 'Mais usados' : 'Alfabético');
+  }
 };
 
 window.resetDashFilters = () => {
@@ -915,7 +939,6 @@ window.resetDashFilters = () => {
   filterAndRenderProducts();
 };
 
-// FUNÇÃO OTIMIZADA: só atualiza a grelha, não re-renderiza tudo
 function filterAndRenderProducts() {
   const products = state.cache.products.filter(p => p.active);
   let filtered = state.dashCategory === 'Todas' ? products : products.filter(p => p.category === state.dashCategory);
@@ -930,9 +953,15 @@ function filterAndRenderProducts() {
     );
   }
   
-  // Atualizar pills de categoria (ativo)
+  // Ordenar por uso
+  if (state.sortByUsage) {
+    filtered = sortProductsByUsage(filtered);
+  }
+  
+  // Atualizar pills de categoria
   document.querySelectorAll('.cat-pill').forEach(p => {
-    p.classList.toggle('active', p.textContent.split('(')[0].trim() === state.dashCategory);
+    const pillText = p.textContent.split('(')[0].trim();
+    p.classList.toggle('active', pillText === state.dashCategory);
   });
   
   // Atualizar contador
@@ -941,10 +970,11 @@ function filterAndRenderProducts() {
     let html = `A mostrar <strong>${filtered.length}</strong> de <strong>${products.length}</strong>`;
     if (state.dashSearch) html += ` para "<strong>${state.dashSearch}</strong>"`;
     if (state.dashCategory !== 'Todas') html += ` em <strong>${state.dashCategory}</strong>`;
+    if (state.sortByUsage) html += ' · ordenado por mais usados';
     resultsEl.innerHTML = html;
   }
   
-  // Mostrar/esconder botão "Limpar"
+  // Botão limpar
   const clearBtn = document.querySelector('.dashboard-results button');
   if (state.dashSearch || state.dashCategory !== 'Todas') {
     if (!clearBtn) {
@@ -958,7 +988,7 @@ function filterAndRenderProducts() {
     clearBtn.remove();
   }
   
-  // Atualizar SÓ a grelha
+  // Atualizar APENAS a grelha
   const grid = document.getElementById('productGrid');
   if (!grid) return;
   
@@ -973,6 +1003,7 @@ function filterAndRenderProducts() {
   
   grid.innerHTML = filtered.map(p => {
     const status = getStockStatus(p);
+    const usage = getProductUsage(p.id);
     let stockIndicator = '';
     if (status.level === 'critical') {
       stockIndicator = `<div class="mp-stock-indicator critical">🔴 ${p.stock} ${p.unit||'un'} · RUTURA</div>`;
@@ -983,12 +1014,14 @@ function filterAndRenderProducts() {
     } else {
       stockIndicator = `<div class="mp-stock-indicator ok">✅ ${p.stock} ${p.unit||'un'}</div>`;
     }
+    const usageBadge = usage > 0 ? `<span class="mp-usage ${usage > 20 ? 'hot' : ''}">📊 ${usage} saídas</span>` : '';
     return `<div class="mini-product ${status.level}">
       <div class="mp-left" onclick="openProductDetail(${p.id})">
         <div class="mp-header">
           <div class="mp-icon">${getProductIcon(p)}</div>
           <div class="mp-info">
             <div class="mp-name">${p.name}</div>
+            ${usageBadge}
           </div>
         </div>
         ${stockIndicator}
@@ -1217,7 +1250,8 @@ window.openProductDetail = (id) => {
   if (!p) return;
   const status = getStockStatus(p);
   const movements = state.cache.movements.filter(m => m.product_id === id).sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 8);
-  openModal('📦 Detalhes', `<div class="detail-card"><div class="detail-header"><div class="detail-icon">${getProductIcon(p)}</div><div class="detail-info"><div class="detail-name">${p.name}</div><div class="detail-ref">${p.ref || '—'}</div></div></div><div class="detail-rows"><div class="detail-row"><div class="dr-label">Stock</div><div class="dr-value">${p.stock} ${p.unit||'un'}</div></div><div class="detail-row"><div class="dr-label">Mínimo</div><div class="dr-value">${p.min_stock}</div></div><div class="detail-row"><div class="dr-label">Localização</div><div class="dr-value">📍 ${p.location}</div></div><div class="detail-row"><div class="dr-label">Categoria</div><div class="dr-value">🏷️ ${p.category||'—'}</div></div></div></div><div class="card"><div class="card-header"><div class="card-title">🔄 Movimentos</div></div><div class="movement-list">${movements.map(m => renderMovementItem(m)).join('') || '<div class="empty">Sem movimentos</div>'}</div></div>`, null, 'Fechar');
+  const usage = getProductUsage(id);
+  openModal('📦 Detalhes', `<div class="detail-card"><div class="detail-header"><div class="detail-icon">${getProductIcon(p)}</div><div class="detail-info"><div class="detail-name">${p.name}</div><div class="detail-ref">${p.ref || '—'}</div></div></div><div class="detail-rows"><div class="detail-row"><div class="dr-label">Stock</div><div class="dr-value">${p.stock} ${p.unit||'un'}</div></div><div class="detail-row"><div class="dr-label">Mínimo</div><div class="dr-value">${p.min_stock}</div></div><div class="detail-row"><div class="dr-label">Localização</div><div class="dr-value">📍 ${p.location}</div></div><div class="detail-row"><div class="dr-label">Categoria</div><div class="dr-value">🏷️ ${p.category||'—'}</div></div><div class="detail-row"><div class="dr-label">Total saídas</div><div class="dr-value">📊 ${usage}</div></div></div></div><div class="card"><div class="card-header"><div class="card-title">🔄 Movimentos</div></div><div class="movement-list">${movements.map(m => renderMovementItem(m)).join('') || '<div class="empty">Sem movimentos</div>'}</div></div>`, null, 'Fechar');
 };
 
 window.quickIn = (id) => {
@@ -1295,7 +1329,7 @@ window.renderOrdersList = () => {
   const f = window._oFilter || 'all';
   if (f !== 'all') orders = orders.filter(o => o.status === f);
   list.innerHTML = orders.length === 0 ? '<div class="empty" style="grid-column:1/-1">Sem encomendas</div>' :
-    orders.map(o => `<div class="order-card"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:9px"><div><strong>🏭 ${o.supplier}</strong><div style="font-size:11px;color:var(--text-soft)">${formatDateTime(o.timestamp)}</div></div><span class="order-status ${o.status}">${statusLabel(o.status)}</span></div><div class="order-items">${(o.items||[]).slice(0,4).map(i => `<div class="order-item"><span>${i.name}</span><strong>${i.quantity} ${i.unit||''}</strong></div>`).join('')}</div><div style="display:flex;gap:5px;margin-top:9px;flex-wrap:wrap">${o.status==='pending'?`<button class="btn btn-sm btn-primary" onclick="updateOrderStatus(${o.id},'ordered')">📦</button>`:''}${o.status==='ordered'?`<button class="btn btn-sm btn-success" onclick="openReceiveOrder(${o.id})">✅</button>`:''}<button class="btn btn-sm btn-secondary" onclick="deleteOrder(${o.id})">🗑️</button></div></div>`).join('');
+    orders.map(o => `<div class="order-card"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:9px"><div><strong>🏭 ${o.supplier}</strong><div style="font-size:11px;color:var(--text-soft)">${formatDateTime(o.timestamp)}</div></div><span class="order-status ${o.status}">${statusLabel(o.status)}</span></div><div class="order-items">${(o.items||[]).slice(0,4).map(i => `<div class="order-item"><span>${i.name}</span><strong>${i.quantity} ${i.unit||''}</strong></div>`).join('')}</div><div style="display:flex;gap:5px;margin-top:9px;flex-wrap:wrap">${o.status==='pending'?`<button class="btn btn-sm btn-primary" onclick="updateOrderStatus('${o.id}','ordered')">📦</button>`:''}${o.status==='ordered'?`<button class="btn btn-sm btn-success" onclick="openReceiveOrder('${o.id}')">✅</button>`:''}<button class="btn btn-sm btn-secondary" onclick="deleteOrder('${o.id}')">🗑️</button></div></div>`).join('');
 };
 window.updateOrderStatus = async (id, status) => {
   await state.sb.from('orders_clinic').update({ status }).eq('id', id);
@@ -1315,9 +1349,9 @@ window.autoGenerateOrder = async () => {
   products.forEach(p => { const s = getStockStatus(p); if (['critical','low'].includes(s.level)) { const sup = p.supplier || 'Outros'; if (!bySupplier[sup]) bySupplier[sup] = []; bySupplier[sup].push({ id: p.id, name: p.name, quantity: Math.max(p.min_stock * 2, 5), unit: p.unit }); } });
   const sups = Object.keys(bySupplier);
   if (sups.length === 0) { toast('Sem alertas', 'warning'); return; }
-  for (const sup of sups) {
-    await state.sb.from('orders_clinic').insert({ supplier: sup, items: bySupplier[sup], status: 'pending', created_by: state.currentUser.name });
-  }
+  const batch = state.sb.batch();
+  sups.forEach(sup => batch.insert({ supplier: sup, items: bySupplier[sup], status: 'pending', created_by: state.currentUser.name }));
+  await batch.commit();
   await refreshTable('orders', 'orders_clinic');
   toast(`${sups.length} encomenda(s)!`, 'success');
   playAlertSound(false);
@@ -1329,7 +1363,7 @@ window.openReceiveOrder = async (id) => {
     let allDone = true;
     for (const inp of document.querySelectorAll('[data-recv]')) {
       const qty = parseInt(inp.value) || 0;
-      const item = (o.items||[]).find(i => i.id === parseInt(inp.dataset.recv));
+      const item = (o.items||[]).find(i => i.id === inp.dataset.recv);
       if (qty > 0 && item) {
         const product = state.cache.products.find(p => p.id === item.id);
         if (product) {
@@ -1366,7 +1400,7 @@ window.quickOrderOne = async (productId) => {
 function renderAlertsPage(c) {
   const products = state.cache.products.filter(p => p.active);
   const alerts = products.map(p => ({p, s: getStockStatus(p)})).filter(a => a.s.level !== 'ok');
-  c.innerHTML = `<div class="card"><div class="card-header"><div class="card-title">⚠️ Alertas</div><button class="btn btn-primary btn-sm" onclick="autoGenerateOrder()">✨ Gerar</button></div><div class="alert-list">${alerts.length === 0 ? '<div class="empty">✅ Tudo em ordem</div>' : alerts.sort((a,b) => { const o = {critical:0,low:1,near:2}; return o[a.s.level]-o[b.s.level]; }).map(a => `<div class="alert-item ${a.s.level}" style="cursor:pointer" onclick="openProductDetail(${a.p.id})"><span class="alert-icon">${a.s.level==='critical'?'🔴':'🟠'}</span><div class="alert-info"><div class="alert-name">${a.p.name}</div><div class="alert-meta">${a.p.location} · ${a.p.stock}/${a.p.min_stock}</div></div><button class="alert-action" onclick="event.stopPropagation();quickOrderOne(${a.p.id})">+</button></div>`).join('')}</div></div>`;
+  c.innerHTML = `<div class="card"><div class="card-header"><div class="card-title">⚠️ Alertas</div><button class="btn btn-primary btn-sm" onclick="autoGenerateOrder()">✨ Gerar</button></div><div class="alert-list">${alerts.length === 0 ? '<div class="empty">✅ Tudo em ordem</div>' : alerts.sort((a,b) => { const o = {critical:0,low:1,near:2}; return o[a.s.level]-o[b.s.level]; }).map(a => `<div class="alert-item ${a.s.level}" style="cursor:pointer" onclick="openProductDetail('${a.p.id}')"><span class="alert-icon">${a.s.level==='critical'?'🔴':'🟠'}</span><div class="alert-info"><div class="alert-name">${a.p.name}</div><div class="alert-meta">${a.p.location} · ${a.p.stock}/${a.p.min_stock}</div></div><button class="alert-action" onclick="event.stopPropagation();quickOrderOne('${a.p.id}')">+</button></div>`).join('')}</div></div>`;
 }
 
 function renderLogsPage(c) {

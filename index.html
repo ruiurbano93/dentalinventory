@@ -830,7 +830,8 @@ function renderDashboard(c) {
     <div class="dashboard-toolbar">
       <div class="dashboard-search ${state.dashSearch ? 'has-value' : ''}">
         <input id="dashSearchInput" type="text" placeholder="Pesquisar produto..." 
-               value="${state.dashSearch.replace(/"/g, '&quot;')}" 
+               value="${state.dashSearch.replace(/"/g, '&quot;')}"
+		oninput="updateDashSearch(this.value)"
                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
         <span class="clear-search" onclick="clearDashSearch()">✕</span>
       </div>

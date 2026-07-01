@@ -108,33 +108,7 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .card-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
 
-/* ===== STATS CARDS ===== */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:14px}
-.stat-card{
-  background:var(--surface);padding:10px 14px;border-radius:var(--radius);
-  border:1px solid var(--border);box-shadow:var(--shadow);
-  display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s;min-height:64px;
-}
-.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--primary)}
-.stat-card:active{transform:scale(0.97)}
-.stat-card .icon-bg{
-  width:36px;height:36px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
-}
-.stat-card .value{font-size:20px;font-weight:800;line-height:1}
-.stat-card .label{font-size:11.5px;color:var(--text-soft);margin-top:2px}
-.stat-card .stat-info{flex:1;min-width:0}
-.stat-card.critical .icon-bg{background:var(--red-bg);color:var(--red)}
-.stat-card.critical .value{color:var(--red)}
-.stat-card.warning .icon-bg{background:var(--orange-bg);color:var(--orange)}
-.stat-card.warning .value{color:var(--orange)}
-.stat-card.success .icon-bg{background:var(--green-bg);color:var(--green)}
-.stat-card.success .value{color:var(--green)}
-.stat-card.info .icon-bg{background:var(--blue-bg);color:var(--blue)}
-.stat-card.info .value{color:var(--blue)}
-.stat-card .stat-arrow{color:var(--text-light);font-size:14px}
-
-/* ===== DASHBOARD LIMPO - APENAS GRELHA ===== */
+/* ===== DASHBOARD - PESQUISA + FILTRO ===== */
 .dashboard-toolbar{
   display:flex;flex-direction:column;gap:12px;margin-bottom:16px;
   background:var(--surface);padding:16px;border-radius:var(--radius);
@@ -142,17 +116,17 @@ input,select,textarea{font-family:inherit;font-size:16px}
 }
 .dashboard-search{position:relative;width:100%}
 .dashboard-search input{
-  width:100%;padding:12px 14px 12px 42px;border-radius:12px;
+  width:100%;padding:12px 44px 12px 42px;border-radius:12px;
   border:2px solid var(--border);background:var(--surface2);font-size:15px;font-weight:500;
-  transition:all .15s;
+  transition:all .15s;outline:none;
 }
-.dashboard-search input:focus{outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(10,31,68,0.1)}
-.dashboard-search::before{content:"🔍";position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px}
+.dashboard-search input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(10,31,68,0.1)}
+.dashboard-search::before{content:"🔍";position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none}
 .dashboard-search .clear-search{
-  position:absolute;right:10px;top:50%;transform:translateY(-50%);
-  background:var(--border);color:var(--text-soft);width:22px;height:22px;
-  border-radius:50%;display:none;align-items:center;justify-content:center;font-size:11px;
-  cursor:pointer;
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  background:var(--border);color:var(--text-soft);width:26px;height:26px;
+  border-radius:50%;display:none;align-items:center;justify-content:center;font-size:12px;
+  cursor:pointer;border:none;
 }
 .dashboard-search .clear-search:hover{background:var(--text-soft);color:#fff}
 .dashboard-search.has-value .clear-search{display:flex}
@@ -168,33 +142,64 @@ input,select,textarea{font-family:inherit;font-size:16px}
 }
 .dashboard-results strong{color:var(--primary)}
 
+/* ===== GRELHA DE PRODUTOS - LAYOUT NOVO ===== */
 .product-grid-dash{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
 @media(max-width:1400px){.product-grid-dash{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:1150px){.product-grid-dash{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:900px){.product-grid-dash{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:650px){.product-grid-dash{grid-template-columns:repeat(2,1fr)}}
-.mini-product{background:var(--surface);border-radius:12px;padding:10px;border:1px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px;border-left:4px solid var(--border)}
-.mini-product.critical{border-left-color:var(--red)}.mini-product.low{border-left-color:var(--orange)}
-.mini-product.near{border-left-color:var(--yellow)}.mini-product.forecast{border-left-color:var(--blue)}
-.mp-header{display:flex;align-items:center;gap:8px;cursor:pointer}
+
+.mini-product{
+  background:var(--surface);border-radius:12px;padding:10px;
+  border:1px solid var(--border);box-shadow:var(--shadow);
+  display:grid;grid-template-columns:1fr auto;gap:10px;
+  align-items:start;border-left:4px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.mini-product.critical{border-left-color:var(--red)}
+.mini-product.low{border-left-color:var(--orange)}
+.mini-product.near{border-left-color:var(--yellow)}
+.mini-product.forecast{border-left-color:var(--blue)}
+
+.mp-left{
+  display:flex;flex-direction:column;gap:8px;min-width:0;cursor:pointer;
+  padding-bottom:30px; /* espaço para o stock indicator no fundo */
+}
+
+.mp-header{
+  display:flex;align-items:center;gap:8px;cursor:pointer;
+}
 .mp-icon{width:36px;height:36px;border-radius:9px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .mp-info{flex:1;min-width:0}
 .mp-name{font-weight:700;font-size:12.5px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.mp-loc{font-size:10px;color:var(--text-light);margin-top:1px}
-.mp-stock{text-align:center;background:var(--surface2);border-radius:9px;padding:6px 4px;cursor:pointer}
-.mp-stock-num{font-size:22px;font-weight:800;color:var(--text);line-height:1}
-.mp-stock-unit{font-size:10px;color:var(--text-light);margin-top:2px}
-.mp-stock-min{font-size:9.5px;color:var(--text-light)}
-.mp-actions{display:flex;gap:4px;justify-content:center}
-.mp-btn{flex:1;height:44px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;cursor:pointer;border:none}
-.mp-btn:active{transform:scale(0.92)}
+.mp-loc{font-size:10px;color:var(--text-light);margin-top:2px}
+
+/* INDICADOR DE STOCK NO FUNDO DO CARD */
+.mp-stock-indicator{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:5px 10px;font-size:10.5px;font-weight:700;text-align:center;
+  border-top:1px solid var(--border);
+}
+.mp-stock-indicator.ok{background:var(--green-bg);color:var(--green)}
+.mp-stock-indicator.critical{background:var(--red-bg);color:var(--red);animation:critical-pulse 1.5s infinite}
+.mp-stock-indicator.low{background:var(--orange-bg);color:var(--orange)}
+.mp-stock-indicator.near{background:var(--yellow-bg);color:#92400e}
+@keyframes critical-pulse{50%{opacity:0.6}}
+
+/* BOTÕES + e - LADO DIREITO, VERTICAL (+ EM CIMA, - EM BAIXO) */
+.mp-actions{
+  display:flex;flex-direction:column;gap:5px;flex-shrink:0;
+}
+.mp-btn{
+  width:38px;height:38px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:700;color:#fff;cursor:pointer;border:none;
+  transition:all .1s;
+}
+.mp-btn:active{transform:scale(0.9)}
 .mp-btn.in{background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%)}
 .mp-btn.out{background:linear-gradient(135deg,var(--orange) 0%,var(--orange-dark) 100%)}
-.mp-btn:disabled{background:#cbd5e1}
-.mp-status{text-align:center;font-size:10px;font-weight:700;padding:2px 4px;border-radius:6px}
-.mp-status.critical{background:var(--red-bg);color:var(--red);animation:critical-pulse 1.5s infinite}
-.mp-status.low{background:var(--orange-bg);color:var(--orange)}
-@keyframes critical-pulse{50%{opacity:0.6}}
+.mp-btn:disabled{background:#cbd5e1;cursor:not-allowed}
 
 .products-header{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
 .zone-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding:6px;background:var(--surface);border-radius:12px;border:1px solid var(--border)}
@@ -719,7 +724,6 @@ function navigate(page) {
   };
   document.getElementById('pageTitle').textContent = titles[page]?.[0] || '';
   document.getElementById('pageSubtitle').textContent = titles[page]?.[1] || '';
-  // Reset filtros do dashboard ao sair
   if (page !== 'dashboard') { state.dashSearch = ''; state.dashCategory = 'Todas'; }
   renderPage(page);
 }
@@ -796,12 +800,11 @@ function renderPage(page) {
   updateBadges();
 }
 
-// ========== DASHBOARD LIMPO: APENAS GRELHA + PESQUISA + FILTRO ==========
+// ===== DASHBOARD COM PESQUISA CORRIGIDA + LAYOUT NOVO =====
 function renderDashboard(c) {
   const products = state.cache.products.filter(p => p.active);
   let filtered = state.dashCategory === 'Todas' ? products : products.filter(p => p.category === state.dashCategory);
   
-  // Aplicar pesquisa
   if (state.dashSearch) {
     const s = state.dashSearch.toLowerCase();
     filtered = filtered.filter(p => 
@@ -816,7 +819,9 @@ function renderDashboard(c) {
   c.innerHTML = `
     <div class="dashboard-toolbar">
       <div class="dashboard-search ${state.dashSearch ? 'has-value' : ''}">
-        <input id="dashSearchInput" type="text" placeholder="Pesquisar por nome, referência, fornecedor ou categoria..." value="${state.dashSearch}" oninput="updateDashSearch(this.value)" autofocus />
+        <input id="dashSearchInput" type="text" placeholder="Pesquisar por nome, referência, fornecedor ou categoria..." 
+               value="${state.dashSearch.replace(/"/g, '&quot;')}" 
+               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
         <span class="clear-search" onclick="clearDashSearch()">✕</span>
       </div>
       <div class="cat-filter">
@@ -840,48 +845,85 @@ function renderDashboard(c) {
       </div>` :
         filtered.map(p => {
           const status = getStockStatus(p);
+          // INDICADOR DE STOCK NO FUNDO DO CARD
+          let stockIndicator = '';
+          if (status.level === 'critical') {
+            stockIndicator = `<div class="mp-stock-indicator critical">🔴 ${p.stock} ${p.unit||'un'} · RUTURA</div>`;
+          } else if (status.level === 'low') {
+            stockIndicator = `<div class="mp-stock-indicator low">🟠 ${p.stock} ${p.unit||'un'} · Baixo (mín ${p.min_stock})</div>`;
+          } else if (status.level === 'near') {
+            stockIndicator = `<div class="mp-stock-indicator near">🟡 ${p.stock} ${p.unit||'un'}</div>`;
+          } else {
+            stockIndicator = `<div class="mp-stock-indicator ok">✅ ${p.stock} ${p.unit||'un'}</div>`;
+          }
           return `<div class="mini-product ${status.level}">
-            <div class="mp-header" onclick="openProductDetail(${p.id})">
-              <div class="mp-icon">${getProductIcon(p)}</div>
-              <div class="mp-info">
-                <div class="mp-name">${p.name}</div>
-                <div class="mp-loc">📍 ${p.location.split(' (')[0]}</div>
+            <div class="mp-left" onclick="openProductDetail(${p.id})">
+              <div class="mp-header">
+                <div class="mp-icon">${getProductIcon(p)}</div>
+                <div class="mp-info">
+                  <div class="mp-name">${p.name}</div>
+                  <div class="mp-loc">📍 ${p.location.split(' (')[0]}</div>
+                </div>
               </div>
             </div>
-            <div class="mp-stock" onclick="openProductDetail(${p.id})">
-              <div class="mp-stock-num">${p.stock}</div>
-              <div class="mp-stock-unit">${p.unit||'un'}</div>
-              <div class="mp-stock-min">mín ${p.min_stock}</div>
-            </div>
-            ${status.level === 'critical' ? `<div class="mp-status critical">🔴 Rutura</div>` : ''}
-            ${status.level === 'low' ? `<div class="mp-status low">🟠 Baixo</div>` : ''}
             <div class="mp-actions">
               <button class="mp-btn in" onclick="event.stopPropagation();quickIn(${p.id})" title="Entrada">+</button>
               <button class="mp-btn out" onclick="event.stopPropagation();quickOut(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} title="Saída">−</button>
             </div>
+            ${stockIndicator}
           </div>`;
         }).join('')}
     </div>
   `;
-  // Foco automático no input de pesquisa
+  // Restaurar foco no input
   setTimeout(() => {
     const inp = document.getElementById('dashSearchInput');
-    if (inp && !state.dashSearch) inp.focus();
-  }, 50);
+    if (inp) {
+      const cursorPos = inp.value.length;
+      inp.focus();
+      inp.setSelectionRange(cursorPos, cursorPos);
+    }
+  }, 30);
 }
 
+// PESQUISA OTIMIZADA - SEM RE-RENDER COMPLETO
+let searchTimeout = null;
 window.updateDashSearch = (val) => {
   state.dashSearch = val;
-  renderDashboard(document.getElementById('content'));
+  // Atualizar visual do botão X
+  const searchBox = document.querySelector('.dashboard-search');
+  if (searchBox) {
+    if (val) searchBox.classList.add('has-value');
+    else searchBox.classList.remove('has-value');
+  }
+  // Debounce: esperar 100ms antes de re-renderizar
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    renderDashboard(document.getElementById('content'));
+    // Restaurar foco e posição do cursor
+    const inp = document.getElementById('dashSearchInput');
+    if (inp) {
+      inp.focus();
+      const pos = inp.value.length;
+      inp.setSelectionRange(pos, pos);
+    }
+  }, 100);
 };
+
 window.clearDashSearch = () => {
   state.dashSearch = '';
   renderDashboard(document.getElementById('content'));
+  setTimeout(() => {
+    const inp = document.getElementById('dashSearchInput');
+    if (inp) inp.focus();
+  }, 50);
 };
+
 window.setDashCategory = (cat) => {
   state.dashCategory = cat;
   renderDashboard(document.getElementById('content'));
 };
+
 window.resetDashFilters = () => {
   state.dashSearch = '';
   state.dashCategory = 'Todas';
@@ -931,7 +973,6 @@ function renderAnalyticsPage(c) {
   const byCat = {};
   products.forEach(p => { const cat = p.category || 'Sem'; byCat[cat] = (byCat[cat]||0) + p.stock; });
   const forecasts = products.map(p => ({ product: p, days: getDaysUntilEmpty(p), daily: getDailyAverage(p) })).filter(f => f.days !== null).sort((a,b) => a.days - b.days);
-
   c.innerHTML = `
     <div class="analytics-grid">
       <div class="card"><div class="card-header"><div class="card-title">📊 Tendência 30 dias</div></div><div class="chart-container"><canvas id="trendChart"></canvas></div></div>

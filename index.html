@@ -108,7 +108,7 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .card-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
 
-/* ===== DASHBOARD - PESQUISA + FILTRO ===== */
+/* ===== DASHBOARD TOOLBAR ===== */
 .dashboard-toolbar{
   display:flex;flex-direction:column;gap:12px;margin-bottom:16px;
   background:var(--surface);padding:16px;border-radius:var(--radius);
@@ -116,16 +116,16 @@ input,select,textarea{font-family:inherit;font-size:16px}
 }
 .dashboard-search{position:relative;width:100%}
 .dashboard-search input{
-  width:100%;padding:12px 44px 12px 42px;border-radius:12px;
-  border:2px solid var(--border);background:var(--surface2);font-size:15px;font-weight:500;
+  width:100%;padding:14px 50px 14px 46px;border-radius:12px;
+  border:2px solid var(--border);background:var(--surface2);font-size:16px;font-weight:500;
   transition:all .15s;outline:none;
 }
 .dashboard-search input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(10,31,68,0.1)}
-.dashboard-search::before{content:"🔍";position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none}
+.dashboard-search::before{content:"🔍";position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none}
 .dashboard-search .clear-search{
-  position:absolute;right:8px;top:50%;transform:translateY(-50%);
-  background:var(--border);color:var(--text-soft);width:26px;height:26px;
-  border-radius:50%;display:none;align-items:center;justify-content:center;font-size:12px;
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  background:var(--border);color:var(--text-soft);width:28px;height:28px;
+  border-radius:50%;display:none;align-items:center;justify-content:center;font-size:14px;
   cursor:pointer;border:none;
 }
 .dashboard-search .clear-search:hover{background:var(--text-soft);color:#fff}
@@ -142,7 +142,7 @@ input,select,textarea{font-family:inherit;font-size:16px}
 }
 .dashboard-results strong{color:var(--primary)}
 
-/* ===== GRELHA DE PRODUTOS - LAYOUT NOVO ===== */
+/* ===== GRELHA DE PRODUTOS - LAYOUT SIMPLES ===== */
 .product-grid-dash{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
 @media(max-width:1400px){.product-grid-dash{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:1150px){.product-grid-dash{grid-template-columns:repeat(4,1fr)}}
@@ -152,33 +152,25 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .mini-product{
   background:var(--surface);border-radius:12px;padding:10px;
   border:1px solid var(--border);box-shadow:var(--shadow);
-  display:grid;grid-template-columns:1fr auto;gap:10px;
-  align-items:start;border-left:4px solid var(--border);
-  position:relative;overflow:hidden;
+  display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;
+  border-left:4px solid var(--border);min-height:110px;position:relative;
 }
 .mini-product.critical{border-left-color:var(--red)}
 .mini-product.low{border-left-color:var(--orange)}
 .mini-product.near{border-left-color:var(--yellow)}
 .mini-product.forecast{border-left-color:var(--blue)}
 
-.mp-left{
-  display:flex;flex-direction:column;gap:8px;min-width:0;cursor:pointer;
-  padding-bottom:30px; /* espaço para o stock indicator no fundo */
-}
+.mp-left{display:flex;flex-direction:column;gap:4px;min-width:0;cursor:pointer;overflow:hidden}
 
-.mp-header{
-  display:flex;align-items:center;gap:8px;cursor:pointer;
-}
-.mp-icon{width:36px;height:36px;border-radius:9px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mp-header{display:flex;align-items:center;gap:8px}
+.mp-icon{width:32px;height:32px;border-radius:8px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .mp-info{flex:1;min-width:0}
-.mp-name{font-weight:700;font-size:12.5px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.mp-loc{font-size:10px;color:var(--text-light);margin-top:2px}
+.mp-name{font-weight:700;font-size:13px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 
-/* INDICADOR DE STOCK NO FUNDO DO CARD */
+/* INDICADOR DE STOCK NO FUNDO */
 .mp-stock-indicator{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:5px 10px;font-size:10.5px;font-weight:700;text-align:center;
-  border-top:1px solid var(--border);
+  padding:4px 8px;font-size:10.5px;font-weight:700;text-align:center;border-radius:6px;
+  margin-top:auto;
 }
 .mp-stock-indicator.ok{background:var(--green-bg);color:var(--green)}
 .mp-stock-indicator.critical{background:var(--red-bg);color:var(--red);animation:critical-pulse 1.5s infinite}
@@ -186,14 +178,12 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .mp-stock-indicator.near{background:var(--yellow-bg);color:#92400e}
 @keyframes critical-pulse{50%{opacity:0.6}}
 
-/* BOTÕES + e - LADO DIREITO, VERTICAL (+ EM CIMA, - EM BAIXO) */
-.mp-actions{
-  display:flex;flex-direction:column;gap:5px;flex-shrink:0;
-}
+/* BOTÕES + e - LADO DIREITO */
+.mp-actions{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
 .mp-btn{
-  width:38px;height:38px;border-radius:9px;
+  width:40px;height:40px;border-radius:8px;
   display:flex;align-items:center;justify-content:center;
-  font-size:20px;font-weight:700;color:#fff;cursor:pointer;border:none;
+  font-size:22px;font-weight:700;color:#fff;cursor:pointer;border:none;
   transition:all .1s;
 }
 .mp-btn:active{transform:scale(0.9)}
@@ -800,7 +790,7 @@ function renderPage(page) {
   updateBadges();
 }
 
-// ===== DASHBOARD COM PESQUISA CORRIGIDA + LAYOUT NOVO =====
+// ===== DASHBOARD COM PESQUISA TEMPO REAL =====
 function renderDashboard(c) {
   const products = state.cache.products.filter(p => p.active);
   let filtered = state.dashCategory === 'Todas' ? products : products.filter(p => p.category === state.dashCategory);
@@ -811,15 +801,14 @@ function renderDashboard(c) {
       p.name.toLowerCase().includes(s) || 
       (p.ref||'').toLowerCase().includes(s) ||
       (p.category||'').toLowerCase().includes(s) ||
-      (p.supplier||'').toLowerCase().includes(s) ||
-      (p.location||'').toLowerCase().includes(s)
+      (p.supplier||'').toLowerCase().includes(s)
     );
   }
 
   c.innerHTML = `
     <div class="dashboard-toolbar">
       <div class="dashboard-search ${state.dashSearch ? 'has-value' : ''}">
-        <input id="dashSearchInput" type="text" placeholder="Pesquisar por nome, referência, fornecedor ou categoria..." 
+        <input id="dashSearchInput" type="text" placeholder="Pesquisar produto..." 
                value="${state.dashSearch.replace(/"/g, '&quot;')}" 
                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
         <span class="clear-search" onclick="clearDashSearch()">✕</span>
@@ -833,24 +822,23 @@ function renderDashboard(c) {
     </div>
     
     <div class="dashboard-results">
-      <span>A mostrar <strong>${filtered.length}</strong> de <strong>${products.length}</strong> produtos${state.dashSearch ? ` para "<strong>${state.dashSearch}</strong>"` : ''}${state.dashCategory !== 'Todas' ? ` em <strong>${state.dashCategory}</strong>` : ''}</span>
-      ${(state.dashSearch || state.dashCategory !== 'Todas') ? `<button class="btn btn-sm btn-secondary" onclick="resetDashFilters()">✕ Limpar filtros</button>` : ''}
+      <span>A mostrar <strong>${filtered.length}</strong> de <strong>${products.length}</strong>${state.dashSearch ? ` para "<strong>${state.dashSearch}</strong>"` : ''}${state.dashCategory !== 'Todas' ? ` em <strong>${state.dashCategory}</strong>` : ''}</span>
+      ${(state.dashSearch || state.dashCategory !== 'Todas') ? `<button class="btn btn-sm btn-secondary" onclick="resetDashFilters()">✕ Limpar</button>` : ''}
     </div>
 
-    <div class="product-grid-dash">
+    <div class="product-grid-dash" id="productGrid">
       ${filtered.length === 0 ? `<div class="empty" style="grid-column:1/-1">
         <div class="empty-icon">🔍</div>
         <div class="empty-title">Nenhum produto encontrado</div>
-        <div>${state.dashSearch ? 'Tente outro termo de pesquisa' : 'Adicione produtos na seção Gerir Produtos'}</div>
+        <div>${state.dashSearch ? 'Tente outro termo' : 'Adicione produtos em Gerir Produtos'}</div>
       </div>` :
         filtered.map(p => {
           const status = getStockStatus(p);
-          // INDICADOR DE STOCK NO FUNDO DO CARD
           let stockIndicator = '';
           if (status.level === 'critical') {
             stockIndicator = `<div class="mp-stock-indicator critical">🔴 ${p.stock} ${p.unit||'un'} · RUTURA</div>`;
           } else if (status.level === 'low') {
-            stockIndicator = `<div class="mp-stock-indicator low">🟠 ${p.stock} ${p.unit||'un'} · Baixo (mín ${p.min_stock})</div>`;
+            stockIndicator = `<div class="mp-stock-indicator low">🟠 ${p.stock} ${p.unit||'un'} · Baixo</div>`;
           } else if (status.level === 'near') {
             stockIndicator = `<div class="mp-stock-indicator near">🟡 ${p.stock} ${p.unit||'un'}</div>`;
           } else {
@@ -862,73 +850,156 @@ function renderDashboard(c) {
                 <div class="mp-icon">${getProductIcon(p)}</div>
                 <div class="mp-info">
                   <div class="mp-name">${p.name}</div>
-                  <div class="mp-loc">📍 ${p.location.split(' (')[0]}</div>
                 </div>
               </div>
+              ${stockIndicator}
             </div>
             <div class="mp-actions">
               <button class="mp-btn in" onclick="event.stopPropagation();quickIn(${p.id})" title="Entrada">+</button>
               <button class="mp-btn out" onclick="event.stopPropagation();quickOut(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} title="Saída">−</button>
             </div>
-            ${stockIndicator}
           </div>`;
         }).join('')}
     </div>
   `;
-  // Restaurar foco no input
+  
+  // Foco no input
   setTimeout(() => {
     const inp = document.getElementById('dashSearchInput');
-    if (inp) {
-      const cursorPos = inp.value.length;
+    if (inp && !state.dashSearch) {
       inp.focus();
-      inp.setSelectionRange(cursorPos, cursorPos);
     }
-  }, 30);
+  }, 100);
 }
 
-// PESQUISA OTIMIZADA - SEM RE-RENDER COMPLETO
+// PESQUISA EM TEMPO REAL - SEM RE-RENDER, SÓ ATUALIZA OS PRODUTOS
 let searchTimeout = null;
 window.updateDashSearch = (val) => {
   state.dashSearch = val;
-  // Atualizar visual do botão X
+  
+  // Atualizar botão X
   const searchBox = document.querySelector('.dashboard-search');
   if (searchBox) {
-    if (val) searchBox.classList.add('has-value');
-    else searchBox.classList.remove('has-value');
+    searchBox.classList.toggle('has-value', !!val);
   }
-  // Debounce: esperar 100ms antes de re-renderizar
+  
+  // Debounce de 50ms
   clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
-    renderDashboard(document.getElementById('content'));
-    // Restaurar foco e posição do cursor
-    const inp = document.getElementById('dashSearchInput');
-    if (inp) {
-      inp.focus();
-      const pos = inp.value.length;
-      inp.setSelectionRange(pos, pos);
-    }
-  }, 100);
+    filterAndRenderProducts();
+  }, 50);
 };
 
 window.clearDashSearch = () => {
   state.dashSearch = '';
-  renderDashboard(document.getElementById('content'));
-  setTimeout(() => {
-    const inp = document.getElementById('dashSearchInput');
-    if (inp) inp.focus();
-  }, 50);
+  document.querySelector('.dashboard-search')?.classList.remove('has-value');
+  const inp = document.getElementById('dashSearchInput');
+  if (inp) {
+    inp.value = '';
+    inp.focus();
+  }
+  filterAndRenderProducts();
 };
 
 window.setDashCategory = (cat) => {
   state.dashCategory = cat;
-  renderDashboard(document.getElementById('content'));
+  filterAndRenderProducts();
 };
 
 window.resetDashFilters = () => {
   state.dashSearch = '';
   state.dashCategory = 'Todas';
-  renderDashboard(document.getElementById('content'));
+  document.querySelector('.dashboard-search')?.classList.remove('has-value');
+  const inp = document.getElementById('dashSearchInput');
+  if (inp) inp.value = '';
+  filterAndRenderProducts();
 };
+
+// FUNÇÃO OTIMIZADA: só atualiza a grelha, não re-renderiza tudo
+function filterAndRenderProducts() {
+  const products = state.cache.products.filter(p => p.active);
+  let filtered = state.dashCategory === 'Todas' ? products : products.filter(p => p.category === state.dashCategory);
+  
+  if (state.dashSearch) {
+    const s = state.dashSearch.toLowerCase();
+    filtered = filtered.filter(p => 
+      p.name.toLowerCase().includes(s) || 
+      (p.ref||'').toLowerCase().includes(s) ||
+      (p.category||'').toLowerCase().includes(s) ||
+      (p.supplier||'').toLowerCase().includes(s)
+    );
+  }
+  
+  // Atualizar pills de categoria (ativo)
+  document.querySelectorAll('.cat-pill').forEach(p => {
+    p.classList.toggle('active', p.textContent.split('(')[0].trim() === state.dashCategory);
+  });
+  
+  // Atualizar contador
+  const resultsEl = document.querySelector('.dashboard-results span');
+  if (resultsEl) {
+    let html = `A mostrar <strong>${filtered.length}</strong> de <strong>${products.length}</strong>`;
+    if (state.dashSearch) html += ` para "<strong>${state.dashSearch}</strong>"`;
+    if (state.dashCategory !== 'Todas') html += ` em <strong>${state.dashCategory}</strong>`;
+    resultsEl.innerHTML = html;
+  }
+  
+  // Mostrar/esconder botão "Limpar"
+  const clearBtn = document.querySelector('.dashboard-results button');
+  if (state.dashSearch || state.dashCategory !== 'Todas') {
+    if (!clearBtn) {
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-sm btn-secondary';
+      btn.textContent = '✕ Limpar';
+      btn.onclick = resetDashFilters;
+      document.querySelector('.dashboard-results').appendChild(btn);
+    }
+  } else if (clearBtn) {
+    clearBtn.remove();
+  }
+  
+  // Atualizar SÓ a grelha
+  const grid = document.getElementById('productGrid');
+  if (!grid) return;
+  
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-title">Nenhum produto encontrado</div>
+      <div>${state.dashSearch ? 'Tente outro termo' : 'Adicione produtos em Gerir Produtos'}</div>
+    </div>`;
+    return;
+  }
+  
+  grid.innerHTML = filtered.map(p => {
+    const status = getStockStatus(p);
+    let stockIndicator = '';
+    if (status.level === 'critical') {
+      stockIndicator = `<div class="mp-stock-indicator critical">🔴 ${p.stock} ${p.unit||'un'} · RUTURA</div>`;
+    } else if (status.level === 'low') {
+      stockIndicator = `<div class="mp-stock-indicator low">🟠 ${p.stock} ${p.unit||'un'} · Baixo</div>`;
+    } else if (status.level === 'near') {
+      stockIndicator = `<div class="mp-stock-indicator near">🟡 ${p.stock} ${p.unit||'un'}</div>`;
+    } else {
+      stockIndicator = `<div class="mp-stock-indicator ok">✅ ${p.stock} ${p.unit||'un'}</div>`;
+    }
+    return `<div class="mini-product ${status.level}">
+      <div class="mp-left" onclick="openProductDetail(${p.id})">
+        <div class="mp-header">
+          <div class="mp-icon">${getProductIcon(p)}</div>
+          <div class="mp-info">
+            <div class="mp-name">${p.name}</div>
+          </div>
+        </div>
+        ${stockIndicator}
+      </div>
+      <div class="mp-actions">
+        <button class="mp-btn in" onclick="event.stopPropagation();quickIn(${p.id})" title="Entrada">+</button>
+        <button class="mp-btn out" onclick="event.stopPropagation();quickOut(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} title="Saída">−</button>
+      </div>
+    </div>`;
+  }).join('');
+}
 
 function renderProductsPage(c) {
   c.innerHTML = `<div class="products-header"><div class="search-box"><input id="prodSearch" type="text" placeholder="🔍 Pesquisar..." oninput="renderProducts(this.value)" /></div></div><div class="zone-tabs" id="zoneTabs"></div><div class="product-list" id="productList"></div>`;

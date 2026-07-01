@@ -7,36 +7,45 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0a1f44">
 <title>Clínica Mais Inventário</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0a1f44">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
-  --bg:#f4f7fb; --surface:#fff; --surface2:#f9fbfd;
-  --primary:#0a1f44; --primary-dark:#051533; --primary-light:#e0e7ff;
-  --text:#0f172a; --text-soft:#475569; --text-light:#94a3b8;
-  --border:#e2e8f0; --border-strong:#cbd5e1;
-  --green:#10b981; --green-dark:#059669; --green-bg:#d1fae5;
-  --yellow:#f59e0b; --yellow-bg:#fef3c7;
-  --orange:#f97316; --orange-dark:#ea580c; --orange-bg:#ffedd5;
-  --red:#ef4444; --red-bg:#fee2e2;
-  --blue:#3b82f6; --blue-bg:#dbeafe;
-  --purple:#8b5cf6; --purple-bg:#ede9fe;
-  --shadow:0 1px 3px rgba(0,0,0,0.05),0 4px 12px rgba(0,0,0,0.04);
-  --shadow-lg:0 4px 20px rgba(0,0,0,0.08);
-  --radius:14px; --radius-sm:10px;
+--bg:#f4f7fb; --surface:#fff; --surface2:#f9fbfd;
+--primary:#0a1f44; --primary-dark:#051533; --primary-light:#e0e7ff;
+--text:#0f172a; --text-soft:#475569; --text-light:#94a3b8;
+--border:#e2e8f0;
+--green:#10b981; --green-dark:#059669; --green-bg:#d1fae5;
+--orange:#f97316; --orange-dark:#ea580c; --orange-bg:#ffedd5;
+--red:#ef4444; --red-dark:#dc2626; --red-bg:#fee2e2;
+--blue:#3b82f6; --blue-bg:#dbeafe;
+--yellow:#eab308; --yellow-bg:#fef9c3;
+--purple:#8b5cf6; --purple-bg:#ede9fe;
+--shadow:0 1px 3px rgba(0,0,0,0.05),0 4px 12px rgba(0,0,0,0.04);
+--shadow-lg:0 4px 20px rgba(0,0,0,0.08);
+--radius:14px; --radius-sm:10px;
+--font-scale:1;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;user-select:none}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:calc(16px * var(--font-scale));line-height:1.5;-webkit-font-smoothing:antialiased;user-select:none}
+h1,h2,h3,.brand h2,.card-title,.page-title,.login-card h1{font-family:'Manrope','Inter',sans-serif}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
 input,select,textarea{font-family:inherit;font-size:16px}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+a{color:var(--primary)}
+:focus-visible{outline:3px solid #60a5fa;outline-offset:2px;border-radius:6px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:0.001ms !important;transition-duration:0.001ms !important}}
 
-/* LOGIN */
 .login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#e0f2fe 0%,#f4f7fb 100%);display:flex;align-items:center;justify-content:center;z-index:1000}
 .login-card{background:var(--surface);padding:42px 34px;border-radius:24px;box-shadow:var(--shadow-lg);width:460px;max-width:94vw;text-align:center}
 .login-logo{width:84px;height:84px;background:var(--primary-light);border-radius:22px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:42px}
-.login-card h1{font-size:24px;font-weight:700;margin-bottom:4px}
+.login-card h1{font-size:24px;font-weight:800;margin-bottom:4px}
 .login-card p{color:var(--text-soft);margin-bottom:18px;font-size:14px}
 .cloud-status{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:14px;font-size:11px;font-weight:600;margin-bottom:14px}
 .cloud-status.connecting{background:var(--yellow-bg);color:#92400e}
@@ -52,41 +61,44 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .user-pill .avatar{width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:600}
 .user-pill:hover{background:var(--primary-light);border-color:var(--primary);transform:translateY(-1px)}
 .user-pill.active{border-color:var(--primary);background:var(--primary-light)}
-.user-loading{padding:12px;color:var(--text-light);font-size:13px;text-align:center}
+.user-loading{padding:12px;color:var(--text-light);font-size:13px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px}
+.spinner{width:16px;height:16px;border:2.5px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
 .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .key{aspect-ratio:1.4;background:var(--surface2);border-radius:var(--radius);font-size:22px;font-weight:600;color:var(--text);transition:all .12s;border:1px solid var(--border)}
 .key:active{background:var(--primary-light);transform:scale(0.95)}
 .key.action{background:var(--primary);color:#fff;border-color:var(--primary)}
-.login-error{color:var(--red);font-size:13px;margin-top:10px;min-height:18px}
+.login-error{color:var(--red);font-size:13px;margin-top:10px;min-height:18px;font-weight:600}
 .setup-info{background:var(--primary-light);border-radius:10px;padding:11px;margin-top:12px;font-size:12px;color:var(--primary-dark);text-align:left;line-height:1.5}
 .setup-info code{background:#fff;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:11px}
+.login-help-link{margin-top:12px;font-size:12px;color:var(--text-light);text-decoration:underline;cursor:pointer;background:none;border:none;font-weight:600}
 
-/* APP */
 .app{display:none;height:100vh;grid-template-columns:240px 1fr}
 .app.active{display:grid}
 .sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:18px 12px}
 .brand{display:flex;align-items:center;gap:11px;padding:8px 12px;margin-bottom:18px}
 .brand-logo{width:42px;height:42px;background:var(--primary-light);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.brand h2{font-size:15px;font-weight:700}
+.brand h2{font-size:15px;font-weight:800}
 .brand small{font-size:10px;color:var(--text-light);font-weight:400}
 .nav-section{margin-bottom:14px}
-.nav-label{font-size:10px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;padding:0 12px 7px}
+.nav-label{font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;padding:0 12px 7px}
 .nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;color:var(--text-soft);font-weight:500;font-size:14px;margin-bottom:2px;text-align:left;width:100%}
 .nav-item:hover{background:var(--surface2)}
-.nav-item.active{background:var(--primary-light);color:var(--primary-dark);font-weight:600}
+.nav-item.active{background:var(--primary-light);color:var(--primary-dark);font-weight:700}
 .nav-item .icon{font-size:18px;width:20px;text-align:center}
 .nav-item .badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:9px;min-width:18px;text-align:center}
 .sidebar-footer{margin-top:auto;padding:10px;border-top:1px solid var(--border)}
 .user-card{display:flex;align-items:center;gap:9px;padding:6px;border-radius:9px}
-.user-avatar{width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;font-weight:600;display:flex;align-items:center;justify-content:center;font-size:13px}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:13px}
 .user-info{flex:1;min-width:0}
-.user-info .name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-info .name{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .user-info .role{font-size:10.5px;color:var(--text-light)}
 .logout-btn{padding:7px;border-radius:7px;color:var(--text-light);font-size:17px}
 
 .main{display:flex;flex-direction:column;overflow:hidden;min-width:0}
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;gap:14px}
-.page-title{font-size:20px;font-weight:700}
+.hamburger-btn{display:none;width:38px;height:38px;border-radius:10px;background:var(--surface2);align-items:center;justify-content:center;font-size:19px;flex-shrink:0;border:1px solid var(--border)}
+.page-title{font-size:20px;font-weight:800}
 .page-subtitle{color:var(--text-soft);font-size:12.5px;margin-top:1px}
 .topbar-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
 .sync-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:14px;font-size:11.5px;font-weight:600}
@@ -94,96 +106,132 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .sync-badge.offline{background:var(--orange-bg);color:var(--orange)}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
 .sync-badge.online .sync-dot{animation:pulse 2s infinite}
+.help-btn{width:34px;height:34px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);font-weight:700;color:var(--text-soft);flex-shrink:0}
+.help-btn:hover{background:var(--primary-light);color:var(--primary-dark)}
+.text-size-toggle{display:flex;align-items:center;gap:3px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:3px}
+.text-size-toggle button{padding:5px 9px;border-radius:7px;font-size:11.5px;font-weight:700;color:var(--text-soft)}
+.text-size-toggle button.active{background:var(--primary);color:#fff}
 
-.search-box{position:relative;width:280px}
-.search-box input{width:100%;padding:9px 12px 9px 36px;border-radius:9px;border:1px solid var(--border);background:var(--surface2);font-size:13.5px}
-.search-box::before{content:"🔍";position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px}
-.btn{padding:9px 14px;border-radius:9px;font-weight:600;font-size:13.5px;display:inline-flex;align-items:center;gap:5px;transition:all .12s;cursor:pointer;border:none}
+.search-box{position:relative;width:100%}
+.search-box input{width:100%;padding:11px 12px 11px 40px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface2);font-size:14px;transition:all .15s;outline:none}
+.search-box input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(10,31,68,0.1)}
+.search-box::before{content:"🔍";position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none}
+.search-box .clear-search{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:var(--border);color:var(--text-soft);width:24px;height:24px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:12px;cursor:pointer;border:none}
+.search-box .clear-search:hover{background:var(--text-soft);color:#fff}
+.search-box.has-value .clear-search{display:flex}
+.btn{padding:9px 14px;border-radius:9px;font-weight:700;font-size:13.5px;display:inline-flex;align-items:center;gap:5px;transition:all .12s;cursor:pointer;border:none}
 .btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
 .btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--primary)}
 .btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{background:var(--red-dark)}
+.btn-success{background:var(--green);color:#fff}
 .btn-sm{padding:6px 10px;font-size:12px}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
 .content{flex:1;overflow-y:auto;padding:22px}
 
 .card{background:var(--surface);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border)}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.card-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+.card-title{font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
 
-/* ===== STATS CARDS - METADE DA ALTURA, CLICÁVEIS ===== */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:14px}
-.stat-card{
-  background:var(--surface);padding:10px 14px;border-radius:var(--radius);
-  border:1px solid var(--border);box-shadow:var(--shadow);
-  display:flex;align-items:center;gap:12px;
-  cursor:pointer;transition:all .15s;min-height:64px;
-}
-.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--primary)}
-.stat-card:active{transform:scale(0.97)}
-.stat-card .icon-bg{
-  width:36px;height:36px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
-}
-.stat-card .value{font-size:20px;font-weight:800;line-height:1}
-.stat-card .label{font-size:11.5px;color:var(--text-soft);margin-top:2px}
-.stat-card .stat-info{flex:1;min-width:0}
-.stat-card.critical .icon-bg{background:var(--red-bg);color:var(--red)}
-.stat-card.critical .value{color:var(--red)}
-.stat-card.warning .icon-bg{background:var(--orange-bg);color:var(--orange)}
-.stat-card.warning .value{color:var(--orange)}
-.stat-card.success .icon-bg{background:var(--green-bg);color:var(--green)}
-.stat-card.success .value{color:var(--green)}
-.stat-card.info .icon-bg{background:var(--blue-bg);color:var(--blue)}
-.stat-card.info .value{color:var(--blue)}
-.stat-card .stat-arrow{color:var(--text-light);font-size:14px}
+/* ===== KPI / STAT CARDS ===== */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:1150px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.kpi-row{grid-template-columns:1fr 1fr}}
+.kpi-card{background:var(--surface);border-radius:var(--radius);padding:15px 16px;border:1px solid var(--border);box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;cursor:pointer;transition:transform .12s}
+.kpi-card:hover{transform:translateY(-2px)}
+.kpi-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--kpi-color,var(--primary))}
+.kpi-icon{width:42px;height:42px;border-radius:11px;background:var(--kpi-bg,var(--primary-light));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.kpi-info{min-width:0}
+.kpi-value{font-size:21px;font-weight:800;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-label{font-size:11px;color:var(--text-soft);font-weight:600;margin-top:2px;white-space:nowrap}
 
-/* ===== ATALHOS RÁPIDOS ===== */
-.quick-actions{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.quick-action{
-  flex:1;min-width:180px;padding:14px 16px;background:var(--surface);
-  border-radius:var(--radius);border:2px solid var(--border);cursor:pointer;
-  display:flex;align-items:center;gap:12px;transition:all .15s;
+/* ===== DASHBOARD TOOLBAR ===== */
+.dashboard-toolbar{
+display:flex;flex-direction:column;gap:12px;margin-bottom:16px;
+background:var(--surface);padding:16px;border-radius:var(--radius);
+border:1px solid var(--border);box-shadow:var(--shadow);
 }
-.quick-action:hover{border-color:var(--primary);background:var(--primary-light);transform:translateY(-2px)}
-.quick-action .qa-icon{font-size:24px}
-.quick-action .qa-info{flex:1}
-.quick-action .qa-title{font-weight:700;font-size:14px;color:var(--text)}
-.quick-action .qa-desc{font-size:11.5px;color:var(--text-soft);margin-top:1px}
-.quick-action.in{border-left:4px solid var(--green)}
-.quick-action.out{border-left:4px solid var(--orange)}
-.quick-action.order{border-left:4px solid var(--blue)}
+.dashboard-search{position:relative;width:100%}
+.dashboard-search input{
+width:100%;padding:14px 50px 14px 46px;border-radius:12px;
+border:2px solid var(--border);background:var(--surface2);font-size:16px;font-weight:500;
+transition:all .15s;outline:none;
+}
+.dashboard-search input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(10,31,68,0.1)}
+.dashboard-search::before{content:"🔍";position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none}
+.dashboard-search .clear-search{
+position:absolute;right:10px;top:50%;transform:translateY(-50%);
+background:var(--border);color:var(--text-soft);width:28px;height:28px;
+border-radius:50%;display:none;align-items:center;justify-content:center;font-size:14px;
+cursor:pointer;border:none;
+}
+.dashboard-search .clear-search:hover{background:var(--text-soft);color:#fff}
+.dashboard-search.has-value .clear-search{display:flex}
 
-/* ===== DASHBOARD GRID ===== */
-.dash-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
-.cat-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding:8px;background:var(--surface);border-radius:12px;border:1px solid var(--border)}
-.cat-pill{padding:7px 13px;border-radius:18px;font-weight:600;font-size:12.5px;color:var(--text-soft);background:var(--surface2);cursor:pointer;border:1px solid var(--border);white-space:nowrap}
+.cat-filter{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.cat-pill{padding:7px 13px;border-radius:18px;font-weight:600;font-size:12.5px;color:var(--text-soft);background:var(--surface2);cursor:pointer;border:1px solid var(--border);white-space:nowrap;transition:all .15s}
+.cat-pill:hover{border-color:var(--primary)}
 .cat-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.sort-toggle{margin-left:auto;display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:18px;cursor:pointer;font-size:12px;font-weight:600;color:var(--text-soft);transition:all .15s}
+.sort-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.sort-toggle.active{background:var(--primary-light);border-color:var(--primary);color:var(--primary-dark)}
+
+.dashboard-results{
+display:flex;align-items:center;justify-content:space-between;
+margin-bottom:12px;padding:0 4px;font-size:12.5px;color:var(--text-soft);flex-wrap:wrap;gap:8px;
+}
+.dashboard-results strong{color:var(--primary)}
+
+/* ===== GRELHA DE PRODUTOS ===== */
 .product-grid-dash{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
 @media(max-width:1400px){.product-grid-dash{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:1150px){.product-grid-dash{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:900px){.product-grid-dash{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:650px){.product-grid-dash{grid-template-columns:repeat(2,1fr)}}
-.mini-product{background:var(--surface);border-radius:12px;padding:10px;border:1px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px;border-left:4px solid var(--border)}
-.mini-product.critical{border-left-color:var(--red)}.mini-product.low{border-left-color:var(--orange)}
-.mini-product.near{border-left-color:var(--yellow)}.mini-product.forecast{border-left-color:var(--blue)}
-.mp-header{display:flex;align-items:center;gap:8px;cursor:pointer}
-.mp-icon{width:36px;height:36px;border-radius:9px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+
+.mini-product{
+background:var(--surface);border-radius:12px;padding:10px;
+border:1px solid var(--border);box-shadow:var(--shadow);
+display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;
+border-left:4px solid var(--border);min-height:110px;position:relative;
+}
+.mini-product.critical{border-left-color:var(--red)}
+.mini-product.low{border-left-color:var(--orange)}
+.mini-product.near{border-left-color:var(--yellow)}
+.mini-product.forecast{border-left-color:var(--blue)}
+
+.mp-left{display:flex;flex-direction:column;gap:4px;min-width:0;cursor:pointer;overflow:hidden}
+.mp-header{display:flex;align-items:center;gap:8px}
+.mp-icon{width:32px;height:32px;border-radius:8px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .mp-info{flex:1;min-width:0}
-.mp-name{font-weight:700;font-size:12.5px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.mp-loc{font-size:10px;color:var(--text-light);margin-top:1px}
-.mp-stock{text-align:center;background:var(--surface2);border-radius:9px;padding:6px 4px;cursor:pointer}
-.mp-stock-num{font-size:22px;font-weight:800;color:var(--text);line-height:1}
-.mp-stock-unit{font-size:10px;color:var(--text-light);margin-top:2px}
-.mp-stock-min{font-size:9.5px;color:var(--text-light)}
-.mp-actions{display:flex;gap:4px;justify-content:center}
-.mp-btn{flex:1;height:44px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;cursor:pointer;border:none}
-.mp-btn:active{transform:scale(0.92)}
+.mp-name{font-weight:700;font-size:13px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.mp-usage{display:inline-flex;align-items:center;gap:3px;font-size:9.5px;font-weight:700;color:var(--text-light);background:var(--surface);padding:1px 6px;border-radius:8px;margin-top:3px;border:1px solid var(--border)}
+.mp-usage.hot{color:var(--orange);background:var(--orange-bg);border-color:var(--orange)}
+
+.mp-stock-indicator{
+padding:4px 8px;font-size:10.5px;font-weight:700;text-align:center;border-radius:6px;
+margin-top:auto;
+}
+.mp-stock-indicator.ok{background:var(--green-bg);color:var(--green)}
+.mp-stock-indicator.critical{background:var(--red-bg);color:var(--red);animation:critical-pulse 1.5s infinite}
+.mp-stock-indicator.low{background:var(--orange-bg);color:var(--orange)}
+.mp-stock-indicator.near{background:var(--yellow-bg);color:#92400e}
+@keyframes critical-pulse{50%{opacity:0.6}}
+
+.mp-actions{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+.mp-btn{
+width:40px;height:40px;border-radius:8px;
+display:flex;align-items:center;justify-content:center;
+font-size:22px;font-weight:700;color:#fff;cursor:pointer;border:none;
+transition:all .1s;
+}
+.mp-btn:active{transform:scale(0.9)}
 .mp-btn.in{background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%)}
 .mp-btn.out{background:linear-gradient(135deg,var(--orange) 0%,var(--orange-dark) 100%)}
-.mp-btn:disabled{background:#cbd5e1}
-.mp-status{text-align:center;font-size:10px;font-weight:700;padding:2px 4px;border-radius:6px}
-.mp-status.critical{background:var(--red-bg);color:var(--red);animation:critical-pulse 1.5s infinite}
-.mp-status.low{background:var(--orange-bg);color:var(--orange)}
-@keyframes critical-pulse{50%{opacity:0.6}}
+.mp-btn.reorder{background:linear-gradient(135deg,var(--blue) 0%,#1d4ed8 100%);font-size:16px}
+.mp-btn:disabled{background:#cbd5e1;cursor:not-allowed}
 
 .products-header{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
 .zone-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding:6px;background:var(--surface);border-radius:12px;border:1px solid var(--border)}
@@ -228,35 +276,37 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.5);display:none;align-items:center;justify-content:center;z-index:900;padding:18px}
 .modal-overlay.active{display:flex}
 .modal{background:var(--surface);border-radius:18px;width:580px;max-width:100%;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-lg)}
+.modal.modal-sm{width:420px}
 .modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px}
-.modal-header h3{font-size:17px;font-weight:700;flex:1}
+.modal-header h3{font-size:17px;font-weight:800;flex:1}
 .modal-close{width:32px;height:32px;border-radius:8px;color:var(--text-soft);font-size:18px}
 .modal-body{padding:20px;overflow-y:auto;flex:1}
 .modal-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:7px}
+.confirm-icon{width:56px;height:56px;border-radius:50%;background:var(--red-bg);color:var(--red);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px}
+.confirm-text{text-align:center;color:var(--text-soft);font-size:14px;line-height:1.6}
 
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
 .form-grid .full{grid-column:1/-1}
 .field{display:flex;flex-direction:column;gap:5px}
-.field label{font-size:12.5px;font-weight:600;color:var(--text-soft)}
+.field label{font-size:12.5px;font-weight:700;color:var(--text-soft)}
 .field label .req{color:var(--red)}
+.field .hint{font-size:11px;color:var(--text-light);font-weight:500}
 .field input,.field select,.field textarea{padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface2);font-size:14.5px}
 .field input:focus,.field select:focus{outline:none;border-color:var(--primary);background:#fff}
 .qty-input{font-size:30px !important;font-weight:800;text-align:center;padding:16px !important;letter-spacing:2px}
 
 .tabs{display:flex;gap:3px;border-bottom:1px solid var(--border);margin-bottom:16px;overflow-x:auto}
-.tab{padding:10px 16px;font-weight:600;font-size:13.5px;color:var(--text-soft);border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap;cursor:pointer}
+.tab{padding:10px 16px;font-weight:700;font-size:13.5px;color:var(--text-soft);border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap;cursor:pointer}
 .tab.active{color:var(--primary);border-color:var(--primary)}
 
-.dash-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
-@media(max-width:1024px){.dash-grid{grid-template-columns:1fr}}
 .alert-list{display:flex;flex-direction:column;gap:7px;max-height:360px;overflow-y:auto}
 .alert-item{display:flex;align-items:center;gap:11px;padding:10px;border-radius:9px;background:var(--surface2);border-left:4px solid}
 .alert-item.critical{background:var(--red-bg);border-color:var(--red)}
 .alert-item.low{background:var(--orange-bg);border-color:var(--orange)}
 .alert-item .alert-info{flex:1;min-width:0}
-.alert-item .alert-name{font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.alert-item .alert-name{font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .alert-item .alert-meta{font-size:11.5px;color:var(--text-soft)}
-.alert-item .alert-action{padding:5px 11px;background:#fff;border-radius:7px;font-size:11.5px;font-weight:600;border:1px solid var(--border);cursor:pointer}
+.alert-item .alert-action{padding:5px 11px;background:#fff;border-radius:7px;font-size:11.5px;font-weight:700;border:1px solid var(--border);cursor:pointer}
 
 .movement-list{display:flex;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto}
 .movement{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;background:var(--surface2)}
@@ -265,7 +315,7 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .movement.out .mov-icon{background:var(--orange-bg);color:var(--orange)}
 .movement.transfer .mov-icon{background:var(--blue-bg);color:var(--blue)}
 .movement .mov-info{flex:1;min-width:0}
-.movement .mov-product{font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.movement .mov-product{font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .movement .mov-meta{font-size:11.5px;color:var(--text-soft);margin-top:1px}
 .movement .mov-qty{font-weight:700;font-size:13.5px}
 .movement.in .mov-qty{color:var(--green)}
@@ -288,146 +338,361 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .forecast-card.warn{border-color:var(--orange);background:var(--orange-bg)}
 .forecast-card strong{font-size:17px}
 
-.toast{position:fixed;bottom:22px;right:22px;background:var(--text);color:#fff;padding:12px 18px;border-radius:9px;font-weight:500;font-size:13.5px;box-shadow:var(--shadow-lg);transform:translateY(100px);opacity:0;transition:all .25s;z-index:2000;display:flex;align-items:center;gap:9px;max-width:400px}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--text);color:#fff;padding:12px 18px;border-radius:9px;font-weight:600;font-size:13.5px;box-shadow:var(--shadow-lg);transform:translateY(100px);opacity:0;transition:all .25s;z-index:2000;display:flex;align-items:center;gap:9px;max-width:400px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{background:var(--green)}.toast.error{background:var(--red)}.toast.warning{background:var(--yellow);color:#1f2937}
 
 .empty{padding:36px 18px;text-align:center;color:var(--text-light)}
 .empty .empty-icon{font-size:42px;margin-bottom:9px;opacity:0.5}
+.empty .empty-title{font-size:15px;font-weight:700;color:var(--text-soft);margin-bottom:5px}
+.empty .empty-desc{font-size:12.5px;margin-bottom:14px}
 
 .list-manager{display:flex;flex-direction:column;gap:8px}
 .list-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface2);border-radius:10px}
-.list-item .li-name{flex:1;font-weight:500}
+.list-item .li-name{flex:1;font-weight:600}
 .list-item .li-actions{display:flex;gap:6px}
 .list-item .li-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-soft);background:var(--surface)}
 .list-item .li-btn.del{color:var(--red)}
 .add-row{display:flex;gap:8px;margin-top:10px}
 .add-row input{flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:9px;font-size:14px}
-.add-row button{padding:9px 16px;background:var(--primary);color:#fff;border-radius:9px;font-weight:600;font-size:13px}
+.add-row button{padding:9px 16px;background:var(--primary);color:#fff;border-radius:9px;font-weight:700;font-size:13px}
+
+/* ===== UTILIZADORES ===== */
+.user-manage-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.user-manage-card{background:var(--surface);border-radius:var(--radius);padding:15px;border:1px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.user-manage-card.inactive{opacity:0.55}
+.umc-top{display:flex;align-items:center;gap:10px}
+.umc-avatar{width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.umc-name{font-weight:700;font-size:14.5px}
+.umc-role{font-size:11px;color:var(--text-light);font-weight:600}
+.umc-actions{display:flex;gap:6px}
+.umc-actions .btn{flex:1;justify-content:center}
+.role-tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:8px;font-size:10.5px;font-weight:700}
+.role-tag.admin{background:var(--purple-bg);color:var(--purple)}
+.role-tag.user{background:var(--blue-bg);color:var(--blue)}
+
+/* ===== AJUDA ===== */
+.help-legend{display:flex;flex-direction:column;gap:10px}
+.help-legend-item{display:flex;gap:12px;align-items:flex-start;padding:10px;background:var(--surface2);border-radius:10px}
+.help-legend-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.help-section-title{font-size:13px;font-weight:800;margin:16px 0 8px;color:var(--primary-dark)}
+.help-section-title:first-child{margin-top:0}
+
+/* ===== MOBILE DRAWER ===== */
+.mobile-drawer-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.5);z-index:950;display:none}
+.mobile-drawer-overlay.active{display:block}
+.mobile-drawer{position:absolute;top:0;left:0;bottom:0;width:280px;max-width:82vw;background:var(--surface);box-shadow:var(--shadow-lg);padding:18px 12px;overflow-y:auto;transform:translateX(-100%);transition:transform .2s}
+.mobile-drawer-overlay.active .mobile-drawer{transform:translateX(0)}
 
 @media(max-width:900px){
-  .app{grid-template-columns:1fr}
-  .sidebar{display:none}
-  .topbar{padding:11px 14px}
-  .content{padding:14px;padding-bottom:90px}
-  .topbar .search-box{display:none}
-  .form-grid{grid-template-columns:1fr}
-  .product-row{grid-template-columns:50px 1fr;gap:10px}
-  .product-stock{grid-column:1/-1;order:3;flex-direction:row;justify-content:space-between;padding:10px 14px}
-  .product-actions{grid-column:1/-1;order:2;justify-content:center;padding:8px 0}
-  .big-btn{width:72px;height:72px;font-size:42px}
-  .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;padding:7px 3px;z-index:100}
-  .bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px;color:var(--text-soft);font-size:10.5px;font-weight:500;cursor:pointer}
-  .bn-item.active{color:var(--primary)}
-  .bn-item .bn-icon{font-size:20px}
+.app{grid-template-columns:1fr}
+.sidebar{display:none}
+.hamburger-btn{display:flex}
+.topbar{padding:11px 14px}
+.content{padding:14px;padding-bottom:90px}
+.form-grid{grid-template-columns:1fr}
+.product-row{grid-template-columns:50px 1fr;gap:10px}
+.product-stock{grid-column:1/-1;order:3;flex-direction:row;justify-content:space-between;padding:10px 14px}
+.product-actions{grid-column:1/-1;order:2;justify-content:center;padding:8px 0}
+.big-btn{width:72px;height:72px;font-size:42px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;padding:7px 3px;z-index:100}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px;color:var(--text-soft);font-size:10.5px;font-weight:600;cursor:pointer}
+.bn-item.active{color:var(--primary)}
+.bn-item .bn-icon{font-size:20px}
+.kpi-row{gap:8px}
+.kpi-card{padding:11px 12px}
+.kpi-value{font-size:17px}
 }
 @media(min-width:901px){.bottom-nav{display:none}}
 
 .detail-card{background:var(--surface);border-radius:var(--radius);padding:18px;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:14px}
 .detail-header{display:flex;gap:14px;align-items:center;margin-bottom:14px}
 .detail-icon{width:70px;height:70px;border-radius:18px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:34px}
-.detail-info .detail-name{font-size:20px;font-weight:700}
+.detail-info .detail-name{font-size:20px;font-weight:800}
 .detail-info .detail-ref{font-size:12px;color:var(--text-light);font-family:monospace;margin-top:2px}
 .detail-rows{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 .detail-row{background:var(--surface2);padding:10px 14px;border-radius:9px}
-.detail-row .dr-label{font-size:11px;color:var(--text-soft);text-transform:uppercase;font-weight:600}
-.detail-row .dr-value{font-size:15px;font-weight:600;margin-top:3px}
+.detail-row .dr-label{font-size:11px;color:var(--text-soft);text-transform:uppercase;font-weight:700}
+.detail-row .dr-value{font-size:15px;font-weight:700;margin-top:3px}
+
+@media print{
+body *{visibility:hidden}
+#printArea,#printArea *{visibility:visible}
+#printArea{position:absolute;top:0;left:0;width:100%;padding:20px}
+.login-screen,.app,.modal-overlay,.toast,.bottom-nav{display:none !important}
+}
+#printArea{display:none}
 </style>
 </head>
 <body>
 
 <div id="loginScreen" class="login-screen">
-  <div class="login-card">
-    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:18px">
-      <img id="clinicLogo" src="https://clinicamais.pt/wp-content/uploads/2020/09/logo_2-150x150.png" alt="Clínica Mais" onerror="this.style.display='none'; document.getElementById('clinicFallback').style.display='flex';" style="width:120px;height:120px;border-radius:24px;box-shadow:0 8px 24px rgba(10,31,68,0.25);object-fit:contain;background:linear-gradient(135deg,#0a1f44,#1e3a8a);padding:8px" />
-      <div id="clinicFallback" style="display:none;width:120px;height:120px;border-radius:24px;background:linear-gradient(135deg,#0a1f44,#1e3a8a);align-items:center;justify-content:center;font-size:48px;color:#fff;box-shadow:0 8px 24px rgba(10,31,68,0.25)">🦷</div>
-      <h1 style="font-size:24px;font-weight:700;margin:8px 0 0 0">Clínica Mais</h1>
-      <p style="color:var(--text-soft);font-size:13.5px;margin:0;font-weight:500">Sistema de Gestão de Stock</p>
-    </div>
-    <div id="cloudStatus" class="cloud-status connecting"><span class="cloud-dot"></span><span id="cloudText">A iniciar...</span></div>
-    <div id="userPills" class="user-pills"><div class="user-loading">A carregar utilizadores...</div></div>
-    <div id="pinDisplay" class="pin-display empty">Insira o PIN</div>
-    <div class="keypad">
-      <button class="key" data-key="1">1</button><button class="key" data-key="2">2</button><button class="key" data-key="3">3</button>
-      <button class="key" data-key="4">4</button><button class="key" data-key="5">5</button><button class="key" data-key="6">6</button>
-      <button class="key" data-key="7">7</button><button class="key" data-key="8">8</button><button class="key" data-key="9">9</button>
-      <button class="key" data-key="clear">⌫</button><button class="key" data-key="0">0</button><button class="key action" data-key="enter">→</button>
-    </div>
-    <div id="loginError" class="login-error"></div>
-    <div id="setupInfo" class="setup-info" style="display:none"><strong>⚙️ Configure o Supabase:</strong><br>1. Crie projeto em <a href="https://supabase.com" target="_blank">supabase.com</a><br>2. SQL Editor → execute o script de tabelas<br>3. Settings → API → copie URL e chave<br>4. Cole no início do código (<code>SUPABASE_CONFIG</code>)</div>
-  </div>
+<div class="login-card">
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:18px">
+<img id="clinicLogo" src="https://clinicamais.pt/wp-content/uploads/2020/09/logo_2-150x150.png" alt="Clínica Mais" onerror="this.style.display='none'; document.getElementById('clinicFallback').style.display='flex';" style="width:120px;height:120px;border-radius:24px;box-shadow:0 8px 24px rgba(10,31,68,0.25);object-fit:contain;background:linear-gradient(135deg,#0a1f44,#1e3a8a);padding:8px" />
+<div id="clinicFallback" style="display:none;width:120px;height:120px;border-radius:24px;background:linear-gradient(135deg,#0a1f44,#1e3a8a);align-items:center;justify-content:center;font-size:48px;color:#fff;box-shadow:0 8px 24px rgba(10,31,68,0.25)">🦷</div>
+<h1 style="font-size:24px;font-weight:800;margin:8px 0 0 0">Clínica Mais</h1>
+<p style="color:var(--text-soft);font-size:13.5px;margin:0;font-weight:500">Sistema de Gestão de Stock</p>
+</div>
+<div id="cloudStatus" class="cloud-status connecting"><span class="spinner"></span><span id="cloudText">A iniciar...</span></div>
+<div id="userPills" class="user-pills"><div class="user-loading"><span class="spinner"></span>A carregar utilizadores...</div></div>
+<div id="pinDisplay" class="pin-display empty">Insira o PIN</div>
+<div class="keypad">
+<button class="key" data-key="1">1</button><button class="key" data-key="2">2</button><button class="key" data-key="3">3</button>
+<button class="key" data-key="4">4</button><button class="key" data-key="5">5</button><button class="key" data-key="6">6</button>
+<button class="key" data-key="7">7</button><button class="key" data-key="8">8</button><button class="key" data-key="9">9</button>
+<button class="key" data-key="clear">⌫</button><button class="key" data-key="0">0</button><button class="key action" data-key="enter">→</button>
+</div>
+<div id="loginError" class="login-error"></div>
+<button class="login-help-link" onclick="showLoginHelp()">Esqueceu-se do PIN? Precisa de ajuda?</button>
+<div id="setupInfo" class="setup-info" style="display:none"><strong>⚙️ Configure o Supabase:</strong><br>1. Crie projeto em <a href="https://supabase.com" target="_blank">supabase.com</a><br>2. SQL Editor → execute o script de tabelas<br>3. Settings → API → copie URL e chave<br>4. Cole no início do código (<code>SUPABASE_CONFIG</code>)</div>
+</div>
 </div>
 
 <div id="app" class="app">
-  <aside class="sidebar">
-    <div class="brand">
-      <img src="https://clinicamais.pt/wp-content/uploads/2020/09/logo_2-150x150.png" alt="Clínica Mais" onerror="this.style.display='none'; document.getElementById('sidebarFallback').style.display='flex';" style="width:42px;height:42px;border-radius:11px;box-shadow:0 2px 8px rgba(10,31,68,0.2);object-fit:contain;background:linear-gradient(135deg,#0a1f44,#1e3a8a);padding:4px;flex-shrink:0" />
-      <div id="sidebarFallback" style="display:none;width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#0a1f44,#1e3a8a);align-items:center;justify-content:center;font-size:20px;color:#fff;flex-shrink:0">🦷</div>
-      <div><h2 style="font-size:15px;font-weight:700">Clínica Mais</h2><small style="font-size:10px;color:var(--text-light);font-weight:400">Gestão de Stock</small></div>
-    </div>
-    <div class="nav-section">
-      <div class="nav-label">Operações</div>
-      <button class="nav-item active" data-page="dashboard"><span class="icon">📊</span>Dashboard</button>
-      <button class="nav-item" data-page="products"><span class="icon">📦</span>Produtos<span id="alertBadge" class="badge" style="display:none">0</span></button>
-      <button class="nav-item" data-page="movements"><span class="icon">🔄</span>Movimentos</button>
-      <button class="nav-item" data-page="analytics"><span class="icon">📈</span>Análise</button>
-    </div>
-    <div class="nav-section">
-      <div class="nav-label">Gestão</div>
-      <button class="nav-item" data-page="orders"><span class="icon">🛒</span>Encomendas<span id="orderBadge" class="badge" style="display:none">0</span></button>
-      <button class="nav-item" data-page="alerts"><span class="icon">⚠️</span>Alertas</button>
-    </div>
-    <div class="nav-section" id="adminNav" style="display:none">
-      <div class="nav-label">Administração</div>
-      <button class="nav-item" data-page="productsAdmin"><span class="icon">📦</span>Gerir Produtos</button>
-      <button class="nav-item" data-page="categories"><span class="icon">🏷️</span>Categorias</button>
-      <button class="nav-item" data-page="suppliers"><span class="icon">🏭</span>Fornecedores</button>
-      <button class="nav-item" data-page="logs"><span class="icon">📋</span>Logs</button>
-    </div>
-    <div class="sidebar-footer">
-      <div class="user-card">
-        <div id="userAvatar" class="user-avatar">U</div>
-        <div class="user-info"><div id="userName" class="name">Utilizador</div><div id="userRole" class="role">—</div></div>
-        <button class="logout-btn" onclick="changeOwnPin()" title="Alterar PIN" style="margin-right:4px">🔑</button>
-        <button class="logout-btn" onclick="logout()" title="Sair">⎋</button>
-      </div>
-    </div>
-  </aside>
+<aside class="sidebar">
+<div class="brand">
+<img src="https://clinicamais.pt/wp-content/uploads/2020/09/logo_2-150x150.png" alt="Clínica Mais" onerror="this.style.display='none'; document.getElementById('sidebarFallback').style.display='flex';" style="width:42px;height:42px;border-radius:11px;box-shadow:0 2px 8px rgba(10,31,68,0.2);object-fit:contain;background:linear-gradient(135deg,#0a1f44,#1e3a8a);padding:4px;flex-shrink:0" />
+<div id="sidebarFallback" style="display:none;width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#0a1f44,#1e3a8a);align-items:center;justify-content:center;font-size:20px;color:#fff;flex-shrink:0">🦷</div>
+<div><h2 style="font-size:15px;font-weight:800">Clínica Mais</h2><small style="font-size:10px;color:var(--text-light);font-weight:400">Gestão de Stock</small></div>
+</div>
+<div class="nav-section">
+<div class="nav-label">Operações</div>
+<button class="nav-item active" data-page="dashboard"><span class="icon">📊</span>Início</button>
+<button class="nav-item" data-page="products"><span class="icon">📦</span>Produtos<span id="alertBadge" class="badge" style="display:none">0</span></button>
+<button class="nav-item" data-page="movements"><span class="icon">🔄</span>Movimentos</button>
+<button class="nav-item" data-page="analytics"><span class="icon">📈</span>Análise</button>
+</div>
+<div class="nav-section">
+<div class="nav-label">Gestão</div>
+<button class="nav-item" data-page="orders"><span class="icon">🛒</span>Encomendas<span id="orderBadge" class="badge" style="display:none">0</span></button>
+<button class="nav-item" data-page="alerts"><span class="icon">⚠️</span>Alertas</button>
+</div>
+<div class="nav-section" id="adminNav" style="display:none">
+<div class="nav-label">Administração</div>
+<button class="nav-item" data-page="productsAdmin"><span class="icon">📦</span>Gerir Produtos</button>
+<button class="nav-item" data-page="categories"><span class="icon">🏷️</span>Categorias</button>
+<button class="nav-item" data-page="suppliers"><span class="icon">🏭</span>Fornecedores</button>
+<button class="nav-item" data-page="users"><span class="icon">👥</span>Utilizadores</button>
+<button class="nav-item" data-page="logs"><span class="icon">📋</span>Logs</button>
+</div>
+<div class="sidebar-footer">
+<div class="user-card">
+<div id="userAvatar" class="user-avatar">U</div>
+<div class="user-info"><div id="userName" class="name">Utilizador</div><div id="userRole" class="role">—</div></div>
+<button class="logout-btn" onclick="changeOwnPin()" title="Alterar PIN" style="margin-right:4px">🔑</button>
+<button class="logout-btn" onclick="logout()" title="Sair">⎋</button>
+</div>
+</div>
+</aside>
 
-  <main class="main">
-    <header class="topbar">
-      <div><div id="pageTitle" class="page-title">Dashboard</div><div id="pageSubtitle" class="page-subtitle">Visão geral</div></div>
-      <div class="topbar-actions">
-        <div class="search-box"><input id="globalSearch" type="text" placeholder="Pesquisar..." /></div>
-        <div class="sync-badge online"><span class="sync-dot"></span><span id="syncText">Online</span></div>
-      </div>
-    </header>
-    <div id="content" class="content"></div>
-  </main>
+<main class="main">
+<header class="topbar">
+<button class="hamburger-btn" onclick="openMobileDrawer()" title="Menu">☰</button>
+<div><div id="pageTitle" class="page-title">📊 Início</div><div id="pageSubtitle" class="page-subtitle">Visão geral do stock</div></div>
+<div class="topbar-actions">
+<div class="text-size-toggle" title="Tamanho do texto">
+<button data-scale="1" onclick="setFontScale('1')">A</button>
+<button data-scale="1.15" onclick="setFontScale('1.15')">A+</button>
+</div>
+<div id="syncBadge" class="sync-badge online"><span class="sync-dot"></span><span id="syncText">Online</span></div>
+<button class="help-btn" onclick="openHelp()" title="Ajuda">?</button>
+</div>
+</header>
+<div id="content" class="content"></div>
+</main>
 
-  <nav class="bottom-nav">
-    <button class="bn-item active" data-page="dashboard"><span class="bn-icon">📊</span>Início</button>
-    <button class="bn-item" data-page="products"><span class="bn-icon">📦</span>Produtos</button>
-    <button class="bn-item" data-page="movements"><span class="bn-icon">🔄</span>Mov.</button>
-    <button class="bn-item" data-page="orders"><span class="bn-icon">🛒</span>Pedidos</button>
-    <button class="bn-item" data-page="alerts"><span class="bn-icon">⚠️</span>Alertas</button>
-  </nav>
+<nav class="bottom-nav">
+<button class="bn-item active" data-page="dashboard"><span class="bn-icon">📊</span>Início</button>
+<button class="bn-item" data-page="products"><span class="bn-icon">📦</span>Produtos</button>
+<button class="bn-item" data-page="movements"><span class="bn-icon">🔄</span>Mov.</button>
+<button class="bn-item" data-page="orders"><span class="bn-icon">🛒</span>Pedidos</button>
+<button class="bn-item" data-page="alerts"><span class="bn-icon">⚠️</span>Alertas</button>
+</nav>
+</div>
+
+<div id="mobileDrawer" class="mobile-drawer-overlay" onclick="if(event.target===this)closeMobileDrawer()">
+<div class="mobile-drawer" id="mobileDrawerInner"></div>
 </div>
 
 <div id="modal" class="modal-overlay">
-  <div class="modal">
-    <div class="modal-header"><h3 id="modalTitle"></h3><button class="modal-close" onclick="closeModal()">✕</button></div>
-    <div id="modalBody" class="modal-body"></div>
-    <div id="modalFooter" class="modal-footer"></div>
-  </div>
+<div class="modal" id="modalBox">
+<div class="modal-header"><h3 id="modalTitle"></h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+<div id="modalBody" class="modal-body"></div>
+<div id="modalFooter" class="modal-footer"></div>
+</div>
 </div>
 
+<div id="printArea"></div>
 <div id="toast" class="toast"></div>
 
 <script>
+
+// ===== PWA & OFFLINE MODE =====
+const OFFLINE_QUEUE_DB = 'clinica_mais_offline';
+const OFFLINE_QUEUE_STORE = 'pending_movements';
+let db = null;
+
+// Inicializar IndexedDB para fila offline
+async function initOfflineDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(OFFLINE_QUEUE_DB, 1);
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => { db = req.result; resolve(); };
+    req.onupgradeneeded = (e) => {
+      const database = e.target.result;
+      if (!database.objectStoreNames.contains(OFFLINE_QUEUE_STORE)) {
+        database.createObjectStore(OFFLINE_QUEUE_STORE, { keyPath: 'id', autoIncrement: true });
+      }
+    };
+  });
+}
+
+// Guardar movimento na fila offline
+async function saveMovementOffline(movement) {
+  if (!db) await initOfflineDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction([OFFLINE_QUEUE_STORE], 'readwrite');
+    const store = tx.objectStore(OFFLINE_QUEUE_STORE);
+    const req = store.add({ ...movement, timestamp_created: new Date().toISOString(), synced: false });
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => resolve(req.result);
+  });
+}
+
+// Obter movimentos pendentes offline
+async function getPendingMovements() {
+  if (!db) await initOfflineDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction([OFFLINE_QUEUE_STORE], 'readonly');
+    const store = tx.objectStore(OFFLINE_QUEUE_STORE);
+    const req = store.getAll();
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => resolve(req.result.filter(m => !m.synced));
+  });
+}
+
+// Sincronizar movimentos offline quando volta internet
+async function syncOfflineMovements() {
+  if (!state.sb || !navigator.onLine) return;
+  try {
+    const pending = await getPendingMovements();
+    if (pending.length === 0) return;
+    
+    for (const mov of pending) {
+      try {
+        // Inserir no Supabase
+        await state.sb.from('movements').insert({
+          product_id: mov.product_id,
+          product_name: mov.product_name,
+          type: mov.type,
+          quantity: mov.quantity,
+          from_location: mov.from_location,
+          to_location: mov.to_location,
+          reason: mov.reason,
+          user_name: mov.user_name,
+          timestamp: new Date().toISOString()
+        });
+        
+        // Atualizar stock do produto
+        const p = state.cache.products.find(x => x.id === mov.product_id);
+        if (p) {
+          let newStock = p.stock;
+          if (mov.type === 'in') newStock += mov.quantity;
+          else if (mov.type === 'out') newStock -= mov.quantity;
+          else if (mov.type === 'transfer') newStock -= mov.quantity;
+          
+          await state.sb.from('products').update({ stock: newStock, location: mov.to_location || p.location }).eq('id', mov.product_id);
+        }
+        
+        // Marcar como sincronizado
+        if (db) {
+          const tx = db.transaction([OFFLINE_QUEUE_STORE], 'readwrite');
+          const store = tx.objectStore(OFFLINE_QUEUE_STORE);
+          const req = store.update({ ...mov, synced: true });
+        }
+        
+        toast(`✅ Sincronizado: ${mov.product_name}`, 'success');
+      } catch (e) {
+        console.error('Erro ao sincronizar movimento:', e);
+      }
+    }
+    
+    // Recarregar dados
+    await loadAllData();
+    if (state.currentUser) renderPage(state.currentPage);
+  } catch (e) {
+    console.error('Erro na sincronização offline:', e);
+  }
+}
+
+// Detetar variação anómala (quantidade muito fora da média)
+function checkAnomalousUsage(productId, proposedQuantity) {
+  const movements = state.cache.movements.filter(m => m.product_id === productId && m.type === 'out');
+  if (movements.length < 5) return null; // Precisa de histórico para comparar
+  
+  const quantities = movements.map(m => m.quantity);
+  const avg = quantities.reduce((a,b) => a+b, 0) / quantities.length;
+  const variance = quantities.reduce((s, q) => s + Math.pow(q - avg, 2), 0) / quantities.length;
+  const stdDev = Math.sqrt(variance);
+  
+  // Se a quantidade é > 3 desvios padrão, é anómala
+  const zScore = Math.abs((proposedQuantity - avg) / (stdDev || 1));
+  if (zScore > 3) {
+    const isUnusuallyHigh = proposedQuantity > avg;
+    return {
+      anomalous: true,
+      avgUsage: Math.round(avg * 10) / 10,
+      proposedQty: proposedQuantity,
+      isHigh: isUnusuallyHigh,
+      zScore: Math.round(zScore * 10) / 10
+    };
+  }
+  
+  return null;
+}
+
+// Registar Service Worker para PWA
+async function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register('/service-worker.js', { scope: '/' });
+      console.log('Service Worker registado');
+      
+      // Verificar atualizações a cada minuto
+      setInterval(async () => {
+        try {
+          await registration.update();
+        } catch (e) { }
+      }, 60000);
+      
+      // Notificar quando há atualização disponível
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            // Nova versão disponível
+            showUpdateNotification();
+          }
+        });
+      });
+    } catch (e) {
+      console.error('Erro ao registar Service Worker:', e);
+    }
+  }
+}
+
+function showUpdateNotification() {
+  // Criar notificação de atualização disponível
+  const msg = document.getElementById('toast');
+  msg.innerHTML = '🔄 Nova versão disponível! <button onclick="location.reload()" style="margin-left:10px;padding:4px 12px;background:#fff;color:#0a1f44;border-radius:6px;border:none;font-weight:600;cursor:pointer">Atualizar agora</button>';
+  msg.className = 'toast show warning';
+  setTimeout(() => msg.classList.remove('show'), 30000);
+}
+
 const SUPABASE_CONFIG = {
-  url: 'https://likvqjxysoqkwrshcfyi.supabase.co',
-  anonKey: 'sb_publishable_YwN9oIEh2Oj6ppjRuZm22g_6ozrZBun'
+url: 'https://likvqjxysoqkwrshcfyi.supabase.co',
+anonKey: 'sb_publishable_YwN9oIEh2Oj6ppjRuZm22g_6ozrZBun'
 };
 
 const LOCATIONS = ['Gabinete 1','Gabinete 2','Gabinete 3','Zona 1 (Esterilização)','Zona 2 (Cave)','Zona 3 (Gabinete 7)'];
@@ -436,1014 +701,1240 @@ const PRODUCT_ICONS = {'Anestesia':'💉','Descartáveis':'🧤','Esterilizaçã
 const getProductIcon = (p) => PRODUCT_ICONS[p.category] || '📦';
 
 const DEFAULT_USERS = [
-  { id: 1, name: 'Rui Urbano', role: 'admin', pin: '2580', active: true },
-  { id: 2, name: 'Flávia Girão', role: 'user', pin: '1234', active: true },
-  { id: 3, name: 'Andreia Conde', role: 'user', pin: '4567', active: true },
-  { id: 4, name: 'José Pimenta', role: 'user', pin: '7890', active: true }
+{ id: 1, name: 'Rui Urbano', role: 'admin', pin: '2580', active: true },
+{ id: 2, name: 'Flávia Girão', role: 'user', pin: '1234', active: true },
+{ id: 3, name: 'Andreia Conde', role: 'user', pin: '4567', active: true },
+{ id: 4, name: 'José Pimenta', role: 'user', pin: '7890', active: true }
 ];
 const DEFAULT_CATEGORIES = ['Materiais Dentários','Anestesia','Descartáveis','Esterilização','Ortodontia','Endodontia','Radiologia','Higiene','Protésico'];
 const DEFAULT_SUPPLIERS = ['DentalPlus','MedSupply','DentariaPro','OrthoMax','EndoCare'];
 
 const state = {
-  sb: null, currentUser: null, selectedUser: null, pinInput: '',
-  currentPage: 'dashboard', activeZone: 'all', dashCategory: 'Todas',
-  cache: { products: [], users: [], movements: [], orders: [], logs: [], categories: [], suppliers: [] },
-  loaded: false
+sb: null, currentUser: null, selectedUser: null, pinInput: '',
+currentPage: 'dashboard', activeZone: 'all', dashCategory: 'Todas', dashSearch: '',
+sortByUsage: true,
+cache: { products: [], users: [], movements: [], orders: [], logs: [], categories: [], suppliers: [] },
+loaded: false
 };
 
-// ========== AUTO-LOGOUT (1 minuto) ==========
 const INACTIVITY_TIMEOUT = 60000;
 let inactivityTimer = null;
 function resetInactivityTimer() {
-  clearTimeout(inactivityTimer);
-  inactivityTimer = setTimeout(() => {
-    if (state.currentUser) {
-      toast('Sessão terminada por inatividade', 'warning');
-      setTimeout(() => logout(), 1500);
-    }
-  }, INACTIVITY_TIMEOUT);
+clearTimeout(inactivityTimer);
+inactivityTimer = setTimeout(() => {
+if (state.currentUser) {
+toast('Sessão terminada por inatividade', 'warning');
+setTimeout(() => logout(), 1500);
+}
+}, INACTIVITY_TIMEOUT);
 }
 ['click','touchstart','keydown','mousemove','scroll'].forEach(evt => {
-  document.addEventListener(evt, resetInactivityTimer, { passive: true });
+document.addEventListener(evt, resetInactivityTimer, { passive: true });
 });
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) clearTimeout(inactivityTimer);
-  else resetInactivityTimer();
+if (document.hidden) clearTimeout(inactivityTimer);
+else resetInactivityTimer();
 });
 
-// ========== SOM DE ALERTA ==========
 function playAlertSound(critical = false) {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const playBeep = (freq, duration, startTime) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.frequency.value = freq;
-      osc.type = 'sine';
-      gain.gain.setValueAtTime(0.15, ctx.currentTime + startTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
-      osc.start(ctx.currentTime + startTime);
-      osc.stop(ctx.currentTime + startTime + duration);
-    };
-    if (critical) {
-      playBeep(880, 0.15, 0);
-      playBeep(1100, 0.15, 0.18);
-      playBeep(880, 0.15, 0.36);
-    } else {
-      playBeep(660, 0.1, 0);
-      playBeep(880, 0.1, 0.12);
-    }
-  } catch(e) {}
+try {
+const ctx = new (window.AudioContext || window.webkitAudioContext)();
+const playBeep = (freq, duration, startTime) => {
+const osc = ctx.createOscillator();
+const gain = ctx.createGain();
+osc.connect(gain); gain.connect(ctx.destination);
+osc.frequency.value = freq; osc.type = 'sine';
+gain.gain.setValueAtTime(0.15, ctx.currentTime + startTime);
+gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
+osc.start(ctx.currentTime + startTime);
+osc.stop(ctx.currentTime + startTime + duration);
+};
+if (critical) { playBeep(880, 0.15, 0); playBeep(1100, 0.15, 0.18); playBeep(880, 0.15, 0.36); }
+else { playBeep(660, 0.1, 0); playBeep(880, 0.1, 0.12); }
+} catch(e) {}
 }
 
 const isConfigured = SUPABASE_CONFIG.url && !SUPABASE_CONFIG.url.includes('SEU-PROJETO');
 
 window.addEventListener('DOMContentLoaded', async () => {
-  if (!isConfigured) {
-    document.getElementById('setupInfo').style.display = 'block';
-    document.getElementById('cloudText').textContent = '⚠️ Configure Supabase primeiro';
-    document.getElementById('cloudStatus').className = 'cloud-status offline';
-    return;
-  }
-  await initSupabase();
-  setupLogin();
-  setupNavigation();
-  setupKeyboard();
-  setupOnlineStatus();
-  checkSession();
+if (!isConfigured) {
+document.getElementById('setupInfo').style.display = 'block';
+document.getElementById('cloudText').textContent = '⚠️ Configure Supabase primeiro';
+document.getElementById('cloudStatus').className = 'cloud-status offline';
+return;
+}
+applyFontScale();
+await initOfflineDB();
+registerServiceWorker();
+await initSupabase();
+setupLogin();
+setupNavigation();
+setupKeyboard();
+setupOnlineStatus();
+checkSession();
 });
 
 async function initSupabase() {
-  setCloudStatus('connecting', 'A ligar...');
-  try {
-    state.sb = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, { auth: { persistSession: false } });
-    const { error } = await state.sb.from('users').select('id').limit(1);
-    if (error) throw error;
-    setCloudStatus('online', '☁️ Cloud ligada');
-    await seedInitialData();
-    await loadAllData();
-    state.loaded = true;
-    renderUserPills();
-  } catch (e) {
-    console.error('Supabase init error:', e);
-    setCloudStatus('offline', 'Erro: ' + (e.message || 'desconhecido').slice(0, 40));
-  }
+setCloudStatus('connecting', 'A ligar...');
+try {
+state.sb = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, { auth: { persistSession: false } });
+const { error } = await state.sb.from('users').select('id').limit(1);
+if (error) throw error;
+setCloudStatus('online', '☁️ Cloud ligada');
+await seedInitialData();
+await loadAllData();
+state.loaded = true;
+renderUserPills();
+} catch (e) {
+console.error('Supabase init error:', e);
+setCloudStatus('offline', 'Sem ligação: verifique a internet');
+}
 }
 
 function setCloudStatus(type, text) {
-  document.getElementById('cloudStatus').className = 'cloud-status ' + type;
-  document.getElementById('cloudText').textContent = text;
+document.getElementById('cloudStatus').className = 'cloud-status ' + type;
+document.getElementById('cloudText').textContent = text;
 }
 
 async function loadAllData() {
-  try {
-    const [users, cats, sups, prods, movs, ords, logs] = await Promise.all([
-      state.sb.from('users').select('*').order('id'),
-      state.sb.from('categories').select('*').order('id'),
-      state.sb.from('suppliers').select('*').order('id'),
-      state.sb.from('products').select('*').order('id'),
-      state.sb.from('movements').select('*').order('timestamp', { ascending: false }).limit(500),
-      state.sb.from('orders_clinic').select('*').order('timestamp', { ascending: false }).limit(100),
-      state.sb.from('logs').select('*').order('timestamp', { ascending: false }).limit(200)
-    ]);
-    state.cache.users = users.data || [];
-    state.cache.categories = cats.data || [];
-    state.cache.suppliers = sups.data || [];
-    state.cache.products = prods.data || [];
-    state.cache.movements = movs.data || [];
-    state.cache.orders = ords.data || [];
-    state.cache.logs = logs.data || [];
-  } catch (e) { console.error('loadAllData:', e); }
+try {
+const [users, cats, sups, prods, movs, ords, logs] = await Promise.all([
+state.sb.from('users').select('*').order('id'),
+state.sb.from('categories').select('*').order('id'),
+state.sb.from('suppliers').select('*').order('id'),
+state.sb.from('products').select('*').order('id'),
+state.sb.from('movements').select('*').order('timestamp', { ascending: false }).limit(500),
+state.sb.from('orders_clinic').select('*').order('timestamp', { ascending: false }).limit(100),
+state.sb.from('logs').select('*').order('timestamp', { ascending: false }).limit(200)
+]);
+state.cache.users = users.data || [];
+state.cache.categories = cats.data || [];
+state.cache.suppliers = sups.data || [];
+state.cache.products = prods.data || [];
+state.cache.movements = movs.data || [];
+state.cache.orders = ords.data || [];
+state.cache.logs = logs.data || [];
+} catch (e) { console.error('loadAllData:', e); }
 }
 
 async function refreshTable(key, tbl) {
-  if (!state.sb) return;
-  const { data } = await state.sb.from(tbl).select('*').order('id');
-  state.cache[key] = data || [];
-  if (state.currentUser) { renderPage(state.currentPage); updateBadges(); }
+if (!state.sb) return;
+const { data } = await state.sb.from(tbl).select('*').order('id');
+state.cache[key] = data || [];
+if (state.currentUser) { renderPage(state.currentPage); updateBadges(); }
 }
 
 async function seedInitialData() {
-  try {
-    const { data: existing } = await state.sb.from('users').select('id').limit(1);
-    if (!existing || existing.length === 0) {
-      await state.sb.from('users').insert(DEFAULT_USERS);
-      await state.sb.from('categories').insert(DEFAULT_CATEGORIES.map(n => ({ name: n })));
-      await state.sb.from('suppliers').insert(DEFAULT_SUPPLIERS.map(n => ({ name: n })));
-      const sampleProducts = [
-        { name: 'Luvas Nitrilo M', category: 'Descartáveis', supplier: 'DentalPlus', ref: 'GLV-NT-M', stock: 50, min_stock: 30, location: 'Gabinete 1', unit: 'un', price: 0.15, active: true },
-        { name: 'Máscaras Cirúrgicas IIR', category: 'Descartáveis', supplier: 'MedSupply', ref: 'MSK-IIR', stock: 8, min_stock: 20, location: 'Gabinete 2', unit: 'un', price: 0.25, active: true },
-        { name: 'Anestub Lidocaína 2%', category: 'Anestesia', supplier: 'DentalPlus', ref: 'ANS-LIDO-2', stock: 0, min_stock: 10, location: 'Gabinete 1', unit: 'un', price: 1.20, active: true },
-        { name: 'Agulhas Descartáveis 27G', category: 'Anestesia', supplier: 'MedSupply', ref: 'AGL-27G', stock: 120, min_stock: 50, location: 'Gabinete 1', unit: 'un', price: 0.08, active: true },
-        { name: 'Compressas Estéreis 5x5', category: 'Descartáveis', supplier: 'DentalPlus', ref: 'CMP-5X5', stock: 200, min_stock: 80, location: 'Zona 1 (Esterilização)', unit: 'un', price: 0.05, active: true },
-        { name: 'Resina Composta A2', category: 'Materiais Dentários', supplier: 'DentariaPro', ref: 'RES-A2', stock: 3, min_stock: 5, location: 'Gabinete 2', unit: 'seringa', price: 18.50, active: true },
-        { name: 'Limas Endodônticas K-File #25', category: 'Endodontia', supplier: 'EndoCare', ref: 'LF-K25', stock: 25, min_stock: 15, location: 'Gabinete 3', unit: 'un', price: 2.40, active: true },
-        { name: 'Brackets Metálicos MBT', category: 'Ortodontia', supplier: 'OrthoMax', ref: 'BR-MBT-001', stock: 60, min_stock: 30, location: 'Zona 2 (Cave)', unit: 'kit', price: 8.50, active: true },
-        { name: 'Películas Radiográficas', category: 'Radiologia', supplier: 'MedSupply', ref: 'RX-PEL-3X4', stock: 45, min_stock: 25, location: 'Zona 3 (Gabinete 7)', unit: 'un', price: 0.60, active: true },
-        { name: 'Solução Desinfetante 1L', category: 'Esterilização', supplier: 'DentalPlus', ref: 'DES-1L', stock: 6, min_stock: 4, location: 'Zona 1 (Esterilização)', unit: 'L', price: 12.00, active: true }
-      ];
-      await state.sb.from('products').insert(sampleProducts);
-    }
-  } catch (e) { console.error('Seed error:', e); }
+try {
+const { data: existing } = await state.sb.from('users').select('id').limit(1);
+if (!existing || existing.length === 0) {
+await state.sb.from('users').insert(DEFAULT_USERS);
+await state.sb.from('categories').insert(DEFAULT_CATEGORIES.map(n => ({ name: n })));
+await state.sb.from('suppliers').insert(DEFAULT_SUPPLIERS.map(n => ({ name: n })));
+const sampleProducts = [
+{ name: 'Luvas Nitrilo M', category: 'Descartáveis', supplier: 'DentalPlus', ref: 'GLV-NT-M', stock: 50, min_stock: 30, location: 'Gabinete 1', unit: 'un', price: 0.15, active: true },
+{ name: 'Máscaras Cirúrgicas IIR', category: 'Descartáveis', supplier: 'MedSupply', ref: 'MSK-IIR', stock: 8, min_stock: 20, location: 'Gabinete 2', unit: 'un', price: 0.25, active: true },
+{ name: 'Anestub Lidocaína 2%', category: 'Anestesia', supplier: 'DentalPlus', ref: 'ANS-LIDO-2', stock: 0, min_stock: 10, location: 'Gabinete 1', unit: 'un', price: 1.20, active: true },
+{ name: 'Agulhas Descartáveis 27G', category: 'Anestesia', supplier: 'MedSupply', ref: 'AGL-27G', stock: 120, min_stock: 50, location: 'Gabinete 1', unit: 'un', price: 0.08, active: true },
+{ name: 'Compressas Estéreis 5x5', category: 'Descartáveis', supplier: 'DentalPlus', ref: 'CMP-5X5', stock: 200, min_stock: 80, location: 'Zona 1 (Esterilização)', unit: 'un', price: 0.05, active: true },
+{ name: 'Resina Composta A2', category: 'Materiais Dentários', supplier: 'DentariaPro', ref: 'RES-A2', stock: 3, min_stock: 5, location: 'Gabinete 2', unit: 'seringa', price: 18.50, active: true },
+{ name: 'Limas Endodônticas K-File #25', category: 'Endodontia', supplier: 'EndoCare', ref: 'LF-K25', stock: 25, min_stock: 15, location: 'Gabinete 3', unit: 'un', price: 2.40, active: true },
+{ name: 'Brackets Metálicos MBT', category: 'Ortodontia', supplier: 'OrthoMax', ref: 'BR-MBT-001', stock: 60, min_stock: 30, location: 'Zona 2 (Cave)', unit: 'kit', price: 8.50, active: true },
+{ name: 'Películas Radiográficas', category: 'Radiologia', supplier: 'MedSupply', ref: 'RX-PEL-3X4', stock: 45, min_stock: 25, location: 'Zona 3 (Gabinete 7)', unit: 'un', price: 0.60, active: true },
+{ name: 'Solução Desinfetante 1L', category: 'Esterilização', supplier: 'DentalPlus', ref: 'DES-1L', stock: 6, min_stock: 4, location: 'Zona 1 (Esterilização)', unit: 'L', price: 12.00, active: true }
+];
+await state.sb.from('products').insert(sampleProducts);
+}
+} catch (e) { console.error('Seed error:', e); }
 }
 
 function formatDate(iso) { if (!iso) return ''; return new Date(iso).toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit',year:'numeric'}); }
 function formatDateTime(ts) { if (!ts) return ''; const d = new Date(ts); return d.toLocaleString('pt-PT',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}); }
+function formatCurrency(v) { return (Number(v)||0).toLocaleString('pt-PT',{style:'currency',currency:'EUR'}); }
 function timeAgo(ts) {
-  if (!ts) return '';
-  const d = new Date(ts);
-  const diff = Date.now() - d.getTime();
-  const min = Math.floor(diff/60000);
-  if (min < 1) return 'agora';
-  if (min < 60) return `há ${min}m`;
-  const h = Math.floor(min/60);
-  if (h < 24) return `há ${h}h`;
-  const days = Math.floor(h/24);
-  if (days < 30) return `há ${days}d`;
-  return formatDate(d.toISOString());
+if (!ts) return '';
+const d = new Date(ts);
+const diff = Date.now() - d.getTime();
+const min = Math.floor(diff/60000);
+if (min < 1) return 'agora';
+if (min < 60) return `há ${min}m`;
+const h = Math.floor(min/60);
+if (h < 24) return `há ${h}h`;
+const days = Math.floor(h/24);
+if (days < 30) return `há ${days}d`;
+return formatDate(d.toISOString());
 }
+function isToday(ts) { if (!ts) return false; const d = new Date(ts); const n = new Date(); return d.toDateString() === n.toDateString(); }
 function initials(name) { return name.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase(); }
 function toast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.innerHTML = msg;
-  t.className = 'toast show ' + type;
-  setTimeout(() => t.classList.remove('show'), 2400);
+const t = document.getElementById('toast');
+t.innerHTML = msg;
+t.className = 'toast show ' + type;
+setTimeout(() => t.classList.remove('show'), 2400);
 }
 function isAdmin() { return state.currentUser?.role === 'admin'; }
 
 async function addLog(action, details) {
-  if (!state.sb) return;
-  try { await state.sb.from('logs').insert({ action, details, user_name: state.currentUser?.name || 'Sistema' }); } catch(e) {}
+if (!state.sb) return;
+try { await state.sb.from('logs').insert({ action, details, user_name: state.currentUser?.name || 'Sistema' }); } catch(e) {}
+}
+
+// ===== TEXTO GRANDE (acessibilidade) =====
+function applyFontScale() {
+let saved = '1';
+try { saved = localStorage.getItem('dc_fontscale') || '1'; } catch(e) {}
+document.documentElement.style.setProperty('--font-scale', saved);
+document.querySelectorAll('.text-size-toggle button').forEach(b => b.classList.toggle('active', b.dataset.scale === String(saved)));
+}
+window.setFontScale = (v) => {
+document.documentElement.style.setProperty('--font-scale', v);
+try { localStorage.setItem('dc_fontscale', v); } catch(e) {}
+document.querySelectorAll('.text-size-toggle button').forEach(b => b.classList.toggle('active', b.dataset.scale === String(v)));
+};
+
+function showLoginHelp() {
+alert('Se esqueceu o seu PIN, peça a um colega com acesso de Administrador para o repor em "Utilizadores". Se ainda assim não conseguir entrar, contacte o responsável da clínica.');
 }
 
 function setupLogin() {
-  renderUserPills();
-  document.querySelectorAll('.key').forEach(k => k.addEventListener('click', () => handleKey(k.dataset.key)));
+renderUserPills();
+document.querySelectorAll('.key').forEach(k => k.addEventListener('click', () => handleKey(k.dataset.key)));
 }
 function renderUserPills() {
-  const cont = document.getElementById('userPills');
-  if (!cont) return;
-  if (!state.loaded) { cont.innerHTML = '<div class="user-loading">⏳ A carregar utilizadores...</div>'; return; }
-  const users = state.cache.users.filter(u => u.active);
-  if (users.length === 0) { cont.innerHTML = '<div class="user-loading">⚠️ Nenhum utilizador.</div>'; return; }
-  cont.innerHTML = users.map(u => `
-    <button class="user-pill ${state.selectedUser?.id === u.id ? 'active' : ''}" onclick="selectUser(${u.id})">
-      <span class="avatar">${initials(u.name)}</span>${u.name.split(' ')[0]}${u.role==='admin'?' 🛡️':''}
-    </button>
-  `).join('');
+const cont = document.getElementById('userPills');
+if (!cont) return;
+if (!state.loaded) { cont.innerHTML = '<div class="user-loading"><span class="spinner"></span>A carregar utilizadores...</div>'; return; }
+const users = state.cache.users.filter(u => u.active);
+if (users.length === 0) { cont.innerHTML = '<div class="user-loading">⚠️ Nenhum utilizador.</div>'; return; }
+cont.innerHTML = users.map(u => `
+<button class="user-pill ${state.selectedUser?.id === u.id ? 'active' : ''}" onclick="selectUser(${u.id})">
+<span class="avatar">${initials(u.name)}</span>${u.name.split(' ')[0]}${u.role==='admin'?' 🛡️':''}
+</button>
+`).join('');
 }
 window.selectUser = (id) => {
-  state.selectedUser = state.cache.users.find(u => u.id === id);
-  state.pinInput = ''; updatePinDisplay(); renderUserPills();
+state.selectedUser = state.cache.users.find(u => u.id === id);
+state.pinInput = ''; updatePinDisplay(); renderUserPills();
 };
 function handleKey(key) {
-  if (key === 'clear') state.pinInput = state.pinInput.slice(0, -1);
-  else if (key === 'enter') attemptLogin();
-  else if (state.pinInput.length < 8) state.pinInput += key;
-  updatePinDisplay();
+if (key === 'clear') state.pinInput = state.pinInput.slice(0, -1);
+else if (key === 'enter') attemptLogin();
+else if (state.pinInput.length < 8) state.pinInput += key;
+updatePinDisplay();
 }
 function updatePinDisplay() {
-  const d = document.getElementById('pinDisplay');
-  if (state.pinInput.length === 0) { d.textContent = 'Insira o PIN'; d.classList.add('empty'); }
-  else { d.classList.remove('empty'); d.textContent = '•'.repeat(state.pinInput.length); }
-  document.getElementById('loginError').textContent = '';
+const d = document.getElementById('pinDisplay');
+if (state.pinInput.length === 0) { d.textContent = 'Insira o PIN'; d.classList.add('empty'); }
+else { d.classList.remove('empty'); d.textContent = '•'.repeat(state.pinInput.length); }
+document.getElementById('loginError').textContent = '';
 }
 function attemptLogin() {
-  if (!state.selectedUser) { document.getElementById('loginError').textContent = 'Selecione um utilizador primeiro'; return; }
-  if (state.pinInput.length < 4) { document.getElementById('loginError').textContent = 'PIN mínimo 4 dígitos'; return; }
-  if (state.pinInput === state.selectedUser.pin) {
-    state.currentUser = state.selectedUser;
-    sessionStorage.setItem('dc_session', JSON.stringify({ userId: state.currentUser.id }));
-    addLog('LOGIN', 'Sessão iniciada');
-    showApp();
-    toast(`Bem-vindo, ${state.currentUser.name.split(' ')[0]}!`, 'success');
-  } else {
-    document.getElementById('loginError').textContent = 'PIN incorreto';
-    state.pinInput = ''; updatePinDisplay();
-    addLog('LOGIN_FAIL', state.selectedUser.name);
-  }
+if (!state.selectedUser) { document.getElementById('loginError').textContent = 'Toque no seu nome antes de inserir o PIN'; return; }
+if (state.pinInput.length < 4) { document.getElementById('loginError').textContent = 'O PIN tem de ter pelo menos 4 números'; return; }
+if (state.pinInput === state.selectedUser.pin) {
+state.currentUser = state.selectedUser;
+sessionStorage.setItem('dc_session', JSON.stringify({ userId: state.currentUser.id }));
+addLog('LOGIN', 'Sessão iniciada');
+showApp();
+toast(`Bem-vindo, ${state.currentUser.name.split(' ')[0]}!`, 'success');
+} else {
+document.getElementById('loginError').textContent = 'PIN incorreto. Tente novamente';
+state.pinInput = ''; updatePinDisplay();
+addLog('LOGIN_FAIL', state.selectedUser.name);
+}
 }
 function checkSession() {
-  const s = sessionStorage.getItem('dc_session');
-  if (s && state.loaded) {
-    const { userId } = JSON.parse(s);
-    const u = state.cache.users.find(u => u.id === userId);
-    if (u && u.active) { state.currentUser = u; showApp(); return; }
-  }
-  document.getElementById('loginScreen').style.display = 'flex';
+const s = sessionStorage.getItem('dc_session');
+if (s && state.loaded) {
+const { userId } = JSON.parse(s);
+const u = state.cache.users.find(u => u.id === userId);
+if (u && u.active) { state.currentUser = u; showApp(); return; }
+}
+document.getElementById('loginScreen').style.display = 'flex';
 }
 function showApp() {
-  resetInactivityTimer();
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('app').classList.add('active');
-  updateUserCard();
-  applyPermissions();
-  navigate('dashboard');
+resetInactivityTimer();
+document.getElementById('loginScreen').style.display = 'none';
+document.getElementById('app').classList.add('active');
+updateUserCard();
+applyPermissions();
+navigate('dashboard');
 }
 function updateUserCard() {
-  document.getElementById('userAvatar').textContent = initials(state.currentUser.name);
-  document.getElementById('userName').textContent = state.currentUser.name;
-  document.getElementById('userRole').textContent = state.currentUser.role === 'admin' ? '🛡️ Admin' : '👤 Utilizador';
+document.getElementById('userAvatar').textContent = initials(state.currentUser.name);
+document.getElementById('userName').textContent = state.currentUser.name;
+document.getElementById('userRole').textContent = state.currentUser.role === 'admin' ? '🛡️ Admin' : '👤 Utilizador';
 }
 function applyPermissions() {
-  document.getElementById('adminNav').style.display = isAdmin() ? 'block' : 'none';
+document.getElementById('adminNav').style.display = isAdmin() ? 'block' : 'none';
 }
 window.logout = () => {
-  clearTimeout(inactivityTimer);
-  addLog('LOGOUT', 'Sessão terminada');
-  state.currentUser = null; sessionStorage.removeItem('dc_session');
-  document.getElementById('app').classList.remove('active');
-  document.getElementById('loginScreen').style.display = 'flex';
-  state.selectedUser = null; state.pinInput = '';
-  updatePinDisplay(); renderUserPills();
+clearTimeout(inactivityTimer);
+addLog('LOGOUT', 'Sessão terminada');
+state.currentUser = null; sessionStorage.removeItem('dc_session');
+document.getElementById('app').classList.remove('active');
+document.getElementById('loginScreen').style.display = 'flex';
+state.selectedUser = null; state.pinInput = '';
+updatePinDisplay(); renderUserPills();
+closeMobileDrawer();
 };
 
 function setupNavigation() {
-  document.querySelectorAll('[data-page]').forEach(el => el.addEventListener('click', () => navigate(el.dataset.page)));
-  document.getElementById('globalSearch').addEventListener('input', (e) => {
-    if (state.currentPage === 'products') renderProducts(e.target.value);
-  });
+document.querySelectorAll('[data-page]').forEach(el => el.addEventListener('click', () => navigate(el.dataset.page)));
 }
 function navigate(page) {
-  state.currentPage = page;
-  if (page !== 'dashboard') state.dashCategory = 'Todas';
-  document.querySelectorAll('[data-page]').forEach(el => el.classList.toggle('active', el.dataset.page === page));
-  const titles = {
-    dashboard: ['📊 Dashboard', 'Movimentar stock rapidamente'],
-    products: ['📦 Produtos', 'Lista detalhada'],
-    productsAdmin: ['📦 Gerir Produtos', 'Adicionar, editar e apagar'],
-    categories: ['🏷️ Categorias', 'Gerir categorias'],
-    suppliers: ['🏭 Fornecedores', 'Gerir fornecedores'],
-    movements: ['🔄 Movimentos', 'Histórico'],
-    orders: ['🛒 Encomendas', 'Pedidos a fornecedores'],
-    alerts: ['⚠️ Alertas', 'Produtos com stock baixo'],
-    analytics: ['📈 Análise', 'Inteligência de consumo e previsões'],
-    logs: ['📋 Logs', 'Histórico de ações']
-  };
-  document.getElementById('pageTitle').textContent = titles[page]?.[0] || '';
-  document.getElementById('pageSubtitle').textContent = titles[page]?.[1] || '';
-  renderPage(page);
+state.currentPage = page;
+document.querySelectorAll('[data-page]').forEach(el => el.classList.toggle('active', el.dataset.page === page));
+const titles = {
+dashboard: ['📊 Início', 'Visão geral do stock'],
+products: ['📦 Produtos', 'Lista detalhada'],
+productsAdmin: ['📦 Gerir Produtos', 'Adicionar, editar e apagar'],
+categories: ['🏷️ Categorias', 'Gerir categorias'],
+suppliers: ['🏭 Fornecedores', 'Gerir fornecedores'],
+users: ['👥 Utilizadores', 'Gerir contas e PINs de acesso'],
+movements: ['🔄 Movimentos', 'Histórico'],
+orders: ['🛒 Encomendas', 'Pedidos a fornecedores'],
+alerts: ['⚠️ Alertas', 'Produtos com stock baixo'],
+analytics: ['📈 Análise', 'Inteligência de consumo e previsões'],
+logs: ['📋 Logs', 'Histórico de ações']
+};
+document.getElementById('pageTitle').textContent = titles[page]?.[0] || '';
+document.getElementById('pageSubtitle').textContent = titles[page]?.[1] || '';
+if (page !== 'dashboard') { state.dashSearch = ''; state.dashCategory = 'Todas'; }
+renderPage(page);
+closeMobileDrawer();
+document.getElementById('content').scrollTop = 0;
 }
 function setupKeyboard() {
-  document.addEventListener('keydown', (e) => {
-    if (document.getElementById('loginScreen').style.display !== 'none' && document.activeElement.tagName !== 'INPUT') {
-      if (/^[0-9]$/.test(e.key)) handleKey(e.key);
-      else if (e.key === 'Backspace') handleKey('clear');
-      else if (e.key === 'Enter') handleKey('enter');
-    }
-    // Atalhos dentro da app
-    if (state.currentUser) {
-      if (e.key === 'Escape') closeModal();
-    }
-  });
+document.addEventListener('keydown', (e) => {
+if (document.getElementById('loginScreen').style.display !== 'none' && document.activeElement.tagName !== 'INPUT') {
+if (/^[0-9]$/.test(e.key)) handleKey(e.key);
+else if (e.key === 'Backspace') handleKey('clear');
+else if (e.key === 'Enter') handleKey('enter');
+}
+if (state.currentUser && e.key === 'Escape') { closeModal(); closeMobileDrawer(); }
+});
 }
 function setupOnlineStatus() {
-  const update = () => {
-    const badge = document.getElementById('syncBadge');
-    badge.className = 'sync-badge ' + (navigator.onLine ? 'online' : 'offline');
-    document.getElementById('syncText').textContent = navigator.onLine ? 'Online' : 'Offline';
-  };
-  window.addEventListener('online', update);
-  window.addEventListener('offline', update);
+const update = () => {
+const badge = document.getElementById('syncBadge');
+if (!badge) return;
+badge.className = 'sync-badge ' + (navigator.onLine ? 'online' : 'offline');
+document.getElementById('syncText').textContent = navigator.onLine ? 'Online' : 'Sem ligação';
+if (navigator.onLine) syncOfflineMovements();
+};
+window.addEventListener('online', update);
+window.addEventListener('offline', update);
+update();
 }
 
+// ===== MENU MÓVEL (garante acesso total, incluindo Administração, em telemóvel) =====
+window.openMobileDrawer = () => {
+const items = [
+{ page: 'dashboard', icon: '📊', label: 'Início' },
+{ page: 'products', icon: '📦', label: 'Produtos' },
+{ page: 'movements', icon: '🔄', label: 'Movimentos' },
+{ page: 'analytics', icon: '📈', label: 'Análise' },
+{ page: 'orders', icon: '🛒', label: 'Encomendas' },
+{ page: 'alerts', icon: '⚠️', label: 'Alertas' }
+];
+const adminItems = [
+{ page: 'productsAdmin', icon: '📦', label: 'Gerir Produtos' },
+{ page: 'categories', icon: '🏷️', label: 'Categorias' },
+{ page: 'suppliers', icon: '🏭', label: 'Fornecedores' },
+{ page: 'users', icon: '👥', label: 'Utilizadores' },
+{ page: 'logs', icon: '📋', label: 'Logs' }
+];
+let html = `<div class="brand"><div class="brand-logo">🦷</div><div><h2 style="font-size:15px;font-weight:800">Clínica Mais</h2><small style="font-size:10px;color:var(--text-light)">Gestão de Stock</small></div></div>`;
+html += `<div class="nav-label">Operações</div>` + items.map(i => `<button class="nav-item ${state.currentPage===i.page?'active':''}" onclick="navigate('${i.page}')"><span class="icon">${i.icon}</span>${i.label}</button>`).join('');
+if (isAdmin()) html += `<div class="nav-label" style="margin-top:14px">Administração</div>` + adminItems.map(i => `<button class="nav-item ${state.currentPage===i.page?'active':''}" onclick="navigate('${i.page}')"><span class="icon">${i.icon}</span>${i.label}</button>`).join('');
+html += `<div class="nav-label" style="margin-top:14px">Conta</div>
+<button class="nav-item" onclick="closeMobileDrawer();openHelp()"><span class="icon">❓</span>Ajuda</button>
+<button class="nav-item" onclick="closeMobileDrawer();changeOwnPin()"><span class="icon">🔑</span>Alterar PIN</button>
+<button class="nav-item" onclick="logout()"><span class="icon">⎋</span>Sair (${state.currentUser?.name.split(' ')[0]||''})</button>`;
+document.getElementById('mobileDrawerInner').innerHTML = html;
+document.getElementById('mobileDrawer').classList.add('active');
+};
+window.closeMobileDrawer = () => document.getElementById('mobileDrawer').classList.remove('active');
+
 function getStockStatus(p) {
-  if (p.stock <= 0) return { level: 'critical', label: 'Em rutura', color: 'critical' };
-  if (p.stock < p.min_stock) return { level: 'low', label: 'Abaixo do mínimo', color: 'low' };
-  if (p.stock <= p.min_stock * 1.2) return { level: 'near', label: 'Perto do mínimo', color: 'near' };
-  return { level: 'ok', label: 'OK', color: 'ok' };
+if (p.stock <= 0) return { level: 'critical', label: 'Em rutura', color: 'critical' };
+if (p.stock < p.min_stock) return { level: 'low', label: 'Abaixo do mínimo', color: 'low' };
+if (p.stock <= p.min_stock * 1.2) return { level: 'near', label: 'Perto do mínimo', color: 'near' };
+return { level: 'ok', label: 'OK', color: 'ok' };
 }
 function getDaysUntilEmpty(p) {
-  const m = state.cache.movements.filter(mv => mv.product_id === p.id && mv.type === 'out');
-  if (m.length < 3) return null;
-  const oldest = Math.min(...m.map(x => new Date(x.timestamp).getTime()));
-  const days = Math.max(1, (Date.now() - oldest) / 86400000);
-  const totalOut = m.reduce((s, mv) => s + mv.quantity, 0);
-  const dailyRate = totalOut / days;
-  if (dailyRate <= 0) return null;
-  return Math.floor(p.stock / dailyRate);
+const m = state.cache.movements.filter(mv => mv.product_id === p.id && mv.type === 'out');
+if (m.length < 3) return null;
+const oldest = Math.min(...m.map(x => new Date(x.timestamp).getTime()));
+const days = Math.max(1, (Date.now() - oldest) / 86400000);
+const totalOut = m.reduce((s, mv) => s + mv.quantity, 0);
+const dailyRate = totalOut / days;
+if (dailyRate <= 0) return null;
+return Math.floor(p.stock / dailyRate);
 }
 function getDailyAverage(p, days = 30) {
-  const since = Date.now() - days * 86400000;
-  const m = state.cache.movements.filter(mv => {
-    const ts = new Date(mv.timestamp).getTime();
-    return mv.product_id === p.id && mv.type === 'out' && ts >= since;
-  });
-  return m.reduce((s, mv) => s + mv.quantity, 0) / days;
+const since = Date.now() - days * 86400000;
+const m = state.cache.movements.filter(mv => {
+const ts = new Date(mv.timestamp).getTime();
+return mv.product_id === p.id && mv.type === 'out' && ts >= since;
+});
+return m.reduce((s, mv) => s + mv.quantity, 0) / days;
+}
+
+function getProductUsage(productId) {
+return state.cache.movements
+.filter(m => m.product_id === productId && m.type === 'out')
+.reduce((s, m) => s + m.quantity, 0);
+}
+function sortProductsByUsage(products) {
+return [...products].sort((a, b) => getProductUsage(b.id) - getProductUsage(a.id));
+}
+function getInventoryValue(products) {
+return products.reduce((s,p) => s + (Number(p.stock)||0) * (Number(p.price)||0), 0);
 }
 function updateBadges() {
-  const alerts = state.cache.products.filter(p => p.active && getStockStatus(p).level !== 'ok').length;
-  const b = document.getElementById('alertBadge');
-  if (alerts > 0) { b.style.display = 'inline'; b.textContent = alerts; } else b.style.display = 'none';
-  const op = state.cache.orders.filter(o => o.status !== 'done').length;
-  const ob = document.getElementById('orderBadge');
-  if (op > 0) { ob.style.display = 'inline'; ob.textContent = op; } else ob.style.display = 'none';
+const alerts = state.cache.products.filter(p => p.active && getStockStatus(p).level !== 'ok').length;
+const b = document.getElementById('alertBadge');
+if (alerts > 0) { b.style.display = 'inline'; b.textContent = alerts; } else b.style.display = 'none';
+const op = state.cache.orders.filter(o => o.status !== 'done').length;
+const ob = document.getElementById('orderBadge');
+if (op > 0) { ob.style.display = 'inline'; ob.textContent = op; } else ob.style.display = 'none';
 }
 function statusLabel(s) { return { pending:'Pendente', ordered:'Encomendada', partial:'Recebida Parcial', done:'Concluída' }[s] || s; }
 function renderMovementItem(m) {
-  const loc = m.from_location ? m.from_location + (m.to_location && m.to_location !== m.from_location ? ' → ' + m.to_location : '') : (m.to_location || '—');
-  return `<div class="movement ${m.type}"><div class="mov-icon">${m.type==='in'?'↓':m.type==='out'?'↑':'⇄'}</div><div class="mov-info"><div class="mov-product">${m.product_name||'Produto'}</div><div class="mov-meta">${loc} · ${m.user_name||'Sistema'} · ${timeAgo(m.timestamp)}</div></div><div class="mov-qty">${m.type==='in'?'+':m.type==='out'?'−':'⇄'}${m.quantity}</div></div>`;
+const loc = m.from_location ? m.from_location + (m.to_location && m.to_location !== m.from_location ? ' → ' + m.to_location : '') : (m.to_location || '—');
+return `<div class="movement ${m.type}"><div class="mov-icon">${m.type==='in'?'↓':m.type==='out'?'↑':'⇄'}</div><div class="mov-info"><div class="mov-product">${m.product_name||'Produto'}</div><div class="mov-meta">${loc} · ${m.user_name||'Sistema'} · ${timeAgo(m.timestamp)}</div></div><div class="mov-qty">${m.type==='in'?'+':m.type==='out'?'−':'⇄'}${m.quantity}</div></div>`;
 }
 
 function renderPage(page) {
-  const c = document.getElementById('content'); c.innerHTML = '';
-  if (page === 'dashboard') renderDashboard(c);
-  else if (page === 'products') renderProductsPage(c);
-  else if (page === 'productsAdmin') renderProductsAdminPage(c);
-  else if (page === 'categories') renderCategoriesPage(c);
-  else if (page === 'suppliers') renderSuppliersPage(c);
-  else if (page === 'movements') renderMovementsPage(c);
-  else if (page === 'orders') renderOrdersPage(c);
-  else if (page === 'alerts') renderAlertsPage(c);
-  else if (page === 'analytics') renderAnalyticsPage(c);
-  else if (page === 'logs') renderLogsPage(c);
-  updateBadges();
+const c = document.getElementById('content'); c.innerHTML = '';
+if (page === 'dashboard') renderDashboard(c);
+else if (page === 'products') renderProductsPage(c);
+else if (page === 'productsAdmin') renderProductsAdminPage(c);
+else if (page === 'categories') renderCategoriesPage(c);
+else if (page === 'suppliers') renderSuppliersPage(c);
+else if (page === 'users') renderUsersPage(c);
+else if (page === 'movements') renderMovementsPage(c);
+else if (page === 'orders') renderOrdersPage(c);
+else if (page === 'alerts') renderAlertsPage(c);
+else if (page === 'analytics') renderAnalyticsPage(c);
+else if (page === 'logs') renderLogsPage(c);
+updateBadges();
 }
 
-// ========== DASHBOARD COM CARDS COMPACTAS + ATALHOS ==========
+// ===== DASHBOARD COM KPIs + PESQUISA TEMPO REAL + ORDENAÇÃO POR USO =====
 function renderDashboard(c) {
-  const products = state.cache.products.filter(p => p.active);
-  const filtered = state.dashCategory === 'Todas' ? products : products.filter(p => p.category === state.dashCategory);
-  const inBreak = filtered.filter(p => p.stock <= 0).length;
-  const lowStock = filtered.filter(p => p.stock > 0 && p.stock < p.min_stock).length;
-  const totalValue = filtered.reduce((s,p) => s + (p.stock * (p.price || 0)), 0);
-  const movements = [...state.cache.movements].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 6);
-  const orders = state.cache.orders.filter(o => o.status !== 'done');
+let products = state.cache.products.filter(p => p.active);
+let filtered = state.dashCategory === 'Todas' ? products : products.filter(p => p.category === state.dashCategory);
 
-  // Produtos críticos (para alerta sonoro)
-  const criticalProducts = products.filter(p => p.stock <= 0);
-  const lowProducts = products.filter(p => p.stock > 0 && p.stock < p.min_stock);
-
-  c.innerHTML = `
-    <!-- ===== STATS CARDS CLICÁVEIS (METADE DA ALTURA) ===== -->
-    <div class="stats-grid">
-      <div class="stat-card critical" onclick="filterDashboard('critical')">
-        <div class="icon-bg">🔴</div>
-        <div class="stat-info">
-          <div class="value">${inBreak}</div>
-          <div class="label">Em rutura</div>
-        </div>
-        <div class="stat-arrow">→</div>
-      </div>
-      <div class="stat-card warning" onclick="filterDashboard('low')">
-        <div class="icon-bg">🟠</div>
-        <div class="stat-info">
-          <div class="value">${lowStock}</div>
-          <div class="label">Abaixo mínimo</div>
-        </div>
-        <div class="stat-arrow">→</div>
-      </div>
-      <div class="stat-card success" onclick="navigate('analytics')">
-        <div class="icon-bg">💰</div>
-        <div class="stat-info">
-          <div class="value">€${totalValue.toFixed(0)}</div>
-          <div class="label">Valor stock</div>
-        </div>
-        <div class="stat-arrow">→</div>
-      </div>
-      <div class="stat-card info" onclick="clearFilter()">
-        <div class="icon-bg">📦</div>
-        <div class="stat-info">
-          <div class="value">${filtered.length}</div>
-          <div class="label">Produtos visíveis</div>
-        </div>
-        <div class="stat-arrow">→</div>
-      </div>
-    </div>
-
-    <!-- ===== ATALHOS RÁPIDOS ===== -->
-    <div class="quick-actions">
-      <div class="quick-action in" onclick="quickMostUsed('in')">
-        <div class="qa-icon">➕</div>
-        <div class="qa-info">
-          <div class="qa-title">Entrada Rápida</div>
-          <div class="qa-desc">Repor stock do produto mais usado</div>
-        </div>
-      </div>
-      <div class="quick-action out" onclick="quickMostUsed('out')">
-        <div class="qa-icon">➖</div>
-        <div class="qa-info">
-          <div class="qa-title">Saída Rápida</div>
-          <div class="qa-desc">Registar uso do produto mais frequente</div>
-        </div>
-      </div>
-      <div class="quick-action order" onclick="autoGenerateOrder()">
-        <div class="qa-icon">🛒</div>
-        <div class="qa-info">
-          <div class="qa-title">Gerar Encomenda</div>
-          <div class="qa-desc">Criar encomendas automáticas dos alertas</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== FILTRO DE CATEGORIAS ===== -->
-    <div class="cat-filter">
-      ${['Todas', ...state.cache.categories.map(c=>c.name)].map(cat => {
-        const count = cat === 'Todas' ? products.length : products.filter(p => p.category === cat).length;
-        return `<button class="cat-pill ${state.dashCategory === cat ? 'active' : ''}" onclick="filterByCategory('${cat.replace(/'/g, "\\'")}')">${cat === 'Todas' ? '📋 ' : ''}${cat} (${count})</button>`;
-      }).join('')}
-    </div>
-
-    <!-- ===== GRELHA DE PRODUTOS ===== -->
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-header"><div><div class="card-title">📦 Produtos ${state.dashCategory !== 'Todas' ? '· ' + state.dashCategory : ''}</div><div style="font-size:11.5px;color:var(--text-light)">${filtered.length} produto(s)</div></div></div>
-      <div class="product-grid-dash">
-        ${filtered.length === 0 ? '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📦</div>Sem produtos</div>' :
-          filtered.map(p => {
-            const status = getStockStatus(p);
-            return `<div class="mini-product ${status.level}">
-              <div class="mp-header" onclick="openProductDetail(${p.id})"><div class="mp-icon">${getProductIcon(p)}</div><div class="mp-info"><div class="mp-name">${p.name}</div><div class="mp-loc">📍 ${p.location.split(' (')[0]}</div></div></div>
-              <div class="mp-stock" onclick="openProductDetail(${p.id})"><div class="mp-stock-num">${p.stock}</div><div class="mp-stock-unit">${p.unit||'un'}</div><div class="mp-stock-min">mín ${p.min_stock}</div></div>
-              ${status.level === 'critical' ? `<div class="mp-status critical">🔴 Rutura</div>` : ''}
-              ${status.level === 'low' ? `<div class="mp-status low">🟠 Baixo</div>` : ''}
-              <div class="mp-actions"><button class="mp-btn in" onclick="event.stopPropagation();quickIn(${p.id})">+</button><button class="mp-btn out" onclick="event.stopPropagation();quickOut(${p.id})" ${p.stock <= 0 ? 'disabled' : ''}>−</button></div>
-            </div>`;
-          }).join('')}
-      </div>
-    </div>
-
-    <div class="dash-grid">
-      <div>
-        <div class="card" style="margin-bottom:14px">
-          <div class="card-header"><div class="card-title">⚠️ Alertas</div><button class="btn btn-sm btn-secondary" onclick="navigate('alerts')">Ver todos</button></div>
-          <div class="alert-list">${(() => {
-            const alerts = filtered.map(p => ({p, s: getStockStatus(p)})).filter(a => a.s.level !== 'ok').slice(0,6);
-            return alerts.length === 0 ? '<div class="empty" style="padding:14px"><div class="empty-icon">✅</div>Sem alertas</div>' :
-              alerts.map(a => `<div class="alert-item ${a.s.level}"><span class="alert-icon">${a.s.level==='critical'?'🔴':'🟠'}</span><div class="alert-info"><div class="alert-name">${a.p.name}</div><div class="alert-meta">${a.p.location} · ${a.p.stock}/${a.p.min_stock}</div></div><button class="alert-action" onclick="quickOrderOne(${a.p.id})">+ Encomendar</button></div>`).join('');
-          })()}</div>
-        </div>
-      </div>
-      <div>
-        <div class="card" style="margin-bottom:14px">
-          <div class="card-header"><div class="card-title">🔄 Últimos Movimentos</div></div>
-          <div class="movement-list">${movements.map(m => renderMovementItem(m)).join('') || '<div class="empty">Sem movimentos</div>'}</div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">🛒 Encomendas</div></div>
-          ${orders.slice(0,3).map(o => `<div style="padding:9px;border-radius:9px;background:var(--surface2);margin-bottom:6px"><div style="display:flex;justify-content:space-between;align-items:center"><strong>${o.supplier}</strong><span class="order-status ${o.status}">${statusLabel(o.status)}</span></div><div style="font-size:11px;color:var(--text-soft);margin-top:2px">${(o.items||[]).length} produto(s)</div></div>`).join('') || '<div class="empty" style="padding:14px"><div class="empty-icon">✅</div>Sem encomendas</div>'}
-        </div>
-      </div>
-    </div>
-  `;
+if (state.dashSearch) {
+const s = state.dashSearch.toLowerCase();
+filtered = filtered.filter(p =>
+p.name.toLowerCase().includes(s) ||
+(p.ref||'').toLowerCase().includes(s) ||
+(p.category||'').toLowerCase().includes(s) ||
+(p.supplier||'').toLowerCase().includes(s)
+);
 }
 
-window.filterByCategory = (cat) => { state.dashCategory = cat; renderDashboard(document.getElementById('content')); };
+if (state.sortByUsage) {
+filtered = sortProductsByUsage(filtered);
+}
 
-// Cards de stats clicáveis - navegam para secção filtrada
-window.filterDashboard = (filter) => {
-  const products = state.cache.products.filter(p => p.active);
-  let filtered = [];
-  if (filter === 'critical') filtered = products.filter(p => p.stock <= 0);
-  else if (filter === 'low') filtered = products.filter(p => p.stock > 0 && p.stock < p.min_stock);
-  navigate('alerts');
+const criticalCount = products.filter(p => getStockStatus(p).level === 'critical').length;
+const lowCount = products.filter(p => getStockStatus(p).level === 'low' || getStockStatus(p).level === 'near').length;
+const invValue = getInventoryValue(products);
+const todayMovs = state.cache.movements.filter(m => isToday(m.timestamp)).length;
+
+c.innerHTML = `
+<div class="kpi-row">
+<div class="kpi-card" style="--kpi-color:var(--primary);--kpi-bg:var(--primary-light)" onclick="navigate('products')">
+<div class="kpi-icon">📦</div>
+<div class="kpi-info"><div class="kpi-value">${products.length}</div><div class="kpi-label">Produtos ativos</div></div>
+</div>
+<div class="kpi-card" style="--kpi-color:var(--red);--kpi-bg:var(--red-bg)" onclick="navigate('alerts')">
+<div class="kpi-icon">🔴</div>
+<div class="kpi-info"><div class="kpi-value">${criticalCount}</div><div class="kpi-label">Em rutura</div></div>
+</div>
+<div class="kpi-card" style="--kpi-color:var(--orange);--kpi-bg:var(--orange-bg)" onclick="navigate('alerts')">
+<div class="kpi-icon">🟠</div>
+<div class="kpi-info"><div class="kpi-value">${lowCount}</div><div class="kpi-label">Stock baixo</div></div>
+</div>
+<div class="kpi-card" style="--kpi-color:var(--green);--kpi-bg:var(--green-bg)" onclick="navigate('movements')">
+<div class="kpi-icon">🔄</div>
+<div class="kpi-info"><div class="kpi-value">${todayMovs}</div><div class="kpi-label">Movimentos hoje</div></div>
+</div>
+</div>
+
+<div class="dashboard-toolbar">
+<div class="dashboard-search ${state.dashSearch ? 'has-value' : ''}">
+<input id="dashSearchInput" type="text" placeholder="Pesquisar produto por nome, referência, categoria ou fornecedor..."
+value="${state.dashSearch.replace(/"/g, '&quot;')}"
+oninput="updateDashSearch(this.value)"
+autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+<span class="clear-search" onclick="clearDashSearch()">✕</span>
+</div>
+<div class="cat-filter">
+<span style="font-size:11px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-right:4px;align-self:center">Filtrar:</span>
+${['Todas', ...state.cache.categories.map(c=>c.name)].map(cat => {
+const count = cat === 'Todas' ? products.length : products.filter(p => p.category === cat).length;
+return `<button class="cat-pill ${state.dashCategory === cat ? 'active' : ''}" onclick="setDashCategory('${cat.replace(/'/g, "\\'")}')">${cat} <span style="opacity:0.6;font-weight:500">(${count})</span></button>`;
+}).join('')}
+<button class="sort-toggle ${state.sortByUsage ? 'active' : ''}" onclick="toggleSortByUsage()">
+${state.sortByUsage ? '🔥' : '📋'} ${state.sortByUsage ? 'Mais usados' : 'Alfabético'}
+</button>
+</div>
+</div>
+
+<div class="dashboard-results">
+<span>A mostrar <strong>${filtered.length}</strong> de <strong>${products.length}</strong>${state.dashSearch ? ` para "<strong>${state.dashSearch}</strong>"` : ''}${state.dashCategory !== 'Todas' ? ` em <strong>${state.dashCategory}</strong>` : ''}${state.sortByUsage ? ' · ordenado por mais usados' : ''}</span>
+${(state.dashSearch || state.dashCategory !== 'Todas') ? `<button class="btn btn-sm btn-secondary" onclick="resetDashFilters()">✕ Limpar</button>` : ''}
+</div>
+
+<div class="product-grid-dash" id="productGrid">
+${renderDashGridItems(filtered)}
+</div>
+`;
+
+setTimeout(() => {
+const inp = document.getElementById('dashSearchInput');
+if (inp && !state.dashSearch) inp.focus();
+}, 100);
+}
+
+function renderDashGridItems(filtered) {
+if (filtered.length === 0) return `<div class="empty" style="grid-column:1/-1">
+<div class="empty-icon">🔍</div>
+<div class="empty-title">Nenhum produto encontrado</div>
+<div class="empty-desc">${state.dashSearch ? 'Tente pesquisar por outra palavra ou limpe os filtros.' : 'Adicione produtos em Gerir Produtos.'}</div>
+</div>`;
+return filtered.map(p => {
+const status = getStockStatus(p);
+const usage = getProductUsage(p.id);
+let stockIndicator = '';
+if (status.level === 'critical') stockIndicator = `<div class="mp-stock-indicator critical">🔴 ${p.stock} ${p.unit||'un'} · RUTURA</div>`;
+else if (status.level === 'low') stockIndicator = `<div class="mp-stock-indicator low">🟠 ${p.stock} ${p.unit||'un'} · Baixo</div>`;
+else if (status.level === 'near') stockIndicator = `<div class="mp-stock-indicator near">🟡 ${p.stock} ${p.unit||'un'}</div>`;
+else stockIndicator = `<div class="mp-stock-indicator ok">✅ ${p.stock} ${p.unit||'un'}</div>`;
+const usageBadge = usage > 0 ? `<span class="mp-usage ${usage > 20 ? 'hot' : ''}">📊 ${usage} saídas</span>` : '';
+const showReorder = (status.level === 'critical' || status.level === 'low') && isAdmin();
+return `<div class="mini-product ${status.level}">
+<div class="mp-left" onclick="openProductDetail(${p.id})">
+<div class="mp-header">
+<div class="mp-icon">${getProductIcon(p)}</div>
+<div class="mp-info">
+<div class="mp-name">${p.name}</div>
+${usageBadge}
+</div>
+</div>
+${stockIndicator}
+</div>
+<div class="mp-actions">
+<button class="mp-btn in" onclick="event.stopPropagation();quickIn(${p.id})" title="Entrada">+</button>
+<button class="mp-btn out" onclick="event.stopPropagation();quickOut(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} title="Saída">−</button>
+${showReorder ? `<button class="mp-btn reorder" onclick="event.stopPropagation();quickOrderOne(${p.id})" title="Adicionar a encomenda">🛒</button>` : ''}
+</div>
+</div>`;
+}).join('');
+}
+
+let searchTimeout = null;
+window.updateDashSearch = (val) => {
+state.dashSearch = val;
+document.querySelector('.dashboard-search')?.classList.toggle('has-value', !!val);
+clearTimeout(searchTimeout);
+searchTimeout = setTimeout(() => filterAndRenderProducts(), 50);
 };
 
-window.clearFilter = () => {
-  state.dashCategory = 'Todas';
-  renderDashboard(document.getElementById('content'));
+window.clearDashSearch = () => {
+state.dashSearch = '';
+document.querySelector('.dashboard-search')?.classList.remove('has-value');
+const inp = document.getElementById('dashSearchInput');
+if (inp) { inp.value = ''; inp.focus(); }
+filterAndRenderProducts();
 };
 
-// ========== ATALHOS RÁPIDOS ==========
-window.quickMostUsed = (type) => {
-  const products = state.cache.products.filter(p => p.active);
-  if (products.length === 0) { toast('Sem produtos', 'warning'); return; }
-  
-  // Encontrar o produto mais usado (com mais movimentos de saída)
-  let mostUsed = products[0];
-  let maxMovs = 0;
-  products.forEach(p => {
-    const movs = state.cache.movements.filter(m => m.product_id === p.id && m.type === 'out').length;
-    if (movs > maxMovs) { maxMovs = movs; mostUsed = p; }
-  });
-  
-  if (type === 'in') quickIn(mostUsed.id);
-  else quickOut(mostUsed.id);
-  
-  // Som de feedback
-  if (type === 'out' && mostUsed.stock <= 1) {
-    playAlertSound(true);
-  }
+window.setDashCategory = (cat) => {
+state.dashCategory = cat;
+filterAndRenderProducts();
 };
+
+window.toggleSortByUsage = () => {
+state.sortByUsage = !state.sortByUsage;
+filterAndRenderProducts();
+const toggle = document.querySelector('.sort-toggle');
+if (toggle) {
+toggle.classList.toggle('active', state.sortByUsage);
+toggle.innerHTML = (state.sortByUsage ? '🔥' : '📋') + ' ' + (state.sortByUsage ? 'Mais usados' : 'Alfabético');
+}
+};
+
+window.resetDashFilters = () => {
+state.dashSearch = '';
+state.dashCategory = 'Todas';
+document.querySelector('.dashboard-search')?.classList.remove('has-value');
+const inp = document.getElementById('dashSearchInput');
+if (inp) inp.value = '';
+filterAndRenderProducts();
+};
+
+function filterAndRenderProducts() {
+const products = state.cache.products.filter(p => p.active);
+let filtered = state.dashCategory === 'Todas' ? products : products.filter(p => p.category === state.dashCategory);
+
+if (state.dashSearch) {
+const s = state.dashSearch.toLowerCase();
+filtered = filtered.filter(p =>
+p.name.toLowerCase().includes(s) ||
+(p.ref||'').toLowerCase().includes(s) ||
+(p.category||'').toLowerCase().includes(s) ||
+(p.supplier||'').toLowerCase().includes(s)
+);
+}
+
+if (state.sortByUsage) filtered = sortProductsByUsage(filtered);
+
+document.querySelectorAll('.cat-pill').forEach(p => {
+const pillText = p.textContent.split('(')[0].trim();
+p.classList.toggle('active', pillText === state.dashCategory);
+});
+
+const resultsEl = document.querySelector('.dashboard-results span');
+if (resultsEl) {
+let html = `A mostrar <strong>${filtered.length}</strong> de <strong>${products.length}</strong>`;
+if (state.dashSearch) html += ` para "<strong>${state.dashSearch}</strong>"`;
+if (state.dashCategory !== 'Todas') html += ` em <strong>${state.dashCategory}</strong>`;
+if (state.sortByUsage) html += ' · ordenado por mais usados';
+resultsEl.innerHTML = html;
+}
+
+const clearBtn = document.querySelector('.dashboard-results button');
+if (state.dashSearch || state.dashCategory !== 'Todas') {
+if (!clearBtn) {
+const btn = document.createElement('button');
+btn.className = 'btn btn-sm btn-secondary';
+btn.textContent = '✕ Limpar';
+btn.onclick = resetDashFilters;
+document.querySelector('.dashboard-results').appendChild(btn);
+}
+} else if (clearBtn) {
+clearBtn.remove();
+}
+
+const grid = document.getElementById('productGrid');
+if (!grid) return;
+grid.innerHTML = renderDashGridItems(filtered);
+}
 
 function renderProductsPage(c) {
-  c.innerHTML = `<div class="products-header"><div class="search-box"><input id="prodSearch" type="text" placeholder="🔍 Pesquisar..." oninput="renderProducts(this.value)" /></div></div><div class="zone-tabs" id="zoneTabs"></div><div class="product-list" id="productList"></div>`;
-  renderZoneTabs(); renderProducts('');
+c.innerHTML = `<div class="products-header"><div class="search-box" style="flex:1"><input id="prodSearch" type="text" placeholder="🔍 Pesquisar..." oninput="renderProducts(this.value)" /></div><button class="btn btn-secondary" onclick="printProductList()">🖨️ Imprimir lista</button><button class="btn btn-secondary" onclick="exportProductsCSV()">⬇️ Exportar CSV</button></div><div class="zone-tabs" id="zoneTabs"></div><div class="product-list" id="productList"></div>`;
+renderZoneTabs(); renderProducts('');
 }
 function renderZoneTabs() {
-  const cont = document.getElementById('zoneTabs');
-  if (!cont) return;
-  const counts = {}; LOCATIONS.forEach(l => counts[l] = 0);
-  state.cache.products.filter(p => p.active).forEach(p => { if (counts[p.location] !== undefined) counts[p.location]++; });
-  cont.innerHTML = `<button class="zone-tab ${state.activeZone === 'all' ? 'active' : ''}" onclick="setZone('all')">📋 Todos ${state.cache.products.filter(p=>p.active).length}</button>${LOCATIONS.map(l => `<button class="zone-tab ${state.activeZone === l ? 'active' : ''}" onclick="setZone('${l}')">${l.split(' (')[0]} ${counts[l]||0}</button>`).join('')}`;
+const cont = document.getElementById('zoneTabs');
+if (!cont) return;
+const counts = {}; LOCATIONS.forEach(l => counts[l] = 0);
+state.cache.products.filter(p => p.active).forEach(p => { if (counts[p.location] !== undefined) counts[p.location]++; });
+cont.innerHTML = `<button class="zone-tab ${state.activeZone === 'all' ? 'active' : ''}" onclick="setZone('all')">📋 Todos ${state.cache.products.filter(p=>p.active).length}</button>${LOCATIONS.map(l => `<button class="zone-tab ${state.activeZone === l ? 'active' : ''}" onclick="setZone('${l}')">${l.split(' (')[0]} ${counts[l]||0}</button>`).join('')}`;
 }
 window.setZone = (z) => { state.activeZone = z; renderZoneTabs(); renderProducts(document.getElementById('prodSearch')?.value || ''); };
 window.renderProducts = (search = '') => {
-  const list = document.getElementById('productList');
-  if (!list) return;
-  let products = state.cache.products.filter(p => p.active);
-  if (state.activeZone !== 'all') products = products.filter(p => p.location === state.activeZone);
-  if (search) { const s = search.toLowerCase(); products = products.filter(p => p.name.toLowerCase().includes(s) || (p.ref||'').toLowerCase().includes(s)); }
-  if (products.length === 0) { list.innerHTML = '<div class="empty"><div class="empty-icon">📦</div>Sem produtos</div>'; return; }
-  list.innerHTML = products.map(p => {
-    const status = getStockStatus(p);
-    return `<div class="product-row ${status.level}" onclick="openProductDetail(${p.id})"><div class="product-icon">${getProductIcon(p)}</div><div class="product-info"><div class="product-name">${p.name}</div><div class="product-meta"><span>📍 ${p.location}</span><span>🏷️ ${p.category||'—'}</span></div></div><div class="product-stock"><div class="stock-num">${p.stock}</div><div class="stock-unit">${p.unit||'un'}</div><div style="font-size:10px;color:var(--text-light)">mín ${p.min_stock}</div></div><div class="product-actions" onclick="event.stopPropagation()"><button class="icon-btn transfer" onclick="quickTransfer(${p.id})">⇄</button><button class="big-btn in" onclick="quickIn(${p.id})">+</button><button class="big-btn out" onclick="quickOut(${p.id})" ${p.stock <= 0 ? 'disabled' : ''}>−</button></div></div>`;
-  }).join('');
+const list = document.getElementById('productList');
+if (!list) return;
+let products = state.cache.products.filter(p => p.active);
+if (state.activeZone !== 'all') products = products.filter(p => p.location === state.activeZone);
+if (search) { const s = search.toLowerCase(); products = products.filter(p => p.name.toLowerCase().includes(s) || (p.ref||'').toLowerCase().includes(s)); }
+if (products.length === 0) { list.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><div class="empty-title">Sem produtos</div><div class="empty-desc">Tente outra zona ou termo de pesquisa.</div></div>'; return; }
+list.innerHTML = products.map(p => {
+const status = getStockStatus(p);
+return `<div class="product-row ${status.level}" onclick="openProductDetail(${p.id})"><div class="product-icon">${getProductIcon(p)}</div><div class="product-info"><div class="product-name">${p.name}</div><div class="product-meta"><span>📍 ${p.location}</span><span>🏷️ ${p.category||'—'}</span></div></div><div class="product-stock"><div class="stock-num">${p.stock}</div><div class="stock-unit">${p.unit||'un'}</div><div style="font-size:10px;color:var(--text-light)">mín ${p.min_stock}</div></div><div class="product-actions" onclick="event.stopPropagation()"><button class="icon-btn transfer" onclick="quickTransfer(${p.id})" title="Transferir">⇄</button><button class="big-btn in" onclick="quickIn(${p.id})" title="Entrada">+</button><button class="big-btn out" onclick="quickOut(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} title="Saída">−</button></div></div>`;
+}).join('');
 };
 
-// ========== PÁGINA DE ANÁLISE COM GRÁFICOS ==========
 function renderAnalyticsPage(c) {
-  const products = state.cache.products.filter(p => p.active);
-  const days = [];
-  for (let i = 29; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    days.push({ date: d.toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit'}), out: 0, in: 0 });
-  }
-  state.cache.movements.forEach(m => {
-    const ts = new Date(m.timestamp).getTime();
-    const idx = 29 - Math.floor((Date.now() - ts) / 86400000);
-    if (idx >= 0 && idx < 30) {
-      if (m.type === 'out') days[idx].out += m.quantity;
-      else if (m.type === 'in') days[idx].in += m.quantity;
-    }
-  });
-
-  // Top produtos mais consumidos
-  const topProducts = products.map(p => ({
-    name: p.name.length > 20 ? p.name.slice(0,18) + '…' : p.name,
-    total: state.cache.movements.filter(m => m.product_id === p.id && m.type === 'out').reduce((s,m) => s+m.quantity, 0)
-  })).sort((a,b) => b.total - a.total).slice(0, 7);
-
-  // Stock por categoria
-  const byCat = {};
-  products.forEach(p => { const cat = p.category || 'Sem'; byCat[cat] = (byCat[cat]||0) + p.stock; });
-
-  // Previsão rutura
-  const forecasts = products.map(p => ({ product: p, days: getDaysUntilEmpty(p), daily: getDailyAverage(p) })).filter(f => f.days !== null).sort((a,b) => a.days - b.days);
-
-  c.innerHTML = `
-    <div class="analytics-grid">
-      <div class="card">
-        <div class="card-header"><div class="card-title">📊 Tendência 30 dias (Entradas vs Saídas)</div></div>
-        <div class="chart-container"><canvas id="trendChart"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-header"><div class="card-title">📦 Stock por Categoria</div></div>
-        <div class="chart-container"><canvas id="catChart"></canvas></div>
-      </div>
-    </div>
-    <div class="card" style="margin-top:14px">
-      <div class="card-header"><div class="card-title">🔮 Previsão de Rutura</div><div style="font-size:11.5px;color:var(--text-light)">Baseado em consumo histórico</div></div>
-      <div>${forecasts.length === 0 ? '<div class="empty">Sem dados suficientes (mínimo 3 movimentos)</div>' : forecasts.slice(0,10).map(f => {
-        const cls = f.days <= 3 ? 'danger' : f.days <= 10 ? 'warn' : '';
-        return `<div class="forecast-card ${cls}">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:11px">
-            <div style="flex:1"><strong>${f.product.name}</strong>
-              <div style="font-size:11.5px;color:var(--text-soft);margin-top:3px">📍 ${f.product.location} · Stock: ${f.product.stock} · Média: <strong>${f.daily.toFixed(1)}/dia</strong></div></div>
-            <div style="text-align:right">
-              <div style="font-size:10px;color:var(--text-soft);text-transform:uppercase;font-weight:600">Acaba em</div>
-              <strong style="font-size:22px;color:var(--blue)">${f.days}d</strong>
-            </div>
-          </div>
-        </div>`;
-      }).join('')}</div>
-    </div>
-  `;
-
-  // Renderizar gráficos
-  setTimeout(() => {
-    // Gráfico de tendência
-    const trendCanvas = document.getElementById('trendChart');
-    if (trendCanvas && days.some(d => d.out > 0 || d.in > 0)) {
-      drawTrendChart(trendCanvas, days);
-    }
-    // Gráfico de categorias
-    const catCanvas = document.getElementById('catChart');
-    if (catCanvas && Object.keys(byCat).length > 0) {
-      drawCategoryChart(catCanvas, byCat);
-    }
-  }, 50);
+const products = state.cache.products.filter(p => p.active);
+const days = [];
+for (let i = 29; i >= 0; i--) {
+const d = new Date(); d.setDate(d.getDate() - i);
+days.push({ date: d.toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit'}), out: 0, in: 0 });
+}
+state.cache.movements.forEach(m => {
+const ts = new Date(m.timestamp).getTime();
+const idx = 29 - Math.floor((Date.now() - ts) / 86400000);
+if (idx >= 0 && idx < 30) {
+if (m.type === 'out') days[idx].out += m.quantity;
+else if (m.type === 'in') days[idx].in += m.quantity;
+}
+});
+const byCat = {};
+products.forEach(p => { const cat = p.category || 'Sem'; byCat[cat] = (byCat[cat]||0) + p.stock; });
+const forecasts = products.map(p => ({ product: p, days: getDaysUntilEmpty(p), daily: getDailyAverage(p) })).filter(f => f.days !== null).sort((a,b) => a.days - b.days);
+const invValue = getInventoryValue(products);
+const topUsed = [...products].sort((a,b)=>getProductUsage(b.id)-getProductUsage(a.id)).slice(0,5).filter(p=>getProductUsage(p.id)>0);
+c.innerHTML = `
+<div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+<div class="kpi-card" style="--kpi-color:var(--blue);--kpi-bg:var(--blue-bg)"><div class="kpi-icon">💶</div><div class="kpi-info"><div class="kpi-value">${formatCurrency(invValue)}</div><div class="kpi-label">Valor total em stock</div></div></div>
+<div class="kpi-card" style="--kpi-color:var(--purple);--kpi-bg:var(--purple-bg)"><div class="kpi-icon">🏆</div><div class="kpi-info"><div class="kpi-value">${topUsed[0]?topUsed[0].name.slice(0,16):'—'}</div><div class="kpi-label">Produto mais usado</div></div></div>
+<div class="kpi-card" style="--kpi-color:var(--orange);--kpi-bg:var(--orange-bg)"><div class="kpi-icon">⏳</div><div class="kpi-info"><div class="kpi-value">${forecasts[0]?forecasts[0].days+'d':'—'}</div><div class="kpi-label">Próxima rutura prevista</div></div></div>
+</div>
+<div class="analytics-grid">
+<div class="card"><div class="card-header"><div class="card-title">📊 Tendência 30 dias</div></div><div class="chart-container"><canvas id="trendChart"></canvas></div></div>
+<div class="card"><div class="card-header"><div class="card-title">📦 Stock por Categoria</div></div><div class="chart-container"><canvas id="catChart"></canvas></div></div>
+</div>
+<div class="card" style="margin-top:14px"><div class="card-header"><div class="card-title">🔮 Previsão de Rutura</div><span style="font-size:11px;color:var(--text-light)">Calculado a partir do consumo recente</span></div>
+<div>${forecasts.length === 0 ? '<div class="empty"><div class="empty-icon">📈</div><div class="empty-title">Ainda sem dados suficientes</div><div class="empty-desc">Assim que houver mais movimentos de saída, aparecem aqui previsões automáticas.</div></div>' : forecasts.slice(0,10).map(f => {
+const cls = f.days <= 3 ? 'danger' : f.days <= 10 ? 'warn' : '';
+return `<div class="forecast-card ${cls}"><div style="display:flex;justify-content:space-between;align-items:center;gap:11px"><div style="flex:1"><strong>${f.product.name}</strong><div style="font-size:11.5px;color:var(--text-soft);margin-top:3px">📍 ${f.product.location} · Stock: ${f.product.stock} · ${f.daily.toFixed(1)}/dia</div></div><div style="text-align:right"><div style="font-size:10px;color:var(--text-soft);text-transform:uppercase">Acaba em</div><strong style="font-size:22px;color:var(--blue)">${f.days}d</strong></div></div></div>`;
+}).join('')}</div>
+</div>
+`;
+setTimeout(() => {
+const tc = document.getElementById('trendChart');
+if (tc && days.some(d => d.out > 0 || d.in > 0)) drawTrendChart(tc, days);
+const cc = document.getElementById('catChart');
+if (cc && Object.keys(byCat).length > 0) drawCategoryChart(cc, byCat);
+}, 50);
 }
 
 function drawTrendChart(canvas, days) {
-  const ctx = canvas.getContext('2d');
-  const w = canvas.width = canvas.parentElement.clientWidth;
-  const h = canvas.height = 240;
-  const padding = { top: 20, right: 20, bottom: 35, left: 40 };
-  const cw = w - padding.left - padding.right;
-  const ch = h - padding.top - padding.bottom;
-  const max = Math.max(...days.map(d => Math.max(d.in, d.out)), 10);
-  ctx.clearRect(0,0,w,h);
-  // Grid
-  ctx.strokeStyle = '#f1f5f9'; ctx.lineWidth = 1;
-  for (let i = 0; i <= 4; i++) {
-    const y = padding.top + (ch/4)*i;
-    ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(w-padding.right, y); ctx.stroke();
-    ctx.fillStyle = '#94a3b8'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
-    ctx.fillText(Math.round(max - (max/4)*i), padding.left-6, y+3);
-  }
-  // Linhas
-  const drawLine = (data, color) => {
-    ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.beginPath();
-    data.forEach((v, i) => {
-      const x = padding.left + (cw/(data.length-1))*i;
-      const y = padding.top + ch - (v/max)*ch;
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-    });
-    ctx.stroke();
-    // Pontos
-    ctx.fillStyle = color;
-    data.forEach((v, i) => {
-      const x = padding.left + (cw/(data.length-1))*i;
-      const y = padding.top + ch - (v/max)*ch;
-      ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI*2); ctx.fill();
-    });
-  };
-  drawLine(days.map(d => d.out), '#f97316');
-  drawLine(days.map(d => d.in), '#10b981');
-  // Legenda
-  ctx.font = 'bold 11px sans-serif';
-  ctx.fillStyle = '#f97316'; ctx.fillText('— Saídas', padding.left, padding.top-6);
-  ctx.fillStyle = '#10b981'; ctx.fillText('— Entradas', padding.left+80, padding.top-6);
-  // Labels eixo X
-  ctx.fillStyle = '#94a3b8'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
-  [0, 10, 20, 29].forEach(i => {
-    const x = padding.left + (cw/29)*i;
-    ctx.fillText(days[i].date, x, h-5);
-  });
+const ctx = canvas.getContext('2d');
+const w = canvas.width = canvas.parentElement.clientWidth;
+const h = canvas.height = 240;
+const padding = { top: 20, right: 20, bottom: 35, left: 40 };
+const cw = w - padding.left - padding.right, ch = h - padding.top - padding.bottom;
+const max = Math.max(...days.map(d => Math.max(d.in, d.out)), 10);
+ctx.clearRect(0,0,w,h);
+ctx.strokeStyle = '#f1f5f9'; ctx.lineWidth = 1;
+for (let i = 0; i <= 4; i++) {
+const y = padding.top + (ch/4)*i;
+ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(w-padding.right, y); ctx.stroke();
+ctx.fillStyle = '#94a3b8'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+ctx.fillText(Math.round(max - (max/4)*i), padding.left-6, y+3);
+}
+const drawLine = (data, color) => {
+ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.beginPath();
+data.forEach((v, i) => {
+const x = padding.left + (cw/(data.length-1))*i;
+const y = padding.top + ch - (v/max)*ch;
+i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+});
+ctx.stroke();
+ctx.fillStyle = color;
+data.forEach((v, i) => {
+const x = padding.left + (cw/(data.length-1))*i;
+const y = padding.top + ch - (v/max)*ch;
+ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI*2); ctx.fill();
+});
+};
+drawLine(days.map(d => d.out), '#f97316');
+drawLine(days.map(d => d.in), '#10b981');
+ctx.font = 'bold 11px sans-serif';
+ctx.fillStyle = '#f97316'; ctx.fillText('— Saídas', padding.left, padding.top-6);
+ctx.fillStyle = '#10b981'; ctx.fillText('— Entradas', padding.left+80, padding.top-6);
 }
 
 function drawCategoryChart(canvas, data) {
-  const ctx = canvas.getContext('2d');
-  const w = canvas.width = canvas.parentElement.clientWidth;
-  const h = canvas.height = 240;
-  const labels = Object.keys(data);
-  const values = Object.values(data);
-  const colors = ['#0ea5e9','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6','#f97316','#6366f1'];
-  const max = Math.max(...values, 1);
-  ctx.clearRect(0,0,w,h);
-  const barW = (w - 40) / labels.length * 0.7;
-  const gap = (w - 40) / labels.length * 0.3;
-  labels.forEach((label, i) => {
-    const x = 20 + (i * (barW + gap)) + gap/2;
-    const barH = (values[i]/max) * (h - 60);
-    const y = h - 30 - barH;
-    ctx.fillStyle = colors[i % colors.length];
-    ctx.beginPath();
-    const r = 6;
-    ctx.moveTo(x+r, y);
-    ctx.arcTo(x+barW, y, x+barW, y+r, r);
-    ctx.arcTo(x+barW, y+barH, x+barW-r, y+barH, r);
-    ctx.arcTo(x, y+barH, x, y+barH-r, r);
-    ctx.arcTo(x, y, x+r, y, r);
-    ctx.closePath(); ctx.fill();
-    // Valor
-    ctx.fillStyle = '#0f172a'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(values[i], x+barW/2, y-4);
-    // Label
-    ctx.fillStyle = '#475569'; ctx.font = '10px sans-serif';
-    const shortLabel = label.length > 10 ? label.slice(0,9)+'…' : label;
-    ctx.fillText(shortLabel, x+barW/2, h-12);
-  });
+const ctx = canvas.getContext('2d');
+const w = canvas.width = canvas.parentElement.clientWidth;
+const h = canvas.height = 240;
+const labels = Object.keys(data), values = Object.values(data);
+const colors = ['#0ea5e9','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6','#f97316','#6366f1'];
+const max = Math.max(...values, 1);
+ctx.clearRect(0,0,w,h);
+const barW = (w - 40) / labels.length * 0.7;
+const gap = (w - 40) / labels.length * 0.3;
+labels.forEach((label, i) => {
+const x = 20 + (i * (barW + gap)) + gap/2;
+const barH = (values[i]/max) * (h - 60), y = h - 30 - barH;
+ctx.fillStyle = colors[i % colors.length];
+ctx.beginPath();
+const r = 6;
+ctx.moveTo(x+r, y);
+ctx.arcTo(x+barW, y, x+barW, y+r, r);
+ctx.arcTo(x+barW, y+barH, x+barW-r, y+barH, r);
+ctx.arcTo(x, y+barH, x, y+barH-r, r);
+ctx.arcTo(x, y, x+r, y, r);
+ctx.closePath(); ctx.fill();
+ctx.fillStyle = '#0f172a'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+ctx.fillText(values[i], x+barW/2, y-4);
+ctx.fillStyle = '#475569'; ctx.font = '10px sans-serif';
+const shortLabel = label.length > 10 ? label.slice(0,9)+'…' : label;
+ctx.fillText(shortLabel, x+barW/2, h-12);
+});
 }
 
 function renderProductsAdminPage(c) {
-  if (!isAdmin()) { c.innerHTML = '<div class="empty">🔒</div>'; return; }
-  c.innerHTML = `<div class="products-header"><div class="search-box"><input id="adminSearch" type="text" placeholder="🔍..." oninput="renderAdminProducts(this.value)" /></div><button class="btn btn-primary" onclick="openProductModal()">➕ Novo</button></div><div class="products-admin-grid" id="adminGrid"></div>`;
-  renderAdminProducts('');
+if (!isAdmin()) { c.innerHTML = '<div class="empty">🔒 Apenas administradores</div>'; return; }
+c.innerHTML = `<div class="products-header"><div class="search-box" style="flex:1"><input id="adminSearch" type="text" placeholder="🔍 Pesquisar..." oninput="renderAdminProducts(this.value)" /></div><button class="btn btn-secondary" onclick="exportProductsCSV()">⬇️ CSV</button><button class="btn btn-primary" onclick="openProductModal()">➕ Novo Produto</button></div><div class="products-admin-grid" id="adminGrid"></div>`;
+renderAdminProducts('');
 }
 window.renderAdminProducts = (search = '') => {
-  const grid = document.getElementById('adminGrid');
-  if (!grid) return;
-  let products = state.cache.products.filter(p => p.active);
-  if (search) { const s = search.toLowerCase(); products = products.filter(p => p.name.toLowerCase().includes(s) || (p.ref||'').toLowerCase().includes(s)); }
-  grid.innerHTML = products.length === 0 ? '<div class="empty" style="grid-column:1/-1">Sem produtos</div>' :
-    products.map(p => `<div class="admin-product-card"><div class="apc-header"><div><div class="apc-name">${p.name}</div><div style="font-size:10.5px;color:var(--text-light);font-family:monospace">${p.ref||''}</div></div><span class="stock-badge ${getStockStatus(p).color}">${p.stock}</span></div><div class="apc-body"><div class="apc-row"><span>📍</span><strong>${p.location}</strong></div><div class="apc-row"><span>🏷️</span><strong>${p.category||'—'}</strong></div><div class="apc-row"><span>🏭</span><strong>${p.supplier||'—'}</strong></div></div><div class="apc-actions"><button class="btn btn-sm btn-secondary" onclick="openProductModal(${p.id})">✏️</button><button class="btn btn-sm btn-danger" onclick="forceDeleteProduct(${p.id})">🗑️</button></div></div>`).join('');
+const grid = document.getElementById('adminGrid');
+if (!grid) return;
+let products = state.cache.products.filter(p => p.active);
+if (search) { const s = search.toLowerCase(); products = products.filter(p => p.name.toLowerCase().includes(s) || (p.ref||'').toLowerCase().includes(s)); }
+if (products.length === 0) { grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📦</div><div class="empty-title">${search ? 'Nenhum produto encontrado' : 'Ainda não há produtos'}</div><div class="empty-desc">${search ? 'Tente outro termo de pesquisa.' : 'Comece por adicionar o primeiro produto ao inventário.'}</div>${!search ? '<button class="btn btn-primary" onclick="openProductModal()">➕ Adicionar Produto</button>' : ''}</div>`; return; }
+grid.innerHTML = products.map(p => `<div class="admin-product-card"><div class="apc-header"><div><div class="apc-name">${p.name}</div><div style="font-size:10.5px;color:var(--text-light);font-family:monospace">${p.ref||''}</div></div><span class="stock-badge ${getStockStatus(p).color}">${p.stock}</span></div><div class="apc-body"><div class="apc-row"><span>📍 Local</span><strong>${p.location}</strong></div><div class="apc-row"><span>🏷️ Categoria</span><strong>${p.category||'—'}</strong></div><div class="apc-row"><span>🏭 Fornecedor</span><strong>${p.supplier||'—'}</strong></div><div class="apc-row"><span>💶 Valor em stock</span><strong>${formatCurrency((p.stock||0)*(p.price||0))}</strong></div></div><div class="apc-actions"><button class="btn btn-sm btn-secondary" onclick="openProductModal(${p.id})">✏️ Editar</button><button class="btn btn-sm btn-danger" onclick="forceDeleteProduct(${p.id})">🗑️ Apagar</button></div></div>`).join('');
 };
-window.forceDeleteProduct = async (id) => {
-  const p = state.cache.products.find(x => x.id === id);
-  if (!p) return;
-  if (!confirm(`Apagar "${p.name}"? Stock e histórico serão perdidos.`)) return;
-  await state.sb.from('products').delete().eq('id', id);
-  await state.sb.from('movements').delete().eq('product_id', id);
-  await addLog('PRODUCT_DELETE', p.name);
-  toast('Apagado', 'success');
-  await refreshTable('products', 'products');
-  await refreshTable('movements', 'movements');
+window.forceDeleteProduct = (id) => {
+const p = state.cache.products.find(x => x.id === id);
+if (!p) return;
+confirmAction(`Tem a certeza que quer apagar "${p.name}"? O stock e todo o histórico de movimentos deste produto serão perdidos para sempre. Esta ação não pode ser desfeita.`, 'Apagar produto', async () => {
+await state.sb.from('products').delete().eq('id', id);
+await state.sb.from('movements').delete().eq('product_id', id);
+await addLog('PRODUCT_DELETE', p.name);
+closeModal();
+toast('Produto apagado', 'success');
+await Promise.all([refreshTable('products', 'products'), refreshTable('movements', 'movements')]);
+});
 };
 
 function renderCategoriesPage(c) {
-  if (!isAdmin()) { c.innerHTML = '<div class="empty">🔒</div>'; return; }
-  c.innerHTML = `<div class="card"><div class="card-header"><div class="card-title">🏷️ Categorias</div><div style="font-size:11.5px;color:var(--text-light)">${state.cache.categories.length}</div></div><div class="list-manager">${state.cache.categories.map(c => `<div class="list-item"><div class="li-name">🏷️ ${c.name}</div><div class="li-actions"><button class="li-btn" onclick="renameCategory(${c.id},'${c.name.replace(/'/g, "\\'")}')">✏️</button><button class="li-btn del" onclick="deleteCategory(${c.id})">🗑️</button></div></div>`).join('')}</div><div class="add-row"><input id="newCat" placeholder="Nova categoria..." /><button onclick="addCategory()">➕</button></div></div>`;
+if (!isAdmin()) { c.innerHTML = '<div class="empty">🔒 Apenas administradores</div>'; return; }
+c.innerHTML = `<div class="card"><div class="card-header"><div class="card-title">🏷️ Categorias</div><div style="font-size:11.5px;color:var(--text-light)">${state.cache.categories.length}</div></div><div class="list-manager">${state.cache.categories.length===0?'<div class="empty">Sem categorias. Adicione uma abaixo.</div>':state.cache.categories.map(c => `<div class="list-item"><div class="li-name">🏷️ ${c.name}</div><div class="li-actions"><button class="li-btn" onclick="renameCategory(${c.id},'${c.name.replace(/'/g, "\\'")}')">✏️</button><button class="li-btn del" onclick="deleteCategory(${c.id})">🗑️</button></div></div>`).join('')}</div><div class="add-row"><input id="newCat" placeholder="Nova categoria..." onkeydown="if(event.key==='Enter')addCategory()" /><button onclick="addCategory()">➕ Adicionar</button></div></div>`;
 }
 window.addCategory = async () => {
-  const name = document.getElementById('newCat').value.trim();
-  if (!name) return;
-  await state.sb.from('categories').insert({ name });
-  document.getElementById('newCat').value = '';
-  await refreshTable('categories', 'categories');
-  toast('Adicionada', 'success');
+const name = document.getElementById('newCat').value.trim();
+if (!name) { toast('Escreva um nome para a categoria', 'error'); return; }
+await state.sb.from('categories').insert({ name });
+document.getElementById('newCat').value = '';
+await refreshTable('categories', 'categories');
+toast('Categoria adicionada', 'success');
 };
-window.renameCategory = async (id, old) => {
-  const newName = prompt('Novo nome:', old);
-  if (!newName || newName === old) return;
-  await state.sb.from('categories').update({ name: newName }).eq('id', id);
-  await state.sb.from('products').update({ category: newName }).eq('category', old);
-  await refreshTable('categories', 'categories');
-  await refreshTable('products', 'products');
-  toast('Renomeada', 'success');
+window.renameCategory = (id, old) => {
+promptAction('Renomear categoria', 'Novo nome', old, async (newName) => {
+if (!newName || newName === old) return;
+await state.sb.from('categories').update({ name: newName }).eq('id', id);
+await state.sb.from('products').update({ category: newName }).eq('category', old);
+await refreshTable('categories', 'categories');
+await refreshTable('products', 'products');
+toast('Categoria renomeada', 'success');
+});
 };
-window.deleteCategory = async (id) => {
-  if (!confirm('Apagar esta categoria?')) return;
-  await state.sb.from('categories').delete().eq('id', id);
-  await refreshTable('categories', 'categories');
-  toast('Apagada', 'success');
+window.deleteCategory = (id) => {
+confirmAction('Tem a certeza que quer apagar esta categoria? Os produtos já criados mantêm o nome antigo.', 'Apagar categoria', async () => {
+await state.sb.from('categories').delete().eq('id', id);
+closeModal();
+await refreshTable('categories', 'categories');
+toast('Categoria apagada', 'success');
+});
 };
 
 function renderSuppliersPage(c) {
-  if (!isAdmin()) { c.innerHTML = '<div class="empty">🔒</div>'; return; }
-  c.innerHTML = `<div class="card"><div class="card-header"><div class="card-title">🏭 Fornecedores</div><div style="font-size:11.5px;color:var(--text-light)">${state.cache.suppliers.length}</div></div><div class="list-manager">${state.cache.suppliers.map(s => `<div class="list-item"><div class="li-name">🏭 ${s.name}</div><div class="li-actions"><button class="li-btn" onclick="renameSupplier(${s.id},'${s.name.replace(/'/g, "\\'")}')">✏️</button><button class="li-btn del" onclick="deleteSupplier(${s.id})">🗑️</button></div></div>`).join('')}</div><div class="add-row"><input id="newSup" placeholder="Novo fornecedor..." /><button onclick="addSupplier()">➕</button></div></div>`;
+if (!isAdmin()) { c.innerHTML = '<div class="empty">🔒 Apenas administradores</div>'; return; }
+c.innerHTML = `<div class="card"><div class="card-header"><div class="card-title">🏭 Fornecedores</div><div style="font-size:11.5px;color:var(--text-light)">${state.cache.suppliers.length}</div></div><div class="list-manager">${state.cache.suppliers.length===0?'<div class="empty">Sem fornecedores. Adicione um abaixo.</div>':state.cache.suppliers.map(s => `<div class="list-item"><div class="li-name">🏭 ${s.name}</div><div class="li-actions"><button class="li-btn" onclick="renameSupplier(${s.id},'${s.name.replace(/'/g, "\\'")}')">✏️</button><button class="li-btn del" onclick="deleteSupplier(${s.id})">🗑️</button></div></div>`).join('')}</div><div class="add-row"><input id="newSup" placeholder="Novo fornecedor..." onkeydown="if(event.key==='Enter')addSupplier()" /><button onclick="addSupplier()">➕ Adicionar</button></div></div>`;
 }
 window.addSupplier = async () => {
-  const name = document.getElementById('newSup').value.trim();
-  if (!name) return;
-  await state.sb.from('suppliers').insert({ name });
-  document.getElementById('newSup').value = '';
-  await refreshTable('suppliers', 'suppliers');
-  toast('Adicionado', 'success');
+const name = document.getElementById('newSup').value.trim();
+if (!name) { toast('Escreva um nome para o fornecedor', 'error'); return; }
+await state.sb.from('suppliers').insert({ name });
+document.getElementById('newSup').value = '';
+await refreshTable('suppliers', 'suppliers');
+toast('Fornecedor adicionado', 'success');
 };
-window.renameSupplier = async (id, old) => {
-  const newName = prompt('Novo nome:', old);
-  if (!newName || newName === old) return;
-  await state.sb.from('suppliers').update({ name: newName }).eq('id', id);
-  await state.sb.from('products').update({ supplier: newName }).eq('supplier', old);
-  await refreshTable('suppliers', 'suppliers');
-  await refreshTable('products', 'products');
-  toast('Renomeado', 'success');
+window.renameSupplier = (id, old) => {
+promptAction('Renomear fornecedor', 'Novo nome', old, async (newName) => {
+if (!newName || newName === old) return;
+await state.sb.from('suppliers').update({ name: newName }).eq('id', id);
+await state.sb.from('products').update({ supplier: newName }).eq('supplier', old);
+await refreshTable('suppliers', 'suppliers');
+await refreshTable('products', 'products');
+toast('Fornecedor renomeado', 'success');
+});
 };
-window.deleteSupplier = async (id) => {
-  if (!confirm('Apagar este fornecedor?')) return;
-  await state.sb.from('suppliers').delete().eq('id', id);
-  await refreshTable('suppliers', 'suppliers');
-  toast('Apagado', 'success');
+window.deleteSupplier = (id) => {
+confirmAction('Tem a certeza que quer apagar este fornecedor?', 'Apagar fornecedor', async () => {
+await state.sb.from('suppliers').delete().eq('id', id);
+closeModal();
+await refreshTable('suppliers', 'suppliers');
+toast('Fornecedor apagado', 'success');
+});
+};
+
+// ===== UTILIZADORES (nova página de administração) =====
+function renderUsersPage(c) {
+if (!isAdmin()) { c.innerHTML = '<div class="empty">🔒 Apenas administradores</div>'; return; }
+const users = [...state.cache.users].sort((a,b) => (b.active - a.active) || a.name.localeCompare(b.name));
+c.innerHTML = `<div class="products-header"><div style="flex:1;font-size:12.5px;color:var(--text-soft)">Crie uma conta para cada colaborador e defina um PIN de acesso. Só administradores podem gerir esta página.</div><button class="btn btn-primary" onclick="openUserModal()">➕ Novo Utilizador</button></div>
+<div class="user-manage-grid">
+${users.map(u => `<div class="user-manage-card ${u.active?'':'inactive'}">
+<div class="umc-top"><div class="umc-avatar">${initials(u.name)}</div><div><div class="umc-name">${u.name}</div><span class="role-tag ${u.role}">${u.role==='admin'?'🛡️ Administrador':'👤 Utilizador'}</span> ${!u.active?'<span class="role-tag" style="background:var(--red-bg);color:var(--red)">Inativo</span>':''}</div></div>
+<div class="umc-actions">
+<button class="btn btn-sm btn-secondary" onclick="openUserModal(${u.id})">✏️ Editar</button>
+<button class="btn btn-sm btn-secondary" onclick="resetUserPin(${u.id})">🔑 Repor PIN</button>
+</div>
+<div class="umc-actions">
+${u.id===state.currentUser.id ? '<span style="font-size:11px;color:var(--text-light);padding:6px 0">Esta é a sua conta</span>' : `<button class="btn btn-sm ${u.active?'btn-danger':'btn-success'}" style="width:100%" onclick="toggleUserActive(${u.id})">${u.active?'🚫 Desativar':'✅ Reativar'}</button>`}
+</div>
+</div>`).join('')}
+</div>`;
+}
+window.openUserModal = (id = null) => {
+const u = id ? state.cache.users.find(x => x.id === id) : null;
+openModal(u ? '✏️ Editar Utilizador' : '➕ Novo Utilizador', `
+<div class="field full" style="margin-bottom:13px"><label>Nome completo <span class="req">*</span></label><input id="u_name" value="${u?.name||''}" placeholder="Ex: Maria Silva" /></div>
+<div class="field full" style="margin-bottom:13px"><label>Função</label><select id="u_role"><option value="user" ${u?.role==='user'?'selected':''}>👤 Utilizador (acesso normal)</option><option value="admin" ${u?.role==='admin'?'selected':''}>🛡️ Administrador (acesso total)</option></select></div>
+${!u ? `<div class="field full"><label>PIN inicial (4-8 números) <span class="req">*</span></label><input id="u_pin" type="password" maxlength="8" placeholder="Ex: 1234" /><span class="hint">O colaborador pode alterar o PIN depois, em "Alterar PIN".</span></div>` : ''}
+`, async () => {
+const name = document.getElementById('u_name').value.trim();
+const role = document.getElementById('u_role').value;
+if (!name) { toast('Escreva o nome do utilizador', 'error'); return; }
+if (u) {
+await state.sb.from('users').update({ name, role }).eq('id', u.id);
+await addLog('USER_EDIT', name);
+toast('Utilizador atualizado', 'success');
+} else {
+const pin = document.getElementById('u_pin').value;
+if (!/^\d{4,8}$/.test(pin)) { toast('O PIN tem de ter entre 4 e 8 números', 'error'); return; }
+await state.sb.from('users').insert({ name, role, pin, active: true });
+await addLog('USER_CREATE', name);
+toast('Utilizador criado', 'success');
+}
+closeModal();
+await refreshTable('users', 'users');
+if (id === state.currentUser?.id) updateUserCard();
+});
+};
+window.toggleUserActive = (id) => {
+const u = state.cache.users.find(x => x.id === id);
+if (!u) return;
+const action = u.active ? 'desativar' : 'reativar';
+confirmAction(`Tem a certeza que quer ${action} "${u.name}"? ${u.active ? 'Deixará de conseguir entrar na aplicação.' : 'Voltará a conseguir entrar na aplicação.'}`, u.active ? 'Desativar utilizador' : 'Reativar utilizador', async () => {
+await state.sb.from('users').update({ active: !u.active }).eq('id', id);
+await addLog(u.active ? 'USER_DEACTIVATE' : 'USER_ACTIVATE', u.name);
+closeModal();
+toast(u.active ? 'Utilizador desativado' : 'Utilizador reativado', 'success');
+await refreshTable('users', 'users');
+});
+};
+window.resetUserPin = (id) => {
+const u = state.cache.users.find(x => x.id === id);
+if (!u) return;
+openModal('🔑 Repor PIN de ' + u.name, `<div class="field full"><label>Novo PIN (4-8 números) <span class="req">*</span></label><input id="rp_pin" type="password" maxlength="8" placeholder="Ex: 1234" autofocus /><span class="hint">Informe o colaborador do novo PIN. Ele pode alterá-lo depois em "Alterar PIN".</span></div>`, async () => {
+const pin = document.getElementById('rp_pin').value;
+if (!/^\d{4,8}$/.test(pin)) { toast('O PIN tem de ter entre 4 e 8 números', 'error'); return; }
+await state.sb.from('users').update({ pin }).eq('id', id);
+await addLog('PIN_RESET', 'PIN reposto para ' + u.name);
+closeModal();
+toast('PIN reposto com sucesso', 'success');
+await refreshTable('users', 'users');
+}, '🔑 Repor PIN');
 };
 
 window.openProductDetail = (id) => {
-  const p = state.cache.products.find(x => x.id === id);
-  if (!p) return;
-  const status = getStockStatus(p);
-  const movements = state.cache.movements.filter(m => m.product_id === id).sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 8);
-  openModal('📦 Detalhes', `<div class="detail-card"><div class="detail-header"><div class="detail-icon">${getProductIcon(p)}</div><div class="detail-info"><div class="detail-name">${p.name}</div><div class="detail-ref">${p.ref || '—'}</div></div></div><div class="detail-rows"><div class="detail-row"><div class="dr-label">Stock</div><div class="dr-value">${p.stock} ${p.unit||'un'}</div></div><div class="detail-row"><div class="dr-label">Mínimo</div><div class="dr-value">${p.min_stock}</div></div><div class="detail-row"><div class="dr-label">Localização</div><div class="dr-value">📍 ${p.location}</div></div><div class="detail-row"><div class="dr-label">Categoria</div><div class="dr-value">🏷️ ${p.category||'—'}</div></div></div></div><div class="card"><div class="card-header"><div class="card-title">🔄 Movimentos</div></div><div class="movement-list">${movements.map(m => renderMovementItem(m)).join('') || '<div class="empty">Sem movimentos</div>'}</div></div>`, null, 'Fechar');
+const p = state.cache.products.find(x => x.id === id);
+if (!p) return;
+const status = getStockStatus(p);
+const movements = state.cache.movements.filter(m => m.product_id === id).sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 8);
+const usage = getProductUsage(id);
+openModal('📦 Detalhes', `<div class="detail-card"><div class="detail-header"><div class="detail-icon">${getProductIcon(p)}</div><div class="detail-info"><div class="detail-name">${p.name}</div><div class="detail-ref">${p.ref || '—'}</div></div></div><div class="detail-rows"><div class="detail-row"><div class="dr-label">Stock</div><div class="dr-value">${p.stock} ${p.unit||'un'}</div></div><div class="detail-row"><div class="dr-label">Mínimo</div><div class="dr-value">${p.min_stock}</div></div><div class="detail-row"><div class="dr-label">Localização</div><div class="dr-value">📍 ${p.location}</div></div><div class="detail-row"><div class="dr-label">Categoria</div><div class="dr-value">🏷️ ${p.category||'—'}</div></div><div class="detail-row"><div class="dr-label">Total saídas</div><div class="dr-value">📊 ${usage}</div></div><div class="detail-row"><div class="dr-label">Valor em stock</div><div class="dr-value">💶 ${formatCurrency((p.stock||0)*(p.price||0))}</div></div></div></div><div class="card"><div class="card-header"><div class="card-title">🔄 Movimentos</div></div><div class="movement-list">${movements.map(m => renderMovementItem(m)).join('') || '<div class="empty">Sem movimentos ainda</div>'}</div></div>`, null, 'Fechar');
 };
 
 window.quickIn = (id) => {
-  const p = state.cache.products.find(x => x.id === id);
-  if (!p) return;
-  openModal('➕ Entrada', `<div class="field full"><label>Quantidade <span class="req">*</span></label><input type="number" id="qi_qty" class="qty-input" value="1" min="1" autofocus /></div><div class="field full"><label>Destino</label><select id="qi_to">${LOCATIONS.map(l => `<option ${l === p.location ? 'selected':''}>${l}</option>`).join('')}</select></div><div class="field full"><label>Motivo</label><select id="qi_reason">${REASONS.map(r => `<option ${r==='Reposição'?'selected':''}>${r}</option>`).join('')}</select></div>`, async () => {
-    const qty = parseInt(document.getElementById('qi_qty').value) || 0;
-    if (qty <= 0) return;
-    const to = document.getElementById('qi_to').value;
-    await state.sb.from('products').update({ stock: p.stock + qty, location: to }).eq('id', id);
-    await state.sb.from('movements').insert({ product_id: id, product_name: p.name, type: 'in', quantity: qty, from_location: null, to_location: to, reason: document.getElementById('qi_reason').value, user_name: state.currentUser.name });
-    await addLog('QUICK_IN', `+${qty} ${p.name}`);
-    closeModal(); toast('✅', 'success');
-    await Promise.all([refreshTable('products', 'products'), refreshTable('movements', 'movements')]);
-    playAlertSound(false);
-  }, '✅');
+const p = state.cache.products.find(x => x.id === id);
+if (!p) return;
+openModal('➕ Entrada de Stock', `<div class="field full"><label>Quantidade <span class="req">*</span></label><input type="number" id="qi_qty" class="qty-input" value="1" min="1" autofocus /></div><div class="field full"><label>Destino</label><select id="qi_to">${LOCATIONS.map(l => `<option ${l === p.location ? 'selected':''}>${l}</option>`).join('')}</select></div><div class="field full"><label>Motivo</label><select id="qi_reason">${REASONS.map(r => `<option ${r==='Reposição'?'selected':''}>${r}</option>`).join('')}</select></div>`, async () => {
+const qty = parseInt(document.getElementById('qi_qty').value) || 0;
+if (qty <= 0) { toast('Indique uma quantidade válida', 'error'); return; }
+const to = document.getElementById('qi_to').value;
+await state.sb.from('products').update({ stock: p.stock + qty, location: to }).eq('id', id);
+await state.sb.from('movements').insert({ product_id: id, product_name: p.name, type: 'in', quantity: qty, from_location: null, to_location: to, reason: document.getElementById('qi_reason').value, user_name: state.currentUser.name });
+await addLog('QUICK_IN', `+${qty} ${p.name}`);
+closeModal(); toast(`✅ Entrada registada: +${qty} ${p.name}`, 'success');
+await Promise.all([refreshTable('products', 'products'), refreshTable('movements', 'movements')]);
+playAlertSound(false);
+}, '✅ Confirmar entrada');
 };
 
 window.quickOut = (id) => {
-  const p = state.cache.products.find(x => x.id === id);
-  if (!p) return;
-  const willBeLow = (p.stock - 1) <= 0;
-  openModal('➖ Saída', `<div class="field full"><label>Quantidade <span class="req">*</span></label><input type="number" id="qo_qty" class="qty-input" value="1" min="1" max="${p.stock}" autofocus /></div><div class="field"><label>De</label><input value="${p.location}" disabled /></div><div class="field"><label>Motivo</label><select id="qo_reason">${REASONS.map(r => `<option ${r==='Uso clínico'?'selected':''}>${r}</option>`).join('')}</select></div>${willBeLow ? '<div style="background:var(--red-bg);color:var(--red);padding:10px;border-radius:9px;margin-top:10px;font-size:12.5px;font-weight:600">⚠️ ATENÇÃO: Esta saída deixa o produto em rutura!</div>' : ''}`, async () => {
-    const qty = parseInt(document.getElementById('qo_qty').value) || 0;
-    if (qty <= 0 || qty > p.stock) return;
-    const newStock = p.stock - qty;
-    await state.sb.from('products').update({ stock: newStock }).eq('id', id);
-    await state.sb.from('movements').insert({ product_id: id, product_name: p.name, type: 'out', quantity: qty, from_location: p.location, to_location: null, reason: document.getElementById('qo_reason').value, user_name: state.currentUser.name });
-    await addLog('QUICK_OUT', `−${qty} ${p.name}`);
-    closeModal(); toast('➖', 'warning');
-    
-    // Som crítico se ficar em rutura
-    if (newStock <= 0) {
-      setTimeout(() => playAlertSound(true), 300);
-    } else if (newStock < p.min_stock) {
-      setTimeout(() => playAlertSound(false), 300);
-    }
-    
-    await Promise.all([refreshTable('products', 'products'), refreshTable('movements', 'movements')]);
-  }, '➖');
+const p = state.cache.products.find(x => x.id === id);
+if (!p) return;
+const willBeLow = (p.stock - 1) <= 0;
+const anomaly = checkAnomalousUsage(id, 1);
+const anomalyWarning = anomaly ? `<div style="background:#ede9fe;color:#7c3aed;padding:12px;border-radius:9px;margin-top:10px;font-size:12px;font-weight:600">⚠️ ATENÇÃO — Variação anómala: normalmente saem ${anomaly.avgUsage} un. de cada vez. Tem a certeza?</div>` : '';
+openModal('➖ Saída de Stock', `<div class="field full"><label>Quantidade <span class="req">*</span></label><input type="number" id="qo_qty" class="qty-input" value="1" min="1" max="${p.stock}" autofocus onchange="updateAnomalyWarning(${id}, this.value)" /></div><div class="field"><label>De</label><input value="${p.location}" disabled /></div><div class="field"><label>Motivo</label><select id="qo_reason">${REASONS.map(r => `<option ${r==='Uso clínico'?'selected':''}>${r}</option>`).join('')}</select></div><div id="anomalyWarning">${anomalyWarning}</div>${willBeLow ? '<div style="background:var(--red-bg);color:var(--red);padding:10px;border-radius:9px;margin-top:10px;font-size:12.5px;font-weight:700">🔴 ATENÇÃO: Esta saída deixa o produto em rutura!</div>' : ''}`, async () => {
+const qty = parseInt(document.getElementById('qo_qty').value) || 0;
+if (qty <= 0 || qty > p.stock) { toast('Quantidade inválida para o stock disponível', 'error'); return; }
+const newStock = p.stock - qty;
+await state.sb.from('products').update({ stock: newStock }).eq('id', id);
+await state.sb.from('movements').insert({ product_id: id, product_name: p.name, type: 'out', quantity: qty, from_location: p.location, to_location: null, reason: document.getElementById('qo_reason').value, user_name: state.currentUser.name });
+await addLog('QUICK_OUT', `−${qty} ${p.name}`);
+closeModal(); toast(`➖ Saída registada: −${qty} ${p.name}`, 'warning');
+if (newStock <= 0) setTimeout(() => playAlertSound(true), 300);
+else if (newStock < p.min_stock) setTimeout(() => playAlertSound(false), 300);
+await Promise.all([refreshTable('products', 'products'), refreshTable('movements', 'movements')]);
+}, '➖ Confirmar saída');
 };
 
 window.quickTransfer = (id) => {
-  const p = state.cache.products.find(x => x.id === id);
-  if (!p) return;
-  openModal('⇄ Transferir', `<div class="field full"><label>Quantidade <span class="req">*</span></label><input type="number" id="qt_qty" class="qty-input" value="${p.stock}" min="1" max="${p.stock}" autofocus /></div><div class="field"><label>De</label><input value="${p.location}" disabled /></div><div class="field"><label>Para</label><select id="qt_to">${LOCATIONS.filter(l => l !== p.location).map(l => `<option>${l}</option>`).join('')}</select></div>`, async () => {
-    const qty = parseInt(document.getElementById('qt_qty').value) || 0;
-    const to = document.getElementById('qt_to').value;
-    if (qty <= 0 || qty > p.stock) return;
-    await state.sb.from('products').update({ stock: p.stock - qty }).eq('id', id);
-    await state.sb.from('movements').insert({ product_id: id, product_name: p.name, type: 'transfer', quantity: qty, from_location: p.location, to_location: to, reason: 'Transferência interna', user_name: state.currentUser.name });
-    await addLog('TRANSFER', `${qty} ${p.name} → ${to}`);
-    closeModal(); toast('⇄ Transferido', 'success');
-    await Promise.all([refreshTable('products', 'products'), refreshTable('movements', 'movements')]);
-  }, '⇄');
+const p = state.cache.products.find(x => x.id === id);
+if (!p) return;
+openModal('⇄ Transferir entre zonas', `<div class="field full"><label>Quantidade <span class="req">*</span></label><input type="number" id="qt_qty" class="qty-input" value="${p.stock}" min="1" max="${p.stock}" autofocus /></div><div class="field"><label>De</label><input value="${p.location}" disabled /></div><div class="field"><label>Para</label><select id="qt_to">${LOCATIONS.filter(l => l !== p.location).map(l => `<option>${l}</option>`).join('')}</select></div>`, async () => {
+const qty = parseInt(document.getElementById('qt_qty').value) || 0;
+const to = document.getElementById('qt_to').value;
+if (qty <= 0 || qty > p.stock) { toast('Quantidade inválida', 'error'); return; }
+await state.sb.from('products').update({ stock: p.stock - qty }).eq('id', id);
+await state.sb.from('movements').insert({ product_id: id, product_name: p.name, type: 'transfer', quantity: qty, from_location: p.location, to_location: to, reason: 'Transferência interna', user_name: state.currentUser.name });
+await addLog('TRANSFER', `${qty} ${p.name} → ${to}`);
+closeModal(); toast('⇄ Transferido com sucesso', 'success');
+await Promise.all([refreshTable('products', 'products'), refreshTable('movements', 'movements')]);
+}, '⇄ Confirmar transferência');
 };
 
 function renderMovementsPage(c) {
-  const movements = [...state.cache.movements].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-  c.innerHTML = `<div class="tabs"><div class="tab active" data-mfilter="all">Todos</div><div class="tab" data-mfilter="in">↓ Entradas</div><div class="tab" data-mfilter="out">↑ Saídas</div><div class="tab" data-mfilter="transfer">⇄</div></div><div class="movement-list" id="movList" style="max-height:calc(100vh - 260px)">${movements.slice(0,300).map(m => renderMovementItem(m)).join('') || '<div class="empty">Sem movimentos</div>'}</div>`;
-  document.querySelectorAll('[data-mfilter]').forEach(t => t.addEventListener('click', () => {
-    document.querySelectorAll('[data-mfilter]').forEach(x => x.classList.remove('active')); t.classList.add('active');
-    const f = t.dataset.mfilter; const filtered = f === 'all' ? movements : movements.filter(m => m.type === f);
-    document.getElementById('movList').innerHTML = filtered.slice(0,300).map(m => renderMovementItem(m)).join('') || '<div class="empty">Sem movimentos</div>';
-  }));
+const movements = [...state.cache.movements].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+c.innerHTML = `<div class="products-header"><div class="tabs" style="border:none;margin:0;flex:1"><div class="tab active" data-mfilter="all">Todos</div><div class="tab" data-mfilter="in">↓ Entradas</div><div class="tab" data-mfilter="out">↑ Saídas</div><div class="tab" data-mfilter="transfer">⇄ Transferências</div></div><button class="btn btn-secondary" onclick="exportMovementsCSV()">⬇️ Exportar CSV</button></div><div class="movement-list" id="movList" style="max-height:calc(100vh - 260px)">${movements.slice(0,300).map(m => renderMovementItem(m)).join('') || '<div class="empty"><div class="empty-icon">🔄</div><div class="empty-title">Sem movimentos ainda</div><div class="empty-desc">As entradas, saídas e transferências vão aparecer aqui.</div></div>'}</div>`;
+document.querySelectorAll('[data-mfilter]').forEach(t => t.addEventListener('click', () => {
+document.querySelectorAll('[data-mfilter]').forEach(x => x.classList.remove('active')); t.classList.add('active');
+const f = t.dataset.mfilter; const filtered = f === 'all' ? movements : movements.filter(m => m.type === f);
+document.getElementById('movList').innerHTML = filtered.slice(0,300).map(m => renderMovementItem(m)).join('') || '<div class="empty">Sem movimentos</div>';
+}));
 }
 
 function renderOrdersPage(c) {
-  const orders = [...state.cache.orders].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-  c.innerHTML = `<div class="products-header"><button class="btn btn-primary" onclick="autoGenerateOrder()">✨ Gerar Encomenda</button></div><div class="tabs"><div class="tab active" data-ofilter="all">Todas</div><div class="tab" data-ofilter="pending">Pendentes</div><div class="tab" data-ofilter="ordered">Encomendadas</div><div class="tab" data-ofilter="done">Concluídas</div></div><div id="orderList" class="order-board"></div>`;
-  window._allOrders = orders; renderOrdersList();
-  document.querySelectorAll('[data-ofilter]').forEach(t => t.addEventListener('click', () => {
-    document.querySelectorAll('[data-ofilter]').forEach(x => x.classList.remove('active')); t.classList.add('active');
-    window._oFilter = t.dataset.ofilter; renderOrdersList();
-  }));
+const orders = [...state.cache.orders].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+c.innerHTML = `<div class="products-header"><button class="btn btn-primary" onclick="autoGenerateOrder()">✨ Gerar Encomenda Automática</button></div><div class="tabs"><div class="tab active" data-ofilter="all">Todas</div><div class="tab" data-ofilter="pending">Pendentes</div><div class="tab" data-ofilter="ordered">Encomendadas</div><div class="tab" data-ofilter="done">Concluídas</div></div><div id="orderList" class="order-board"></div>`;
+window._allOrders = orders; renderOrdersList();
+document.querySelectorAll('[data-ofilter]').forEach(t => t.addEventListener('click', () => {
+document.querySelectorAll('[data-ofilter]').forEach(x => x.classList.remove('active')); t.classList.add('active');
+window._oFilter = t.dataset.ofilter; renderOrdersList();
+}));
 }
 window.renderOrdersList = () => {
-  const list = document.getElementById('orderList');
-  if (!list) return;
-  let orders = window._allOrders || [];
-  const f = window._oFilter || 'all';
-  if (f !== 'all') orders = orders.filter(o => o.status === f);
-  list.innerHTML = orders.length === 0 ? '<div class="empty" style="grid-column:1/-1">Sem encomendas</div>' :
-    orders.map(o => `<div class="order-card"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:9px"><div><strong>🏭 ${o.supplier}</strong><div style="font-size:11px;color:var(--text-soft)">${formatDateTime(o.timestamp)}</div></div><span class="order-status ${o.status}">${statusLabel(o.status)}</span></div><div class="order-items">${(o.items||[]).slice(0,4).map(i => `<div class="order-item"><span>${i.name}</span><strong>${i.quantity} ${i.unit||''}</strong></div>`).join('')}</div><div style="display:flex;gap:5px;margin-top:9px;flex-wrap:wrap">${o.status==='pending'?`<button class="btn btn-sm btn-primary" onclick="updateOrderStatus(${o.id},'ordered')">📦</button>`:''}${o.status==='ordered'?`<button class="btn btn-sm btn-success" onclick="openReceiveOrder(${o.id})">✅</button>`:''}<button class="btn btn-sm btn-secondary" onclick="deleteOrder(${o.id})">🗑️</button></div></div>`).join('');
+const list = document.getElementById('orderList');
+if (!list) return;
+let orders = window._allOrders || [];
+const f = window._oFilter || 'all';
+if (f !== 'all') orders = orders.filter(o => o.status === f);
+list.innerHTML = orders.length === 0 ? '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🛒</div><div class="empty-title">Sem encomendas</div><div class="empty-desc">Use "Gerar Encomenda Automática" para criar pedidos com base nos alertas de stock.</div></div>' :
+orders.map(o => `<div class="order-card"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:9px"><div><strong>🏭 ${o.supplier}</strong><div style="font-size:11px;color:var(--text-soft)">${formatDateTime(o.timestamp)}</div></div><span class="order-status ${o.status}">${statusLabel(o.status)}</span></div><div class="order-items">${(o.items||[]).slice(0,4).map(i => `<div class="order-item"><span>${i.name}</span><strong>${i.quantity} ${i.unit||''}</strong></div>`).join('')}</div><div style="display:flex;gap:5px;margin-top:9px;flex-wrap:wrap">${o.status==='pending'?`<button class="btn btn-sm btn-primary" onclick="updateOrderStatus('${o.id}','ordered')">📦 Marcar como encomendada</button>`:''}${o.status==='ordered'?`<button class="btn btn-sm btn-success" onclick="openReceiveOrder('${o.id}')">✅ Receber</button>`:''}<button class="btn btn-sm btn-secondary" onclick="deleteOrder('${o.id}')">🗑️</button></div></div>`).join('');
 };
 window.updateOrderStatus = async (id, status) => {
-  await state.sb.from('orders_clinic').update({ status }).eq('id', id);
-  await addLog('ORDER_STATUS', `#${id} → ${statusLabel(status)}`);
-  await refreshTable('orders', 'orders_clinic');
-  toast('Atualizado', 'success');
+await state.sb.from('orders_clinic').update({ status }).eq('id', id);
+await addLog('ORDER_STATUS', `#${id} → ${statusLabel(status)}`);
+await refreshTable('orders', 'orders_clinic');
+toast('Encomenda atualizada', 'success');
 };
-window.deleteOrder = async (id) => {
-  if (!confirm('Apagar encomenda?')) return;
-  await state.sb.from('orders_clinic').delete().eq('id', id);
-  await refreshTable('orders', 'orders_clinic');
-  toast('Apagada', 'success');
+window.deleteOrder = (id) => {
+confirmAction('Tem a certeza que quer apagar esta encomenda?', 'Apagar encomenda', async () => {
+await state.sb.from('orders_clinic').delete().eq('id', id);
+closeModal();
+await refreshTable('orders', 'orders_clinic');
+toast('Encomenda apagada', 'success');
+});
 };
 window.autoGenerateOrder = async () => {
-  const products = state.cache.products.filter(p => p.active);
-  const bySupplier = {};
-  products.forEach(p => { const s = getStockStatus(p); if (['critical','low'].includes(s.level)) { const sup = p.supplier || 'Outros'; if (!bySupplier[sup]) bySupplier[sup] = []; bySupplier[sup].push({ id: p.id, name: p.name, quantity: Math.max(p.min_stock * 2, 5), unit: p.unit }); } });
-  const sups = Object.keys(bySupplier);
-  if (sups.length === 0) { toast('Sem alertas', 'warning'); return; }
-  for (const sup of sups) {
-    await state.sb.from('orders_clinic').insert({ supplier: sup, items: bySupplier[sup], status: 'pending', created_by: state.currentUser.name });
-  }
-  await refreshTable('orders', 'orders_clinic');
-  toast(`${sups.length} encomenda(s)!`, 'success');
-  playAlertSound(false);
+const products = state.cache.products.filter(p => p.active);
+const bySupplier = {};
+products.forEach(p => { const s = getStockStatus(p); if (['critical','low'].includes(s.level)) { const sup = p.supplier || 'Outros'; if (!bySupplier[sup]) bySupplier[sup] = []; bySupplier[sup].push({ id: p.id, name: p.name, quantity: Math.max(p.min_stock * 2, 5), unit: p.unit }); } });
+const sups = Object.keys(bySupplier);
+if (sups.length === 0) { toast('Sem produtos em alerta neste momento 🎉', 'warning'); return; }
+for (const sup of sups) {
+await state.sb.from('orders_clinic').insert({ supplier: sup, items: bySupplier[sup], status: 'pending', created_by: state.currentUser.name });
+}
+await addLog('ORDER_AUTO_GENERATE', `${sups.length} encomenda(s)`);
+await refreshTable('orders', 'orders_clinic');
+toast(`${sups.length} encomenda(s) criada(s)!`, 'success');
+playAlertSound(false);
 };
 window.openReceiveOrder = async (id) => {
-  const o = state.cache.orders.find(x => x.id === id);
-  if (!o) return;
-  openModal('✅ Receber', `<div>${(o.items||[]).map(i => `<div style="display:grid;grid-template-columns:1fr 90px 70px;gap:9px;padding:9px;background:var(--surface2);border-radius:9px;margin-bottom:7px;align-items:center"><div><strong>${i.name}</strong><div style="font-size:11px">Pedido: ${i.quantity}</div></div><input type="number" min="0" max="${i.quantity-(i.received||0)}" value="${i.quantity-(i.received||0)}" data-recv="${i.id}" style="padding:7px;border-radius:7px;border:1px solid var(--border);text-align:center" /><span style="text-align:center;font-size:12px">${i.unit||'un'}</span></div>`).join('')}</div>`, async () => {
-    let allDone = true;
-    for (const inp of document.querySelectorAll('[data-recv]')) {
-      const qty = parseInt(inp.value) || 0;
-      const item = (o.items||[]).find(i => i.id === parseInt(inp.dataset.recv));
-      if (qty > 0 && item) {
-        const product = state.cache.products.find(p => p.id === item.id);
-        if (product) {
-          await state.sb.from('products').update({ stock: product.stock + qty }).eq('id', product.id);
-          await state.sb.from('movements').insert({ product_id: product.id, product_name: product.name, type: 'in', quantity: qty, from_location: null, to_location: product.location, reason: 'Entrada fornecedor', user_name: state.currentUser.name });
-        }
-        item.received = (item.received||0) + qty;
-        if (item.received < item.quantity) allDone = false;
-      }
-    }
-    await state.sb.from('orders_clinic').update({ status: allDone ? 'done' : 'partial', items: o.items }).eq('id', id);
-    await addLog('ORDER_RECEIVED', `#${id}`);
-    closeModal(); toast('✅', 'success');
-    await Promise.all([refreshTable('orders', 'orders_clinic'), refreshTable('products', 'products'), refreshTable('movements', 'movements')]);
-  }, '✅');
+const o = state.cache.orders.find(x => x.id === id);
+if (!o) return;
+openModal('✅ Receber Encomenda', `<div>${(o.items||[]).map(i => `<div style="display:grid;grid-template-columns:1fr 90px 70px;gap:9px;padding:9px;background:var(--surface2);border-radius:9px;margin-bottom:7px;align-items:center"><div><strong>${i.name}</strong><div style="font-size:11px">Pedido: ${i.quantity}</div></div><input type="number" min="0" max="${i.quantity-(i.received||0)}" value="${i.quantity-(i.received||0)}" data-recv="${i.id}" style="padding:7px;border-radius:7px;border:1px solid var(--border);text-align:center" /><span style="text-align:center;font-size:12px">${i.unit||'un'}</span></div>`).join('')}</div>`, async () => {
+let allDone = true;
+for (const inp of document.querySelectorAll('[data-recv]')) {
+const qty = parseInt(inp.value) || 0;
+const item = (o.items||[]).find(i => i.id === inp.dataset.recv);
+if (qty > 0 && item) {
+const product = state.cache.products.find(p => p.id === item.id);
+if (product) {
+await state.sb.from('products').update({ stock: product.stock + qty }).eq('id', product.id);
+await state.sb.from('movements').insert({ product_id: product.id, product_name: product.name, type: 'in', quantity: qty, from_location: null, to_location: product.location, reason: 'Entrada fornecedor', user_name: state.currentUser.name });
+}
+item.received = (item.received||0) + qty;
+if (item.received < item.quantity) allDone = false;
+}
+}
+await state.sb.from('orders_clinic').update({ status: allDone ? 'done' : 'partial', items: o.items }).eq('id', id);
+await addLog('ORDER_RECEIVED', `#${id}`);
+closeModal(); toast('✅ Encomenda recebida', 'success');
+await Promise.all([refreshTable('orders', 'orders_clinic'), refreshTable('products', 'products'), refreshTable('movements', 'movements')]);
+}, '✅ Confirmar receção');
 };
 window.quickOrderOne = async (productId) => {
-  const p = state.cache.products.find(x => x.id === productId);
-  const supplier = p.supplier || 'Outros';
-  let order = state.cache.orders.find(o => o.supplier === supplier && o.status === 'pending');
-  if (!order) {
-    await state.sb.from('orders_clinic').insert({ supplier, items: [{ id: productId, name: p.name, quantity: Math.max(p.min_stock, 5), unit: p.unit }], status: 'pending', created_by: state.currentUser.name });
-  } else {
-    const items = order.items || [];
-    const ex = items.find(i => i.id === productId);
-    if (ex) ex.quantity += Math.max(p.min_stock, 5);
-    else items.push({ id: productId, name: p.name, quantity: Math.max(p.min_stock, 5), unit: p.unit });
-    await state.sb.from('orders_clinic').update({ items }).eq('id', order.id);
-  }
-  await refreshTable('orders', 'orders_clinic');
-  toast('Adicionado', 'success');
+const p = state.cache.products.find(x => x.id === productId);
+const supplier = p.supplier || 'Outros';
+let order = state.cache.orders.find(o => o.supplier === supplier && o.status === 'pending');
+if (!order) {
+await state.sb.from('orders_clinic').insert({ supplier, items: [{ id: productId, name: p.name, quantity: Math.max(p.min_stock, 5), unit: p.unit }], status: 'pending', created_by: state.currentUser.name });
+} else {
+const items = order.items || [];
+const ex = items.find(i => i.id === productId);
+if (ex) ex.quantity += Math.max(p.min_stock, 5);
+else items.push({ id: productId, name: p.name, quantity: Math.max(p.min_stock, 5), unit: p.unit });
+await state.sb.from('orders_clinic').update({ items }).eq('id', order.id);
+}
+await refreshTable('orders', 'orders_clinic');
+toast(`"${p.name}" adicionado à encomenda`, 'success');
 };
 
 function renderAlertsPage(c) {
-  const products = state.cache.products.filter(p => p.active);
-  const alerts = products.map(p => ({p, s: getStockStatus(p)})).filter(a => a.s.level !== 'ok');
-  c.innerHTML = `<div class="card"><div class="card-header"><div class="card-title">⚠️ Alertas</div><button class="btn btn-primary btn-sm" onclick="autoGenerateOrder()">✨ Gerar</button></div><div class="alert-list">${alerts.length === 0 ? '<div class="empty">✅ Tudo em ordem</div>' : alerts.sort((a,b) => { const o = {critical:0,low:1,near:2}; return o[a.s.level]-o[b.s.level]; }).map(a => `<div class="alert-item ${a.s.level}" style="cursor:pointer" onclick="openProductDetail(${a.p.id})"><span class="alert-icon">${a.s.level==='critical'?'🔴':'🟠'}</span><div class="alert-info"><div class="alert-name">${a.p.name}</div><div class="alert-meta">${a.p.location} · ${a.p.stock}/${a.p.min_stock}</div></div><button class="alert-action" onclick="event.stopPropagation();quickOrderOne(${a.p.id})">+</button></div>`).join('')}</div></div>`;
+const products = state.cache.products.filter(p => p.active);
+const alerts = products.map(p => ({p, s: getStockStatus(p)})).filter(a => a.s.level !== 'ok');
+c.innerHTML = `<div class="card"><div class="card-header"><div class="card-title">⚠️ Alertas</div><div style="display:flex;gap:6px"><button class="btn btn-secondary btn-sm" onclick="exportAlertsCSV()">⬇️ CSV</button><button class="btn btn-primary btn-sm" onclick="autoGenerateOrder()">✨ Gerar Encomenda</button></div></div><div class="alert-list">${alerts.length === 0 ? '<div class="empty"><div class="empty-icon">✅</div><div class="empty-title">Tudo em ordem</div><div class="empty-desc">Não há produtos com stock baixo neste momento.</div></div>' : alerts.sort((a,b) => { const o = {critical:0,low:1,near:2}; return o[a.s.level]-o[b.s.level]; }).map(a => `<div class="alert-item ${a.s.level}" style="cursor:pointer" onclick="openProductDetail('${a.p.id}')"><span class="alert-icon">${a.s.level==='critical'?'🔴':'🟠'}</span><div class="alert-info"><div class="alert-name">${a.p.name}</div><div class="alert-meta">${a.p.location} · ${a.p.stock}/${a.p.min_stock}</div></div><button class="alert-action" onclick="event.stopPropagation();quickOrderOne('${a.p.id}')">+ Encomendar</button></div>`).join('')}</div></div>`;
 }
 
 function renderLogsPage(c) {
-  if (!isAdmin()) { c.innerHTML = '<div class="empty">🔒</div>'; return; }
-  const logs = [...state.cache.logs].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 200);
-  c.innerHTML = `<div class="card"><div class="card-header"><div class="card-title">📋 Logs</div></div><div style="max-height:calc(100vh - 220px);overflow:auto"><table style="width:100%;border-collapse:collapse"><thead><tr style="border-bottom:2px solid var(--border)"><th style="padding:9px;text-align:left;font-size:11.5px">Data/Hora</th><th style="padding:9px;text-align:left;font-size:11.5px">User</th><th style="padding:9px;text-align:left;font-size:11.5px">Ação</th></tr></thead><tbody>${logs.map(l => `<tr style="border-bottom:1px solid var(--border)"><td style="padding:9px;font-size:12px;white-space:nowrap">${formatDateTime(l.timestamp)}</td><td style="padding:9px;font-size:12px">${l.user_name}</td><td style="padding:9px;font-size:11.5px"><span style="background:var(--surface2);padding:2px 7px;border-radius:5px;font-family:monospace">${l.action}</span> ${l.details||''}</td></tr>`).join('')}</tbody></table></div></div>`;
+if (!isAdmin()) { c.innerHTML = '<div class="empty">🔒 Apenas administradores</div>'; return; }
+const logs = [...state.cache.logs].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 200);
+c.innerHTML = `<div class="card"><div class="card-header"><div class="card-title">📋 Logs</div><button class="btn btn-secondary btn-sm" onclick="exportFullBackup()">💾 Exportar cópia de segurança (JSON)</button></div><div style="max-height:calc(100vh - 220px);overflow:auto">${logs.length===0?'<div class="empty">Sem registos ainda</div>':`<table style="width:100%;border-collapse:collapse"><thead><tr style="border-bottom:2px solid var(--border)"><th style="padding:9px;text-align:left;font-size:11.5px">Data/Hora</th><th style="padding:9px;text-align:left;font-size:11.5px">Utilizador</th><th style="padding:9px;text-align:left;font-size:11.5px">Ação</th></tr></thead><tbody>${logs.map(l => `<tr style="border-bottom:1px solid var(--border)"><td style="padding:9px;font-size:12px;white-space:nowrap">${formatDateTime(l.timestamp)}</td><td style="padding:9px;font-size:12px">${l.user_name}</td><td style="padding:9px;font-size:11.5px"><span style="background:var(--surface2);padding:2px 7px;border-radius:5px;font-family:monospace">${l.action}</span> ${l.details||''}</td></tr>`).join('')}</tbody></table>`}</div></div>`;
 }
 
+// ===== EXPORTAÇÃO CSV / BACKUP / IMPRESSÃO =====
+function downloadFile(filename, content, mime) {
+const blob = new Blob([content], { type: mime });
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url; a.download = filename;
+document.body.appendChild(a); a.click(); document.body.removeChild(a);
+URL.revokeObjectURL(url);
+}
+function toCSV(rows) {
+return rows.map(r => r.map(c => `"${String(c===null||c===undefined?'':c).replace(/"/g,'""')}"`).join(';')).join('\r\n');
+}
+window.exportProductsCSV = () => {
+const products = state.cache.products.filter(p => p.active);
+const rows = [['Nome','Referência','Categoria','Fornecedor','Localização','Stock','Mínimo','Unidade','Preço Unitário (€)','Valor em Stock (€)']];
+products.forEach(p => rows.push([p.name, p.ref, p.category, p.supplier, p.location, p.stock, p.min_stock, p.unit, (p.price||0).toFixed(2), ((p.stock||0)*(p.price||0)).toFixed(2)]));
+downloadFile(`produtos_${new Date().toISOString().slice(0,10)}.csv`, '\uFEFF'+toCSV(rows), 'text/csv;charset=utf-8');
+toast('CSV de produtos descarregado', 'success');
+};
+window.exportMovementsCSV = () => {
+const rows = [['Data/Hora','Tipo','Produto','Quantidade','De','Para','Motivo','Utilizador']];
+[...state.cache.movements].sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp)).forEach(m => rows.push([formatDateTime(m.timestamp), m.type==='in'?'Entrada':m.type==='out'?'Saída':'Transferência', m.product_name, m.quantity, m.from_location||'', m.to_location||'', m.reason||'', m.user_name||'']));
+downloadFile(`movimentos_${new Date().toISOString().slice(0,10)}.csv`, '\uFEFF'+toCSV(rows), 'text/csv;charset=utf-8');
+toast('CSV de movimentos descarregado', 'success');
+};
+window.exportAlertsCSV = () => {
+const products = state.cache.products.filter(p => p.active);
+const alerts = products.filter(p => getStockStatus(p).level !== 'ok');
+const rows = [['Nome','Estado','Stock','Mínimo','Localização','Fornecedor']];
+alerts.forEach(p => rows.push([p.name, getStockStatus(p).label, p.stock, p.min_stock, p.location, p.supplier]));
+downloadFile(`alertas_${new Date().toISOString().slice(0,10)}.csv`, '\uFEFF'+toCSV(rows), 'text/csv;charset=utf-8');
+toast('CSV de alertas descarregado', 'success');
+};
+window.exportFullBackup = () => {
+const backup = { exported_at: new Date().toISOString(), ...state.cache };
+downloadFile(`backup_clinica_mais_${new Date().toISOString().slice(0,10)}.json`, JSON.stringify(backup, null, 2), 'application/json');
+toast('Cópia de segurança descarregada', 'success');
+};
+window.printProductList = () => {
+const products = [...state.cache.products.filter(p=>p.active)].sort((a,b)=>a.name.localeCompare(b.name));
+const rows = products.map(p => `<tr><td>${p.name}</td><td>${p.ref||''}</td><td>${p.location}</td><td style="text-align:center">${p.stock}</td><td style="text-align:center">${p.min_stock}</td><td>${getStockStatus(p).label}</td></tr>`).join('');
+document.getElementById('printArea').innerHTML = `<h2 style="margin-bottom:4px">Clínica Mais — Lista de Produtos</h2><div style="color:#666;font-size:12px;margin-bottom:14px">Gerado em ${formatDateTime(new Date().toISOString())}</div><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="border-bottom:2px solid #000"><th style="text-align:left;padding:6px">Produto</th><th style="text-align:left;padding:6px">Ref</th><th style="text-align:left;padding:6px">Local</th><th style="padding:6px">Stock</th><th style="padding:6px">Mín</th><th style="text-align:left;padding:6px">Estado</th></tr></thead><tbody>${rows}</tbody></table>`;
+window.print();
+};
+
 function openModal(title, body, onConfirm, confirmLabel = 'Guardar') {
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalBody').innerHTML = body;
-  document.getElementById('modalFooter').innerHTML = `${onConfirm === null ? '' : `<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>`}${onConfirm ? `<button class="btn btn-primary" id="modalConfirm">${confirmLabel}</button>` : `<button class="btn btn-primary" onclick="closeModal()">${confirmLabel||'Fechar'}</button>`}`;
-  document.getElementById('modal').classList.add('active');
-  if (onConfirm) document.getElementById('modalConfirm').addEventListener('click', onConfirm);
+document.getElementById('modalBox').classList.remove('modal-sm');
+document.getElementById('modalTitle').textContent = title;
+document.getElementById('modalBody').innerHTML = body;
+document.getElementById('modalFooter').innerHTML = `${onConfirm === null ? '' : `<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>`}${onConfirm ? `<button class="btn btn-primary" id="modalConfirm">${confirmLabel}</button>` : `<button class="btn btn-primary" onclick="closeModal()">${confirmLabel||'Fechar'}</button>`}`;
+document.getElementById('modal').classList.add('active');
+if (onConfirm) document.getElementById('modalConfirm').addEventListener('click', onConfirm);
 }
 window.closeModal = () => document.getElementById('modal').classList.remove('active');
+
+// ===== CONFIRMAÇÃO E PROMPT EM ESTILO DA APP (substitui confirm()/prompt() nativos) =====
+window.confirmAction = (message, title = 'Confirmar', onYes) => {
+document.getElementById('modalBox').classList.add('modal-sm');
+document.getElementById('modalTitle').textContent = title;
+document.getElementById('modalBody').innerHTML = `<div class="confirm-icon">⚠️</div><div class="confirm-text">${message}</div>`;
+document.getElementById('modalFooter').innerHTML = `<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-danger" id="modalConfirm">Sim, confirmar</button>`;
+document.getElementById('modal').classList.add('active');
+document.getElementById('modalConfirm').addEventListener('click', onYes);
+};
+window.promptAction = (title, label, currentValue, onSubmit) => {
+document.getElementById('modalBox').classList.add('modal-sm');
+document.getElementById('modalTitle').textContent = title;
+document.getElementById('modalBody').innerHTML = `<div class="field full"><label>${label}</label><input id="promptInput" value="${(currentValue||'').replace(/"/g,'&quot;')}" autofocus /></div>`;
+document.getElementById('modalFooter').innerHTML = `<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" id="modalConfirm">Guardar</button>`;
+document.getElementById('modal').classList.add('active');
+document.getElementById('modalConfirm').addEventListener('click', () => { const v = document.getElementById('promptInput').value.trim(); closeModal(); onSubmit(v); });
+setTimeout(()=>document.getElementById('promptInput')?.focus(), 50);
+};
+
+// ===== AJUDA (legenda de cores e dicas rápidas para quem não é da área de informática) =====
+window.openHelp = () => {
+document.getElementById('modalBox').classList.remove('modal-sm');
+openModal('❓ Ajuda e Legenda', `
+<div class="help-section-title">O que significam as cores do stock</div>
+<div class="help-legend">
+<div class="help-legend-item"><div class="help-legend-dot" style="background:var(--red)"></div><div><strong>Vermelho — Em rutura:</strong> o produto acabou. Encomende com urgência.</div></div>
+<div class="help-legend-item"><div class="help-legend-dot" style="background:var(--orange)"></div><div><strong>Laranja — Stock baixo:</strong> abaixo do mínimo definido. Convém encomendar em breve.</div></div>
+<div class="help-legend-item"><div class="help-legend-dot" style="background:var(--yellow)"></div><div><strong>Amarelo — Perto do mínimo:</strong> ainda há stock, mas está a aproximar-se do limite.</div></div>
+<div class="help-legend-item"><div class="help-legend-dot" style="background:var(--green)"></div><div><strong>Verde — Tudo bem:</strong> stock em quantidade suficiente.</div></div>
+</div>
+<div class="help-section-title">Como usar a aplicação</div>
+<div class="help-legend">
+<div class="help-legend-item">📊 <div><strong>Início:</strong> pesquise produtos e registe entradas/saídas rapidamente, tocando em "+" ou "−".</div></div>
+<div class="help-legend-item">📦 <div><strong>Produtos:</strong> veja o stock detalhado, organizado por zona da clínica.</div></div>
+<div class="help-legend-item">🔄 <div><strong>Movimentos:</strong> histórico de tudo o que entrou, saiu ou foi transferido.</div></div>
+<div class="help-legend-item">🛒 <div><strong>Encomendas:</strong> gere pedidos aos fornecedores automaticamente a partir dos alertas.</div></div>
+<div class="help-legend-item">⚠️ <div><strong>Alertas:</strong> lista de tudo o que precisa de atenção imediata.</div></div>
+</div>
+${isAdmin() ? `<div class="help-section-title">Área de Administração</div>
+<div class="help-legend">
+<div class="help-legend-item">👥 <div><strong>Utilizadores:</strong> crie contas para a equipa e reponha PINs esquecidos.</div></div>
+<div class="help-legend-item">📦🏷️🏭 <div><strong>Gerir Produtos / Categorias / Fornecedores:</strong> mantenha a lista organizada.</div></div>
+</div>` : ''}
+<div class="help-section-title">Precisa de mais ajuda?</div>
+<div style="font-size:12.5px;color:var(--text-soft)">Fale com o administrador da clínica, ou toque em 🔑 para alterar o seu PIN a qualquer momento.</div>
+`, null, 'Entendi');
+};
+
 window.changeOwnPin = () => {
-  const u = state.currentUser;
-  if (!u) return;
-  openModal('🔑 Alterar o Meu PIN', `
-    <div class="field full" style="margin-bottom:14px"><label>Utilizador</label><input value="${u.name}" disabled style="background:var(--surface);font-weight:600" /></div>
-    <div class="field full" style="margin-bottom:14px"><label>PIN Atual <span class="req">*</span></label><input type="password" id="cp_current" maxlength="8" placeholder="Digite o PIN atual" autofocus /></div>
-    <div class="field full" style="margin-bottom:14px"><label>PIN Novo (4-8 dígitos) <span class="req">*</span></label><input type="password" id="cp_new" maxlength="8" placeholder="Digite o novo PIN" /></div>
-    <div class="field full"><label>Confirmar PIN Novo <span class="req">*</span></label><input type="password" id="cp_confirm" maxlength="8" placeholder="Digite novamente" /></div>
-  `, async () => {
-    const current = document.getElementById('cp_current').value;
-    const newPin = document.getElementById('cp_new').value;
-    const confirm = document.getElementById('cp_confirm').value;
-    if (!current || !newPin || !confirm) { toast('Preencha todos os campos', 'error'); return; }
-    if (current !== u.pin) { toast('PIN atual incorreto', 'error'); return; }
-    if (newPin.length < 4 || newPin.length > 8) { toast('PIN deve ter entre 4 e 8 dígitos', 'error'); return; }
-    if (!/^\d+$/.test(newPin)) { toast('Apenas números', 'error'); return; }
-    if (newPin !== confirm) { toast('Confirmação não coincide', 'error'); return; }
-    if (newPin === current) { toast('PIN novo tem de ser diferente', 'error'); return; }
-    const { error } = await state.sb.from('users').update({ pin: newPin }).eq('id', u.id);
-    if (error) { toast('Erro: ' + error.message, 'error'); return; }
-    u.pin = newPin;
-    await addLog('PIN_CHANGE', 'Alterou o próprio PIN');
-    closeModal();
-    toast('✅ PIN alterado!', 'success');
-    setTimeout(() => toast('Vai precisar do novo PIN no próximo login', 'warning'), 2500);
-  }, '🔑 Guardar');
+const u = state.currentUser;
+if (!u) return;
+document.getElementById('modalBox').classList.remove('modal-sm');
+openModal('🔑 Alterar o Meu PIN', `
+<div class="field full" style="margin-bottom:14px"><label>Utilizador</label><input value="${u.name}" disabled style="background:var(--surface);font-weight:700" /></div>
+<div class="field full" style="margin-bottom:14px"><label>PIN Atual <span class="req">*</span></label><input type="password" id="cp_current" maxlength="8" placeholder="Digite o PIN atual" autofocus /></div>
+<div class="field full" style="margin-bottom:14px"><label>PIN Novo (4-8 dígitos) <span class="req">*</span></label><input type="password" id="cp_new" maxlength="8" placeholder="Digite o novo PIN" /></div>
+<div class="field full"><label>Confirmar PIN Novo <span class="req">*</span></label><input type="password" id="cp_confirm" maxlength="8" placeholder="Digite novamente" /></div>
+`, async () => {
+const current = document.getElementById('cp_current').value;
+const newPin = document.getElementById('cp_new').value;
+const confirmVal = document.getElementById('cp_confirm').value;
+if (!current || !newPin || !confirmVal) { toast('Preencha todos os campos', 'error'); return; }
+if (current !== u.pin) { toast('PIN atual incorreto', 'error'); return; }
+if (newPin.length < 4 || newPin.length > 8) { toast('PIN deve ter entre 4 e 8 dígitos', 'error'); return; }
+if (!/^\d+$/.test(newPin)) { toast('Apenas números', 'error'); return; }
+if (newPin !== confirmVal) { toast('Confirmação não coincide', 'error'); return; }
+if (newPin === current) { toast('PIN novo tem de ser diferente', 'error'); return; }
+const { error } = await state.sb.from('users').update({ pin: newPin }).eq('id', u.id);
+if (error) { toast('Erro: ' + error.message, 'error'); return; }
+u.pin = newPin;
+await addLog('PIN_CHANGE', 'Alterou o próprio PIN');
+closeModal();
+toast('✅ PIN alterado!', 'success');
+setTimeout(() => toast('Vai precisar do novo PIN no próximo login', 'warning'), 2500);
+}, '🔑 Guardar');
 };
 
 window.openProductModal = (id = null) => {
-  if (!isAdmin()) return;
-  const p = id ? state.cache.products.find(x => x.id === id) : null;
-  openModal(id ? '✏️ Editar' : '➕ Novo', `<div class="form-grid"><div class="field full"><label>📦 Nome <span class="req">*</span></label><input id="f_name" value="${p?.name||''}" /></div><div class="field"><label>🏷️ Categoria</label><select id="f_category">${state.cache.categories.map(c => `<option ${p?.category===c.name?'selected':''}>${c.name}</option>`).join('')}</select></div><div class="field"><label>🏭 Fornecedor</label><select id="f_supplier">${state.cache.suppliers.map(s => `<option ${p?.supplier===s.name?'selected':''}>${s.name}</option>`).join('')}</select></div><div class="field"><label>🔖 Ref <span class="req">*</span></label><input id="f_ref" value="${p?.ref||''}" /></div><div class="field"><label>📊 Stock</label><input type="number" id="f_stock" value="${p?.stock||0}" /></div><div class="field"><label>⚠️ Mínimo</label><input type="number" id="f_min" value="${p?.min_stock||0}" /></div><div class="field"><label>📏 Unidade</label><input id="f_unit" value="${p?.unit||'un'}" /></div><div class="field"><label>📍 Localização</label><select id="f_location">${LOCATIONS.map(l => `<option ${p?.location===l?'selected':''}>${l}</option>`).join('')}</select></div></div>`, async () => {
-    const data = { name: document.getElementById('f_name').value.trim(), category: document.getElementById('f_category').value, supplier: document.getElementById('f_supplier').value, ref: document.getElementById('f_ref').value.trim(), stock: parseInt(document.getElementById('f_stock').value)||0, min_stock: parseInt(document.getElementById('f_min').value)||0, unit: document.getElementById('f_unit').value, location: document.getElementById('f_location').value, active: true };
-    if (!data.name || !data.ref) { toast('Nome e ref obrigatórios', 'error'); return; }
-    if (p) { await state.sb.from('products').update(data).eq('id', p.id); await addLog('PRODUCT_EDIT', data.name); }
-    else { await state.sb.from('products').insert(data); await addLog('PRODUCT_CREATE', data.name); }
-    closeModal(); toast('✅', 'success');
-    await refreshTable('products', 'products');
-  });
+if (!isAdmin()) return;
+const p = id ? state.cache.products.find(x => x.id === id) : null;
+document.getElementById('modalBox').classList.remove('modal-sm');
+openModal(id ? '✏️ Editar Produto' : '➕ Novo Produto', `<div class="form-grid"><div class="field full"><label>📦 Nome <span class="req">*</span></label><input id="f_name" value="${p?.name||''}" placeholder="Ex: Luvas Nitrilo M" /></div><div class="field"><label>🏷️ Categoria</label><select id="f_category">${state.cache.categories.map(c => `<option ${p?.category===c.name?'selected':''}>${c.name}</option>`).join('')}</select></div><div class="field"><label>🏭 Fornecedor</label><select id="f_supplier">${state.cache.suppliers.map(s => `<option ${p?.supplier===s.name?'selected':''}>${s.name}</option>`).join('')}</select></div><div class="field"><label>🔖 Referência <span class="req">*</span></label><input id="f_ref" value="${p?.ref||''}" placeholder="Ex: GLV-NT-M" /></div><div class="field"><label>📊 Stock atual</label><input type="number" id="f_stock" value="${p?.stock||0}" /></div><div class="field"><label>⚠️ Stock mínimo</label><input type="number" id="f_min" value="${p?.min_stock||0}" /></div><div class="field"><label>📏 Unidade</label><input id="f_unit" value="${p?.unit||'un'}" placeholder="un, kit, L..." /></div><div class="field"><label>💶 Preço unitário (€)</label><input type="number" step="0.01" id="f_price" value="${p?.price||0}" /></div><div class="field full"><label>📍 Localização</label><select id="f_location">${LOCATIONS.map(l => `<option ${p?.location===l?'selected':''}>${l}</option>`).join('')}</select></div></div>`, async () => {
+const data = { name: document.getElementById('f_name').value.trim(), category: document.getElementById('f_category').value, supplier: document.getElementById('f_supplier').value, ref: document.getElementById('f_ref').value.trim(), stock: parseInt(document.getElementById('f_stock').value)||0, min_stock: parseInt(document.getElementById('f_min').value)||0, unit: document.getElementById('f_unit').value, price: parseFloat(document.getElementById('f_price').value)||0, location: document.getElementById('f_location').value, active: true };
+if (!data.name || !data.ref) { toast('Nome e referência são obrigatórios', 'error'); return; }
+if (p) { await state.sb.from('products').update(data).eq('id', p.id); await addLog('PRODUCT_EDIT', data.name); toast('Produto atualizado', 'success'); }
+else { await state.sb.from('products').insert(data); await addLog('PRODUCT_CREATE', data.name); toast('Produto criado', 'success'); }
+closeModal();
+await refreshTable('products', 'products');
+});
 };
 </script>
 </body>
